@@ -1,7 +1,15 @@
 .p-5 {
-    padding: 5rem !important;
+	padding: 5rem !important;
 }
 
 .vertical-align-center {
-    vertical-align: middle !important;
+	vertical-align: middle !important;
+}
+
+.cursor-pointer:hover {
+	cursor: pointer;
+}
+
+.cursor-normal:hover {
+	cursor: default;
 }

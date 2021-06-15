@@ -3,8 +3,11 @@ import React, { FC, useEffect } from 'react';
 import { Route, RouteProps, Switch } from 'react-router';
 import { v4 } from 'uuid';
 import Forms from '../Components/Dashboard/Forms/Index';
+import Home from '../Components/Dashboard/Home';
 import Navbar from '../Components/Dashboard/Navbar';
 import Sidebar from '../Components/Dashboard/Sidebar';
+import Batch from '../Components/Dashboard/Vaccines/Batch';
+import Types from '../Components/Dashboard/Vaccines/Types';
 import { useURL } from '../hooks';
 import { routes } from '../routes';
 
@@ -17,8 +20,21 @@ const Dashboard: FC<Props> = (props) => {
 
 	const links: RouteProps[] = [
 		{
-			path: url(routes.FORMS),
+			path: url('/'),
+			exact: true,
+			component: Home,
+		},
+		{
+			path: url(routes.FORMS.ROOT),
 			component: Forms,
+		},
+		{
+			path: url(routes.VACCINE.TYPES),
+			component: Types,
+		},
+		{
+			path: url(routes.VACCINE.BATCH),
+			component: Batch,
 		},
 	];
 
@@ -54,7 +70,9 @@ const Dashboard: FC<Props> = (props) => {
 					</div>
 				</main>
 				<footer className='bdT ta-c p-30 lh-0 fsz-sm c-grey-600'>
-					<span>Copyright © {dayjs().year()}. All rights reserved.</span>
+					<span>
+						Copyright © {dayjs().year()}. All Rights Reserved.
+					</span>
 				</footer>
 			</div>
 		</>

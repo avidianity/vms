@@ -4,7 +4,13 @@ import { useRouteMatch } from 'react-router-dom';
 export function useURL() {
 	const match = useRouteMatch();
 
-	return (path: string) => `${match.path}${path}`;
+	const fragments = match.path.split('');
+
+	if(fragments.last() === '/') {
+		fragments.splice(fragments.length - 1, 1);
+	}
+
+	return (path: string) => `${fragments.join('')}${path}`;
 }
 
 export function useMode() {
