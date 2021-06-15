@@ -1,5 +1,10 @@
 import React, { FC } from 'react';
-import { BrowserRouter as Router, Route, RouteProps, Switch } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Route,
+	RouteProps,
+	Switch,
+} from 'react-router-dom';
 import { routes } from './routes';
 import Dashboard from './Views/Dashboard';
 import Home from './Views/Home';
