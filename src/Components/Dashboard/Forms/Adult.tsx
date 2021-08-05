@@ -12,59 +12,30 @@ const Adult: FC<Props> = (props) => {
 			<h1 className='mb-0'>Adult</h1>
 			<p>Personal Information</p>
 			<form className='form-row'>
-				<div
-					className='col-12 col-md-6 border rounded'
-					style={{ padding: '3rem' }}>
+				<div className='col-12 col-md-6 border rounded' style={{ padding: '3rem' }}>
 					<h5>Contact Info</h5>
 					<div className='form-group'>
 						<label htmlFor='first_name'>First Name</label>
-						<input
-							type='text'
-							name='first_name'
-							id='first_name'
-							className='form-control'
-						/>
+						<input type='text' name='first_name' id='first_name' className='form-control' />
 					</div>
 					<div className='form-group'>
 						<label htmlFor='middle_name'>Middle Name</label>
-						<input
-							type='text'
-							name='middle_name'
-							id='middle_name'
-							className='form-control'
-						/>
+						<input type='text' name='middle_name' id='middle_name' className='form-control' />
 					</div>
 					<div className='form-group'>
 						<label htmlFor='last_name'>Last Name</label>
-						<input
-							type='text'
-							name='last_name'
-							id='last_name'
-							className='form-control'
-						/>
+						<input type='text' name='last_name' id='last_name' className='form-control' />
 					</div>
 					<div className='form-group'>
 						<label htmlFor='email'>Email</label>
-						<input
-							type='email'
-							name='email'
-							id='email'
-							className='form-control'
-						/>
+						<input type='email' name='email' id='email' className='form-control' />
 					</div>
 					<div className='form-group'>
 						<label htmlFor='number'>Mobile #</label>
-						<input
-							type='text'
-							name='number'
-							id='number'
-							className='form-control'
-						/>
+						<input type='text' name='number' id='number' className='form-control' />
 					</div>
 				</div>
-				<div
-					className='col-12 col-md-6 border rounded'
-					style={{ padding: '3rem' }}>
+				<div className='col-12 col-md-6 border rounded' style={{ padding: '3rem' }}>
 					<h5>Birthdate</h5>
 					<div className='form-group'>
 						<label htmlFor='birthday'>Birthday</label>
@@ -78,25 +49,11 @@ const Adult: FC<Props> = (props) => {
 					</div>
 					<div className='form-group'>
 						<label>Month of Birth</label>
-						<input
-							type='text'
-							className='form-control'
-							disabled
-							value={
-								birthday ? dayjs(birthday).format('MMMM') : ''
-							}
-						/>
+						<input type='text' className='form-control' disabled value={birthday ? dayjs(birthday).format('MMMM') : ''} />
 					</div>
 					<div className='form-group'>
 						<label>Year of Birth</label>
-						<input
-							type='text'
-							className='form-control'
-							disabled
-							value={
-								birthday ? dayjs(birthday).format('YYYY') : ''
-							}
-						/>
+						<input type='text' className='form-control' disabled value={birthday ? dayjs(birthday).format('YYYY') : ''} />
 					</div>
 					<div className='form-group'>
 						<label>Age</label>
@@ -104,21 +61,12 @@ const Adult: FC<Props> = (props) => {
 							type='text'
 							className='form-control'
 							disabled
-							value={
-								birthday
-									? dayjs().year() - dayjs(birthday).year()
-									: ''
-							}
+							value={birthday ? dayjs().year() - dayjs(birthday).year() : ''}
 						/>
 					</div>
 					<div className='form-group'>
 						<label htmlFor='address'>Address</label>
-						<input
-							type='text'
-							name='address'
-							id='address'
-							className='form-control'
-						/>
+						<input type='text' name='address' id='address' className='form-control' />
 					</div>
 				</div>
 				<div className='col-12 pt-3'>

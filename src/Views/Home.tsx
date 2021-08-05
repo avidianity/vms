@@ -10,21 +10,11 @@ const Home: FC<Props> = (props) => {
 	const id = v4();
 	return (
 		<>
-			<nav
-				className='navbar navbar-expand-lg navbar-light shadow'
-				style={{ backgroundColor: '#fff' }}>
+			<nav className='navbar navbar-expand-lg navbar-light shadow' style={{ backgroundColor: '#fff' }}>
 				<Link to={routes.HOME} className='navbar-brand'>
-					<img
-						src={logo}
-						alt='VMS'
-						style={{ height: '30px', width: '30px' }}
-					/>
+					<img src={logo} alt='VMSS' style={{ height: '30px', width: '30px' }} />
 				</Link>
-				<button
-					className='navbar-toggler'
-					type='button'
-					data-toggle='collapse'
-					data-target={`#${id}`}>
+				<button className='navbar-toggler' type='button' data-toggle='collapse' data-target={`#${id}`}>
 					<span className='navbar-toggler-icon'></span>
 				</button>
 

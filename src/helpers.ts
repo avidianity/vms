@@ -3,6 +3,7 @@ import _, { isArray as _isArray, isString, trim } from 'lodash';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import swal from 'sweetalert';
+import { compareSync, hashSync } from 'bcryptjs';
 
 dayjs.extend(relativeTime);
 
@@ -27,6 +28,16 @@ export class Asker {
 				icon: 'warning',
 			})
 		);
+	}
+}
+
+export class Hash {
+	static check(value: string, hash: string) {
+		return compareSync(value, hash);
+	}
+
+	static make(value: string) {
+		return hashSync(value, 8);
 	}
 }
 
