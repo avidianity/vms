@@ -12,6 +12,8 @@ export const app = firebase.initializeApp({
 
 export const analytics = firebase.analytics(app);
 
+export const storage = firebase.storage();
+
 // Setup
 
 app.auth().useDeviceLanguage();

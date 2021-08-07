@@ -1,4 +1,5 @@
 import { BaseContract } from './base.contract';
+import { FileContract } from './file.contract';
 
 export interface UserContract extends BaseContract {
 	name: string;
@@ -7,5 +8,7 @@ export interface UserContract extends BaseContract {
 	gender: string;
 	birthday: string;
 	address: string;
+	phone: string;
 	role: string;
+	picture?: FileContract;
 }

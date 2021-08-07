@@ -4,7 +4,6 @@ import logo from '../Assets/logo.svg';
 import { useHistory } from 'react-router';
 import { routes } from '../routes';
 import { useForm } from 'react-hook-form';
-import { UserContract } from '../Contracts/user.contract';
 import { User } from '../Models/user.model';
 import { useState } from 'react';
 import { Hash } from '../helpers';
@@ -14,6 +13,16 @@ import { State } from '../Libraries/state.library';
 import { Link } from 'react-router-dom';
 
 type Props = {};
+
+type UserContract = {
+	name: string;
+	email: string;
+	password: string;
+	gender: string;
+	birthday: string;
+	address: string;
+	role: string;
+};
 
 const state = State.getInstance();
 
@@ -36,6 +45,8 @@ const Login: FC<Props> = (props) => {
 				return toastr.error('Password is incorrect.');
 			}
 
+			await user.load(['picture']);
+
 			const hash = String.random(20);
 
 			await user.tokens().save(new Token({ hash: md5(hash) }));
@@ -46,7 +57,7 @@ const Login: FC<Props> = (props) => {
 
 			history.push(routes.DASHBOARD);
 		} catch (error) {
-			console.log(error);
+			console.log('unable to login', error);
 			toastr.error('Unable to login. Please try again later.');
 		} finally {
 			setProcessing(false);

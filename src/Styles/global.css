@@ -2,6 +2,22 @@
 	padding: 5rem !important;
 }
 
+.p-4 {
+	padding: 4rem !important;
+}
+
+.p-3 {
+	padding: 3rem !important;
+}
+
+.p-2 {
+	padding: 2rem !important;
+}
+
+.p-1 {
+	padding: 1rem !important;
+}
+
 .vertical-align-center {
 	vertical-align: middle !important;
 }
@@ -12,4 +28,8 @@
 
 .cursor-normal:hover {
 	cursor: default;
+}
+
+.clickable:hover {
+	cursor: pointer;
 }

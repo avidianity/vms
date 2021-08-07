@@ -4,8 +4,12 @@ import { Route, RouteProps, Switch } from 'react-router';
 import { v4 } from 'uuid';
 import Home from '../Components/Dashboard/Home';
 import Navbar from '../Components/Dashboard/Navbar';
+import Profile from '../Components/Dashboard/Profile';
 import Sidebar from '../Components/Dashboard/Sidebar';
+import Users from '../Components/Dashboard/Users';
+import Vaccines from '../Components/Dashboard/Vaccines';
 import { useAuthenticate, useURL } from '../hooks';
+import { routes } from '../routes';
 
 type Props = {};
 
@@ -21,6 +25,18 @@ const Dashboard: FC<Props> = (props) => {
 			path: url('/'),
 			exact: true,
 			component: Home,
+		},
+		{
+			path: url(routes.PROFILE),
+			component: Profile,
+		},
+		{
+			path: url(routes.USERS),
+			component: Users,
+		},
+		{
+			path: url(routes.VACCINE.ROOT),
+			component: Vaccines,
 		},
 	];
 

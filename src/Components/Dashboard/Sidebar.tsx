@@ -30,9 +30,7 @@ const Sidebar: FC<Props> = (props) => {
 										</div>
 									</div>
 									<div className='peer peer-greed'>
-										<h5 className='lh-1 mB-0 logo-text'>
-											VMS
-										</h5>
+										<h5 className='lh-1 mB-0 logo-text'>VMS</h5>
 									</div>
 								</div>
 							</a>
@@ -58,7 +56,7 @@ const Sidebar: FC<Props> = (props) => {
 					</div>
 				</div>
 				<ul className='sidebar-menu scrollable pos-r'>
-					<li className='nav-item mT-30 actived'>
+					<li className='mT-30'>
 						<Link to={routes.DASHBOARD} className='sidebar-link'>
 							<span className='icon-holder'>
 								<i className='c-blue-500 ti-home'></i>{' '}
@@ -66,96 +64,29 @@ const Sidebar: FC<Props> = (props) => {
 							<span className='title'>Home</span>
 						</Link>
 					</li>
-					<li className='nav-item'>
-						<Link
-							to={url(routes.FORMS.ROOT)}
-							className='sidebar-link'>
-							<span className='icon-holder'>
-								<i className='c-light-blue-500 ti-pencil'></i>{' '}
-							</span>
-							<span className='title'>Forms</span>
-						</Link>
-					</li>
-					<li className='nav-item dropdown open'>
-						<a
-							href='/'
-							className='sidebar-link cursor-normal'
-							onClick={(e) => e.preventDefault()}>
+					<li>
+						<Link to={url(routes.VACCINE.ROOT)} className='sidebar-link'>
 							<span className='icon-holder'>
 								<i className='c-red-500 ti-pulse'></i>
 							</span>
 							<span className='title'>Vaccines</span>
-							<span className='arrow'>
-								<i className='ti-angle-right'></i>
-							</span>
-						</a>
-						<ul className='dropdown-menu d-block'>
-							<li>
-								<Link
-									to={url(routes.VACCINE.TYPES)}
-									className='sidebar-link'>
-									Vaccine Types
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={url(routes.VACCINE.BATCH)}
-									className='sidebar-link'>
-									Batch
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={url(routes.VACCINE.QUEUE)}
-									className='sidebar-link'>
-									Vaccine Queue
-								</Link>
-							</li>
-						</ul>
+						</Link>
 					</li>
-					<li className='nav-item dropdown open'>
-						<a
-							href='/'
-							className='sidebar-link cursor-normal'
-							onClick={(e) => e.preventDefault()}>
+					<li>
+						<Link to={url(routes.INCOMING.APPOINTMENT)} className='sidebar-link'>
 							<span className='icon-holder'>
-								<i className='c-green-500 ti-shift-right-alt'></i>
+								<i className='c-purple-500 ti-list'></i>{' '}
 							</span>
-							<span className='title'>Incoming</span>
-							<span className='arrow'>
-								<i className='ti-angle-right'></i>
+							<span className='title'>Appointments</span>
+						</Link>
+					</li>
+					<li>
+						<Link to={url(routes.USERS)} className='sidebar-link'>
+							<span className='icon-holder'>
+								<i className='c-green-500 ti-user'></i>{' '}
 							</span>
-						</a>
-						<ul className='dropdown-menu d-block'>
-							<li>
-								<Link
-									to={url(routes.INCOMING.RESIDENTS)}
-									className='sidebar-link'>
-									Resident
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={url(routes.INCOMING.ELIGIBILITY)}
-									className='sidebar-link'>
-									Eligibility
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={url(routes.INCOMING.RECOMMENDATION)}
-									className='sidebar-link'>
-									Recommenddation
-								</Link>
-							</li>
-							<li>
-								<Link
-									to={url(routes.INCOMING.APPOINTMENT)}
-									className='sidebar-link'>
-									Appointment
-								</Link>
-							</li>
-						</ul>
+							<span className='title'>Health Workers</span>
+						</Link>
 					</li>
 				</ul>
 			</div>

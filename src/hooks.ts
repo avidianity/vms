@@ -1,3 +1,4 @@
+import { Collection, Model } from 'firestore-eloquent';
 import md5 from 'md5';
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -27,6 +28,10 @@ export function useNullable<T>(data?: T) {
 
 export function useArray<T>(data?: T[]) {
 	return useState<T[]>(data || []);
+}
+
+export function useCollection<T extends Model>(data?: Collection<T>) {
+	return useState<Collection<T>>(data || new Collection());
 }
 
 const state = State.getInstance();

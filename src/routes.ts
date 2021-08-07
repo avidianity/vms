@@ -13,6 +13,7 @@ export const routes = {
 		TYPES: '/vaccine-types',
 		BATCH: '/vaccine-batches',
 		QUEUE: '/vaccine-queues',
+		ROOT: '/vaccines',
 	},
 	INCOMING: {
 		RESIDENTS: '/incoming-residents',
@@ -20,4 +21,5 @@ export const routes = {
 		RECOMMENDATION: '/incoming-recommendation',
 		APPOINTMENT: '/incoming-appointment',
 	},
+	USERS: '/users',
 };

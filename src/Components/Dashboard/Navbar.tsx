@@ -1,6 +1,7 @@
 import md5 from 'md5';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { UserContract } from '../../Contracts/user.contract';
 import { Asker, outIf } from '../../helpers';
 import { useURL } from '../../hooks';
 import { State } from '../../Libraries/state.library';
@@ -15,6 +16,7 @@ const Navbar: FC<Props> = (props) => {
 	const [menu, setMenu] = useState(false);
 	const url = useURL();
 	const history = useHistory();
+	const [user, setUser] = useState(state.get<UserContract>('user'));
 
 	const logout = async () => {
 		if (await Asker.notice('Are you sure you want to logout?')) {
@@ -30,6 +32,15 @@ const Navbar: FC<Props> = (props) => {
 		toastr.info('You have logged out.', 'Notice');
 		history.push(routes.LOGIN);
 	};
+
+	useEffect(() => {
+		const key = state.listen<UserContract>('user', (user) => setUser(user));
+
+		return () => {
+			state.unlisten(key);
+		};
+		//eslint-disable-next-line
+	}, []);
 
 	return (
 		<div className='header navbar'>
@@ -52,15 +63,6 @@ const Navbar: FC<Props> = (props) => {
 							<i className='ti-menu'></i>
 						</a>
 					</li>
-					<li className='search-box'>
-						<a className='search-toggle no-pdd-right' href='/'>
-							<i className='search-icon ti-search pdd-right-10'></i>{' '}
-							<i className='search-icon-close ti-close pdd-right-10'></i>
-						</a>
-					</li>
-					<li className='search-input'>
-						<input className='form-control' type='text' placeholder='Search...' />
-					</li>
 				</ul>
 				<ul className='nav-right mr-4'>
 					<li className={`dropdown ${outIf(menu, 'show')}`}>
@@ -72,10 +74,14 @@ const Navbar: FC<Props> = (props) => {
 								setMenu(!menu);
 							}}>
 							<div className='peer mR-10'>
-								<img className='w-2r bdrs-50p' src='https://via.placeholder.com/200' alt='' />
+								<img
+									className='w-2r bdrs-50p'
+									src={user?.picture?.path || 'https://via.placeholder.com/200'}
+									alt={user?.name}
+								/>
 							</div>
 							<div className='peer'>
-								<span className='fsz-sm c-grey-900'>Jecris</span>
+								<span className='fsz-sm c-grey-900'>{user?.name}</span>
 							</div>
 						</a>
 						<ul className={`dropdown-menu fsz-sm ${outIf(menu, 'show')}`}>
@@ -83,11 +89,6 @@ const Navbar: FC<Props> = (props) => {
 								<Link to={url(routes.PROFILE)} className='d-b td-n pY-5 bgcH-grey-100 c-grey-700'>
 									<i className='ti-user mR-10'></i> <span>Profile</span>
 								</Link>
-							</li>
-							<li>
-								<a href='/' className='d-b td-n pY-5 bgcH-grey-100 c-grey-700'>
-									<i className='ti-settings mR-10'></i> <span>Settings</span>
-								</a>
 							</li>
 							<li role='separator' className='divider'></li>
 							<li>

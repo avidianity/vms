@@ -4,6 +4,7 @@ import '@avidian/extras';
 import './boot';
 import App from './App';
 import './Styles/global.css';
+import './Styles/animations.css';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
