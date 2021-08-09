@@ -5,6 +5,7 @@ import { User } from './user.model';
 
 export class File extends Model<FileContract> {
 	type = File;
+	name = 'files';
 
 	fillable() {
 		return ['size', 'path', 'type', 'name'];

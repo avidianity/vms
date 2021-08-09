@@ -94,7 +94,7 @@ const Register: FC<Props> = (props) => {
 								className='form-control'
 								options={{
 									altInput: true,
-									altFormat: 'F m, Y',
+									altFormat: 'F j, Y',
 								}}
 								onChange={(dates) => setBirthday(dates.first())}
 								value={birthday || undefined}

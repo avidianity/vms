@@ -4,6 +4,7 @@ import { User } from './user.model';
 
 export class Token extends Model<TokenContract> {
 	type = Token;
+	name = 'tokens';
 
 	fillable() {
 		return ['hash'];

@@ -4,6 +4,7 @@ import { Vaccine } from './vaccine.model';
 
 export class Date extends Model<DateContract> {
 	type = Date;
+	name = 'dates';
 
 	fillable() {
 		return ['dates'];
