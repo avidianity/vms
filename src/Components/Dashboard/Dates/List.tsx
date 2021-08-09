@@ -4,14 +4,15 @@ import DataTable from 'react-data-table-component';
 import { useHistory } from 'react-router';
 import { Asker, outIf } from '../../../helpers';
 import { useCollection, useURL } from '../../../hooks';
-import { Vaccine } from '../../../Models/vaccine.model';
+import { Date } from '../../../Models/date.model';
 import Card from '../../Card';
 import Tooltip from '../Tooltip';
 
 type Props = {};
+
 const List: FC<Props> = (props) => {
-	const query = new Vaccine();
-	const [vaccines, setVaccines] = useCollection<Vaccine>();
+	const query = new Date();
+	const [dates, setDates] = useCollection<Date>();
 	const [fetching, setFetching] = useState(false);
 	const history = useHistory();
 	const url = useURL();
@@ -19,11 +20,11 @@ const List: FC<Props> = (props) => {
 	const get = async () => {
 		setFetching(true);
 		try {
-			const vaccines = await query.all();
-			setVaccines(vaccines);
+			const dates = await query.all();
+			setDates(await dates.load(['vaccine']));
 		} catch (error) {
 			console.log(error);
-			toastr.error('Unable to fetch Vaccines.', 'Oops!');
+			toastr.error('Unable to fetch Dates.', 'Oops!');
 		} finally {
 			setFetching(false);
 		}
@@ -31,17 +32,17 @@ const List: FC<Props> = (props) => {
 
 	const remove = async (id: string) => {
 		try {
-			if (await Asker.danger('Are you sure you want to delete this Vaccine?')) {
-				const vaccine = await new Vaccine().findOne(id);
-				await vaccine.delete();
+			if (await Asker.danger('Are you sure you want to delete this Date?')) {
+				const date = await new Date().findOne(id);
+				await date.delete();
 
-				toastr.success('Vaccine deleted successfully.');
+				toastr.success('Date deleted successfully.');
 
 				await get();
 			}
 		} catch (error) {
 			console.error(error);
-			toastr.error('Unable to delete Vaccine.', 'Oops!');
+			toastr.error('Unable to delete Date.', 'Oops!');
 		}
 	};
 
@@ -54,7 +55,7 @@ const List: FC<Props> = (props) => {
 		<div className='container'>
 			<Card>
 				<DataTable
-					title='Vaccines'
+					title='Available Dates'
 					actions={[
 						<i
 							className={`material-icons clickable`}
@@ -82,16 +83,23 @@ const List: FC<Props> = (props) => {
 							minWidth: '200px',
 						},
 						{
-							name: 'Name',
-							selector: (row) => row.get('name'),
+							name: 'Vaccine',
+							selector: (row) => row.get('vaccine')?.name,
 							minWidth: '200px',
 							sortable: true,
 						},
 						{
-							name: 'Number of Doses',
-							selector: (row) => row.get('doses'),
+							name: 'Dates',
 							minWidth: '150px',
-							sortable: true,
+							cell: (row) => (
+								<div>
+									{row.get('dates').map((date, index) => (
+										<p className='mb-0' key={index}>
+											{dayjs(date).format('MMMM DD, YYYY')}
+										</p>
+									))}
+								</div>
+							),
 						},
 						{
 							name: 'Created',
@@ -103,6 +111,15 @@ const List: FC<Props> = (props) => {
 							name: 'Actions',
 							cell: (row) => (
 								<>
+									<i
+										className='material-icons clickable mx-1'
+										onClick={(e) => {
+											e.preventDefault();
+											// modal here
+										}}
+										data-tip='View'>
+										visibility
+									</i>
 									<i
 										className='material-icons clickable mx-1'
 										onClick={(e) => {
@@ -126,7 +143,7 @@ const List: FC<Props> = (props) => {
 							minWidth: '150px',
 						},
 					]}
-					data={vaccines}
+					data={dates}
 				/>
 			</Card>
 			<Tooltip />

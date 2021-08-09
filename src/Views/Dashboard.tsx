@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React, { FC, useEffect } from 'react';
 import { Route, RouteProps, Switch } from 'react-router';
 import { v4 } from 'uuid';
+import Dates from '../Components/Dashboard/Dates';
 import Home from '../Components/Dashboard/Home';
 import Navbar from '../Components/Dashboard/Navbar';
 import Profile from '../Components/Dashboard/Profile';
@@ -37,6 +38,10 @@ const Dashboard: FC<Props> = (props) => {
 		{
 			path: url(routes.VACCINE.ROOT),
 			component: Vaccines,
+		},
+		{
+			path: url(routes.DATES),
+			component: Dates,
 		},
 	];
 

@@ -1,4 +1,7 @@
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/storage';
+import 'firebase/analytics';
 
 export const app = firebase.initializeApp({
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -10,12 +13,8 @@ export const app = firebase.initializeApp({
 	measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 });
 
-export const analytics = firebase.analytics(app);
+export const analytics = app.analytics();
 
-export const storage = firebase.storage();
-
-// Setup
-
-app.auth().useDeviceLanguage();
+export const storage = app.storage();
 
 app.firestore().enablePersistence().catch(console.error);

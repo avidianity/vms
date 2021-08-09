@@ -86,7 +86,6 @@ const List: FC<Props> = (props) => {
 							name: 'ID',
 							selector: (row) => row.get('id'),
 							minWidth: '200px',
-							sortable: true,
 						},
 						{
 							name: 'Name',
@@ -143,7 +142,7 @@ const List: FC<Props> = (props) => {
 											data-tip='Delete'
 											onClick={(e) => {
 												e.preventDefault();
-												remove(row.get('id'));
+												remove(row.get('id')!);
 											}}>
 											delete
 										</i>

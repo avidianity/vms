@@ -22,4 +22,5 @@ export const routes = {
 		APPOINTMENT: '/incoming-appointment',
 	},
 	USERS: '/users',
+	DATES: '/available-dates',
 };

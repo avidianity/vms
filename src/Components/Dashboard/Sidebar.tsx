@@ -1,13 +1,18 @@
 import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../Assets/logo.png';
+import { UserContract } from '../../Contracts/user.contract';
 import { useURL } from '../../hooks';
+import { State } from '../../Libraries/state.library';
 import { routes } from '../../routes';
 
 type Props = {};
 
+const state = State.getInstance();
+
 const Sidebar: FC<Props> = (props) => {
 	const url = useURL();
+	const user = state.get<UserContract>('user');
 
 	return (
 		<div className='sidebar'>
@@ -56,38 +61,50 @@ const Sidebar: FC<Props> = (props) => {
 					</div>
 				</div>
 				<ul className='sidebar-menu scrollable pos-r'>
-					<li className='mT-30'>
-						<Link to={routes.DASHBOARD} className='sidebar-link'>
-							<span className='icon-holder'>
-								<i className='c-blue-500 ti-home'></i>{' '}
-							</span>
-							<span className='title'>Home</span>
-						</Link>
-					</li>
-					<li>
-						<Link to={url(routes.VACCINE.ROOT)} className='sidebar-link'>
-							<span className='icon-holder'>
-								<i className='c-red-500 ti-pulse'></i>
-							</span>
-							<span className='title'>Vaccines</span>
-						</Link>
-					</li>
-					<li>
-						<Link to={url(routes.INCOMING.APPOINTMENT)} className='sidebar-link'>
-							<span className='icon-holder'>
-								<i className='c-purple-500 ti-list'></i>{' '}
-							</span>
-							<span className='title'>Appointments</span>
-						</Link>
-					</li>
-					<li>
-						<Link to={url(routes.USERS)} className='sidebar-link'>
-							<span className='icon-holder'>
-								<i className='c-green-500 ti-user'></i>{' '}
-							</span>
-							<span className='title'>Health Workers</span>
-						</Link>
-					</li>
+					{user?.role === 'Health Worker' ? (
+						<>
+							<li className='mT-30'>
+								<Link to={routes.DASHBOARD} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-blue-500 ti-home'></i>{' '}
+									</span>
+									<span className='title'>Home</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.VACCINE.ROOT)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-red-500 ti-pulse'></i>
+									</span>
+									<span className='title'>Vaccines</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.DATES)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-cyan-500 ti-calendar'></i>{' '}
+									</span>
+									<span className='title'>Available Dates</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.INCOMING.APPOINTMENT)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-purple-500 ti-list'></i>{' '}
+									</span>
+									<span className='title'>Appointments</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.USERS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-green-500 ti-user'></i>{' '}
+									</span>
+									<span className='title'>Health Workers</span>
+								</Link>
+							</li>
+						</>
+					) : null}
 				</ul>
 			</div>
 		</div>

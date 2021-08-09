@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useMode, useNullable } from '../../../hooks';
 import { User } from '../../../Models/user.model';
 import { Hash } from '../../../helpers';
-import { useRouteMatch } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 
 type Props = {};
 
@@ -28,6 +28,7 @@ const Form: FC<Props> = (props) => {
 	const [birthday, setBirthday] = useNullable<Date>();
 	const match = useRouteMatch<{ id: string }>();
 	const ref = createRef<HTMLFormElement>();
+	const history = useHistory();
 
 	const submit = async (data: UserContract) => {
 		setProcessing(true);
@@ -36,7 +37,14 @@ const Form: FC<Props> = (props) => {
 			data.birthday = birthday?.toJSON() || '';
 			data.role = 'Health Worker';
 
-			await new User().forceFill(data).save();
+			const model = new User(data);
+
+			if (mode === 'Edit') {
+				model.set('id', match.params.id);
+			}
+
+			await model.save();
+			toastr.success('Health Worker saved successfully.');
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Health Worker. Please try again later.`, 'Oops!');
@@ -53,13 +61,16 @@ const Form: FC<Props> = (props) => {
 			const query = new User();
 			const user = await query.findOne(id);
 			const { password, ...data } = user.getData();
-			for (const key in data) {
-				setValue(key as any, data[key]);
-			}
+
+			Object.entries(data).forEach(([key, value]) => {
+				setValue(key as any, value);
+			});
+
 			setMode('Edit');
 		} catch (error) {
 			console.error(error);
 			toastr.error('Unable to find Health Worker.', 'Oops!');
+			history.goBack();
 		} finally {
 			setProcessing(false);
 		}

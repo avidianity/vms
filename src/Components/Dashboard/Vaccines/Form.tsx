@@ -3,10 +3,14 @@ import Card from '../../Card';
 import { useForm } from 'react-hook-form';
 import { useMode } from '../../../hooks';
 import { Vaccine } from '../../../Models/vaccine.model';
-import { useRouteMatch } from 'react-router';
-import { VaccineContract } from '../../../Contracts/vaccine.contract';
+import { useHistory, useRouteMatch } from 'react-router';
 
 type Props = {};
+
+type VaccineContract = {
+	name: string;
+	doses: number;
+};
 
 const Form: FC<Props> = (props) => {
 	const [processing, setProcessing] = useState(false);
@@ -14,11 +18,19 @@ const Form: FC<Props> = (props) => {
 	const { register, handleSubmit, setValue } = useForm<VaccineContract>();
 	const match = useRouteMatch<{ id: string }>();
 	const ref = createRef<HTMLFormElement>();
+	const history = useHistory();
 
 	const submit = async (data: VaccineContract) => {
 		setProcessing(true);
 		try {
-			await new Vaccine().forceFill(data).save();
+			const model = new Vaccine(data);
+
+			if (mode === 'Edit') {
+				model.set('id', match.params.id);
+			}
+
+			await model.save();
+			toastr.success('Vaccine saved successfully.');
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Vaccine. Please try again later.`, 'Oops!');
@@ -34,14 +46,16 @@ const Form: FC<Props> = (props) => {
 			const id = match.params.id;
 			const query = new Vaccine();
 			const vaccine = await query.findOne(id);
-			const { password, ...data } = vaccine.getData();
-			for (const key in data) {
-				setValue(key as any, data[key]);
+
+			for (const [key, value] of Object.entries(vaccine.getData())) {
+				setValue(key as any, value);
 			}
+
 			setMode('Edit');
 		} catch (error) {
 			console.error(error);
 			toastr.error('Unable to find Vaccine.', 'Oops!');
+			history.goBack();
 		} finally {
 			setProcessing(false);
 		}

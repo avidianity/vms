@@ -1,7 +1,8 @@
+import md5 from 'md5';
 import React, { FC, useEffect } from 'react';
 import { BrowserRouter as Router, Route, RouteProps, Switch } from 'react-router-dom';
 import { State } from './Libraries/state.library';
-import { User } from './Models/user.model';
+import { Token } from './Models/token.model';
 import { routes } from './routes';
 import Dashboard from './Views/Dashboard';
 import Home from './Views/Home';
@@ -34,9 +35,17 @@ const App: FC<Props> = (props) => {
 	];
 
 	const check = async () => {
-		if (state.has('user')) {
-			const user = await new User().findOne(state.get('user')?.id);
-			state.set('user', user.getData());
+		if (state.has('token')) {
+			const hash = md5(state.get<string>('token')!);
+			const tokens = await new Token().where('hash', '==', hash).all();
+			if (tokens.length > 0) {
+				const token = tokens[0];
+				const user = await token.user().get();
+				await user.load(['picture']);
+				state.set('user', user.toJSON());
+			} else {
+				state.remove('token').remove('user');
+			}
 		}
 	};
 

@@ -14,7 +14,7 @@ export class File extends Model<FileContract> {
 		return this.belongsTo(new User(), 'user');
 	}
 
-	booted() {
+	protected booted() {
 		this.deleted((file) => {
 			const ref = storage.ref(file.get('name'));
 			ref.delete().catch(console.error);
