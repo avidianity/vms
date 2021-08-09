@@ -7,6 +7,7 @@ import { routes } from './routes';
 import Dashboard from './Views/Dashboard';
 import Home from './Views/Home';
 import Login from './Views/Login';
+import Patient from './Views/Patient';
 import Register from './Views/Register';
 
 type Props = {};
@@ -31,6 +32,10 @@ const App: FC<Props> = (props) => {
 		{
 			path: routes.DASHBOARD,
 			component: Dashboard,
+		},
+		{
+			path: routes.PATIENT,
+			component: Patient,
 		},
 	];
 

@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 import Dates from '../Components/Dashboard/Dates';
 import Home from '../Components/Dashboard/Home';
 import Navbar from '../Components/Dashboard/Navbar';
-import Profile from '../Components/Dashboard/Profile';
+import Profile from '../Components/Profile';
 import Sidebar from '../Components/Dashboard/Sidebar';
 import Users from '../Components/Dashboard/Users';
 import Vaccines from '../Components/Dashboard/Vaccines';

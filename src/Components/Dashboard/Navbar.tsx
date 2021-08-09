@@ -1,46 +1,15 @@
-import md5 from 'md5';
-import React, { FC, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { UserContract } from '../../Contracts/user.contract';
-import { Asker, outIf } from '../../helpers';
-import { useURL } from '../../hooks';
-import { State } from '../../Libraries/state.library';
-import { Token } from '../../Models/token.model';
+import React, { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { outIf } from '../../helpers';
+import { useURL, useUser } from '../../hooks';
 import { routes } from '../../routes';
 
 type Props = {};
 
-const state = State.getInstance();
-
 const Navbar: FC<Props> = (props) => {
 	const [menu, setMenu] = useState(false);
 	const url = useURL();
-	const history = useHistory();
-	const [user, setUser] = useState(state.get<UserContract>('user'));
-
-	const logout = async () => {
-		if (await Asker.notice('Are you sure you want to logout?')) {
-			if (state.has('token')) {
-				const hash = state.get<string>('token')!;
-				const token = await new Token().where('hash', '==', md5(hash)).first();
-				if (token) {
-					await token.delete();
-				}
-			}
-			state.clear();
-		}
-		toastr.info('You have logged out.', 'Notice');
-		history.push(routes.LOGIN);
-	};
-
-	useEffect(() => {
-		const key = state.listen<UserContract>('user', (user) => setUser(user));
-
-		return () => {
-			state.unlisten(key);
-		};
-		//eslint-disable-next-line
-	}, []);
+	const { user, logout } = useUser();
 
 	return (
 		<div className='header navbar'>

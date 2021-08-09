@@ -9,14 +9,14 @@ dayjs.extend(relativeTime);
 
 export class Asker {
 	static async notice(message: string, title?: string) {
-		return toBool(
-			await swal({
-				title,
-				text: message,
-				buttons: ['Cancel', 'Confirm'],
-				icon: 'warning',
-			})
-		);
+		const response = await swal({
+			title,
+			text: message,
+			buttons: ['Cancel', 'Confirm'],
+			icon: 'warning',
+		});
+
+		return toBool(response);
 	}
 	static async danger(message: string, title?: string) {
 		return toBool(

@@ -115,15 +115,6 @@ const List: FC<Props> = (props) => {
 										className='material-icons clickable mx-1'
 										onClick={(e) => {
 											e.preventDefault();
-											// modal here
-										}}
-										data-tip='View'>
-										visibility
-									</i>
-									<i
-										className='material-icons clickable mx-1'
-										onClick={(e) => {
-											e.preventDefault();
 											history.push(url(`/${row.id()}/edit`));
 										}}
 										data-tip='Edit'>

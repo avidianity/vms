@@ -55,7 +55,7 @@ const Login: FC<Props> = (props) => {
 
 			state.set('user', user.getData()).set('token', hash);
 
-			history.push(routes.DASHBOARD);
+			history.push(user.get('role') === 'Patient' ? routes.PATIENT : routes.DASHBOARD);
 		} catch (error) {
 			console.log('unable to login', error);
 			toastr.error('Unable to login. Please try again later.');

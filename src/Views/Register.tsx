@@ -53,7 +53,7 @@ const Register: FC<Props> = (props) => {
 
 			state.set('user', user.getData()).set('token', hash);
 
-			history.push(routes.DASHBOARD);
+			history.push(routes.PATIENT);
 		} catch (error) {
 			console.log('Unable to register', error);
 			toastr.error('Unable to register. Please try again later.');

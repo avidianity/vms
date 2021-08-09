@@ -1,10 +1,10 @@
 import React, { createRef, FC, useState } from 'react';
 import { v4 } from 'uuid';
-import { UserContract } from '../../Contracts/user.contract';
-import { storage } from '../../Libraries/firebase.library';
-import { State } from '../../Libraries/state.library';
-import { File as FileModel } from '../../Models/file.model';
-import { User } from '../../Models/user.model';
+import { UserContract } from '../Contracts/user.contract';
+import { storage } from '../Libraries/firebase.library';
+import { State } from '../Libraries/state.library';
+import { File as FileModel } from '../Models/file.model';
+import { User } from '../Models/user.model';
 
 type Props = {};
 

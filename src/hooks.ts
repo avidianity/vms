@@ -2,6 +2,8 @@ import { Collection, Model } from 'firestore-eloquent';
 import md5 from 'md5';
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
+import { UserContract } from './Contracts/user.contract';
+import { Asker } from './helpers';
 import { State } from './Libraries/state.library';
 import { Token } from './Models/token.model';
 import { routes } from './routes';
@@ -36,7 +38,39 @@ export function useCollection<T extends Model>(data?: Collection<T>) {
 
 const state = State.getInstance();
 
-type AuthenticateOptions = {
+export function useUser() {
+	const history = useHistory();
+	const [user, setUser] = useState(state.get<UserContract>('user'));
+
+	const logout = async () => {
+		if (await Asker.notice('Are you sure you want to logout?')) {
+			if (state.has('token')) {
+				const hash = state.get<string>('token')!;
+				const token = await new Token().where('hash', '==', md5(hash)).first();
+				if (token) {
+					await token.delete();
+				}
+			}
+			state.clear();
+
+			toastr.info('You have logged out.', 'Notice');
+			history.push(routes.LOGIN);
+		}
+	};
+
+	useEffect(() => {
+		const key = state.listen<UserContract>('user', (user) => setUser(user));
+
+		return () => {
+			state.unlisten(key);
+		};
+		//eslint-disable-next-line
+	}, []);
+
+	return { user, logout };
+}
+
+export type AuthenticateOptions = {
 	done?: (authenticated: boolean) => void;
 };
 
