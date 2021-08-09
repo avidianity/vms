@@ -4,7 +4,11 @@ import { User } from './user.model';
 
 export class Token extends Model<TokenContract> {
 	type = Token;
-	name = 'tokens';
+
+	constructor(data?: Partial<TokenContract>) {
+		super(data);
+		this.name = 'tokens';
+	}
 
 	fillable() {
 		return ['hash'];

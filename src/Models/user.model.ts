@@ -5,7 +5,11 @@ import { Token } from './token.model';
 
 export class User extends Model<UserContract> {
 	type = User;
-	name = 'users';
+
+	constructor(data?: Partial<UserContract>) {
+		super(data);
+		this.name = 'users';
+	}
 
 	fillable() {
 		return ['name', 'email', 'password', 'gender', 'address', 'birthday', 'role', 'phone'];

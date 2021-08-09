@@ -4,7 +4,11 @@ import { Vaccine } from './vaccine.model';
 
 export class Date extends Model<DateContract> {
 	type = Date;
-	name = 'dates';
+
+	constructor(data?: Partial<DateContract>) {
+		super(data);
+		this.name = 'dates';
+	}
 
 	fillable() {
 		return ['dates'];

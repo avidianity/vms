@@ -5,7 +5,11 @@ import { User } from './user.model';
 
 export class File extends Model<FileContract> {
 	type = File;
-	name = 'files';
+
+	constructor(data?: Partial<FileContract>) {
+		super(data);
+		this.name = 'files';
+	}
 
 	fillable() {
 		return ['size', 'path', 'type', 'name'];
