@@ -59,8 +59,8 @@ const Navbar: FC<Props> = (props) => {
 								<div className='peer mR-10'>
 									<img
 										className='w-2r bdrs-50p'
-										src={user?.picture?.path || 'https://via.placeholder.com/200'}
-										alt={user?.name}
+										src={user.picture?.path || 'https://via.placeholder.com/200'}
+										alt={user.name}
 									/>
 								</div>
 								<div className='peer'>
@@ -68,6 +68,13 @@ const Navbar: FC<Props> = (props) => {
 								</div>
 							</a>
 							<ul className={`dropdown-menu fsz-sm ${outIf(menu, 'show')}`}>
+								<li className='px-3'>
+									<Link
+										to={user.role === 'Patient' ? routes.PATIENT : routes.DASHBOARD}
+										className='d-b td-n pY-5 bgcH-grey-100 c-grey-700'>
+										<i className='ti-home mR-10'></i> <span>Home</span>
+									</Link>
+								</li>
 								<li className='px-3'>
 									<Link to={url(routes.PROFILE)} className='d-b td-n pY-5 bgcH-grey-100 c-grey-700'>
 										<i className='ti-user mR-10'></i> <span>Profile</span>
