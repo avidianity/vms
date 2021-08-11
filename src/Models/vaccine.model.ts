@@ -1,5 +1,6 @@
 import { Model } from 'firestore-eloquent';
 import { VaccineContract } from '../Contracts/vaccine.contract';
+import { Appointment } from './appointment.model';
 import { Date } from './date.model';
 
 export class Vaccine extends Model<VaccineContract> {
@@ -21,6 +22,10 @@ export class Vaccine extends Model<VaccineContract> {
 	}
 
 	dates() {
-		return this.hasMany(new Date(), 'dates');
+		return this.hasMany(new Date());
+	}
+
+	appointments() {
+		return this.hasMany(new Appointment());
 	}
 }

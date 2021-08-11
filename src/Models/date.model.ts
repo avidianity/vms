@@ -15,6 +15,6 @@ export class Date extends Model<DateContract> {
 	}
 
 	vaccine() {
-		return this.belongsTo(new Vaccine(), 'vaccine');
+		return this.belongsTo(new Vaccine());
 	}
 }

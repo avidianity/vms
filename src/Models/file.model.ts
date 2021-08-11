@@ -16,7 +16,7 @@ export class File extends Model<FileContract> {
 	}
 
 	user() {
-		return this.belongsTo(new User(), 'user');
+		return this.belongsTo(new User());
 	}
 
 	protected booted() {

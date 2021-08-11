@@ -37,6 +37,10 @@ const Patient: FC<Props> = (props) => {
 
 	useEffect(() => {
 		get();
+		$(`#${id}`).on('hidden.bs.modal', (e) => {
+			e.preventDefault();
+			setVaccine(null);
+		});
 		// eslint-disable-next-line
 	}, []);
 

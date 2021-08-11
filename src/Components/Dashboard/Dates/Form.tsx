@@ -95,20 +95,6 @@ const Form: FC<Props> = (props) => {
 					}}>
 					<div className='form-row'>
 						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='date'>Date Range</label>
-							<Flatpickr
-								options={{
-									mode: 'multiple',
-									altInput: true,
-								}}
-								id='date'
-								className='form-control'
-								disabled={processing}
-								onChange={setDates}
-								value={dates}
-							/>
-						</div>
-						<div className='form-group col-12 col-md-6'>
 							<label htmlFor='vaccine_id'>Vaccine</label>
 							<select
 								name='vaccine_id'
@@ -134,6 +120,27 @@ const Form: FC<Props> = (props) => {
 									</option>
 								))}
 							</select>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='date'>Date Range</label>
+							<Flatpickr
+								options={{
+									mode: 'multiple',
+									altInput: true,
+								}}
+								id='date'
+								className='form-control'
+								disabled={processing || !vaccine}
+								onChange={(dates) => {
+									if (vaccine) {
+										setDates(dates.limit(vaccine.get('doses')));
+									}
+								}}
+								value={vaccines ? dates : []}
+							/>
+							<small className='form-text text-muted'>
+								Number of dates are limited to the number of doses of the vaccine.
+							</small>
 						</div>
 					</div>
 					<div className='form-group'>

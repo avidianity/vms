@@ -15,6 +15,6 @@ export class Token extends Model<TokenContract> {
 	}
 
 	user() {
-		return this.belongsTo(new User(), 'user');
+		return this.belongsTo(new User());
 	}
 }

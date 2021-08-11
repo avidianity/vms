@@ -16,10 +16,10 @@ export class User extends Model<UserContract> {
 	}
 
 	tokens() {
-		return this.hasMany(new Token(), 'tokens');
+		return this.hasMany(new Token());
 	}
 
 	picture() {
-		return this.hasOne(new File(), 'picture');
+		return this.hasOne(new File());
 	}
 }

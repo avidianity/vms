@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@avidian/extras@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@avidian/extras/-/extras-0.0.8.tgz#7c77724394a097678f24ff1ff7b584e1d17162ab"
-  integrity sha512-FwwtfDByJEU6BLIBrYt/HyifFRACEwzSOgQKkwjowuX4dp40wwAImqE/S5BIC9r3gx3hRfwpE/gh5RlqPzOgRg==
+"@avidian/extras@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@avidian/extras/-/extras-1.0.0.tgz#99af26d4ab6244b13a9c8cf93243b7eefebc3e9d"
+  integrity sha512-6Np4uNwcEu8YUzI+5ihbWKwGhkqNNhgtJmw8iiFeERo76dtDHEOGOWfZg/Pb+JG3Fh6cC1BbQ525Dvc2lgKa0Q==
   dependencies:
     dayjs "^1.10.5"
     lodash "^4.17.21"
