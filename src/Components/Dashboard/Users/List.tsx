@@ -39,7 +39,7 @@ const List: FC<Props> = (props) => {
 		try {
 			if (await Asker.danger('Are you sure you want to delete this Health Worker?')) {
 				const user = await new User().findOne(id);
-				await user.delete();
+				await user?.delete();
 
 				toastr.success('Health Worker deleted successfully.');
 
@@ -102,7 +102,7 @@ const List: FC<Props> = (props) => {
 						{
 							name: 'Address',
 							selector: (row) => row.get('address'),
-							minWidth: '200px',
+							minWidth: '250px',
 							sortable: true,
 						},
 						{

@@ -1,13 +1,20 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import Announcements from '../Components/Announcements';
 import Card from '../Components/Card';
+import Appointments from '../Components/Patient/Appointments';
 import FAQs from '../Components/FAQs';
 import Navbar from '../Components/Home/Navbar';
 import Modal from '../Components/Modal';
 import { UserContract } from '../Contracts/user.contract';
-import { useAuthenticate, useCollection, useNullable } from '../hooks';
+import { useAuthenticate, useCollection, useNullable, useURL } from '../hooks';
 import { State } from '../Libraries/state.library';
+import { Appointment } from '../Models/appointment.model';
 import { Vaccine } from '../Models/vaccine.model';
+import { routes } from '../routes';
+import Profile from '../Components/Profile';
+import { Date } from '../Models/date.model';
+import { getAppointments } from '../helpers';
 
 type Props = {};
 
@@ -16,23 +23,61 @@ const state = State.getInstance();
 const id = String.random(20);
 
 const Patient: FC<Props> = (props) => {
+	const url = useURL();
 	const user = state.get<UserContract>('user');
 	const { authenticated } = useAuthenticate();
 	const [vaccines, setVaccines] = useCollection<Vaccine>();
 	const [vaccine, setVaccine] = useNullable<Vaccine>();
+	const [appointments, setAppointments] = useCollection<Appointment>();
 
 	const get = async () => {
+		await Promise.all([getVaccines(), getAppointmentsRaw()]);
+	};
+
+	const getVaccines = async () => {
 		try {
 			const vaccines = await new Vaccine().all();
-			setVaccines(await vaccines.load(['dates']));
+
+			await Promise.all(
+				vaccines.map(async (vaccine) => {
+					const dates = await new Date().where('vaccine_id', '==', vaccine.id()!).all();
+
+					vaccine.set('dates', dates.toJSON());
+				})
+			);
+
+			setVaccines(vaccines);
 		} catch (error) {
+			console.log(error);
 			toastr.error('Unable to fetch vaccine list.');
 		}
 	};
 
+	const getAppointmentsRaw = async () => {
+		setAppointments(await getAppointments());
+	};
+
 	const submit = async () => {
 		$(`#${id}`).modal('hide');
-		//
+		try {
+			const appointment = new Appointment();
+			appointment.fill({
+				vaccine_id: vaccine?.id(),
+				attendee_id: null,
+				done: false,
+				patient_id: user?.id,
+				dates: [],
+			});
+
+			await appointment.save();
+
+			toastr.success('Appointment saved successfully.');
+		} catch (error) {
+			console.log(error);
+			toastr.error('Unable to save appointment.');
+		} finally {
+			await get();
+		}
 	};
 
 	useEffect(() => {
@@ -43,6 +88,8 @@ const Patient: FC<Props> = (props) => {
 		});
 		// eslint-disable-next-line
 	}, []);
+
+	const pastAppointments = useMemo(() => appointments.filter((appointment) => appointment.get('done')), [appointments]);
 
 	if (!authenticated) {
 		return null;
@@ -61,6 +108,7 @@ const Patient: FC<Props> = (props) => {
 								className='btn btn-info'
 								onClick={(e) => {
 									e.preventDefault();
+									get();
 									$(`#${id}`).modal('show');
 								}}>
 								Make an Appointment
@@ -94,11 +142,23 @@ const Patient: FC<Props> = (props) => {
 													{' '}
 													-- Select --{' '}
 												</option>
-												{vaccines.map((vaccine, index) => (
-													<option value={vaccine.id()} key={index}>
-														{vaccine.get('name')}
-													</option>
-												))}
+												{vaccines
+													.filter((vaccine) => {
+														if (
+															appointments.has(
+																(appointment) => appointment.get('vaccine_id') === vaccine.id()
+															)
+														) {
+															return false;
+														}
+
+														return true;
+													})
+													.map((vaccine, index) => (
+														<option value={vaccine.id()} key={index}>
+															{vaccine.get('name')}
+														</option>
+													))}
 											</select>
 										</div>
 										{vaccine ? (
@@ -129,21 +189,10 @@ const Patient: FC<Props> = (props) => {
 			<div className='container' style={{ marginTop: '-2.5rem' }}>
 				<div className='row mt-3'>
 					<div className='col-12 col-md-8 h-100'>
-						<Card className='mb-3'>
-							<h3>Upcoming Appointments</h3>
-							<p>You don't have any upcoming appointments.</p>
-							<div className='mt-5'>
-								<h4 className='d-flex align-items-center'>
-									<i className='material-icons mr-1'>check</i>
-									Before you arrive
-								</h4>
-								<ol>
-									<li>Bring identification</li>
-									<li>Bring a facial mask</li>
-									<li>Check your email for any updates</li>
-								</ol>
-							</div>
-						</Card>
+						<Switch>
+							<Route path={url('')} exact component={Appointments} />
+							<Route path={url(routes.PROFILE)} component={Profile} />
+						</Switch>
 						<FAQs className='mt-3' />
 					</div>
 					<div className='col-12 col-md-4'>
@@ -152,9 +201,19 @@ const Patient: FC<Props> = (props) => {
 								<div className='col-12'>
 									<Card className='mb-3'>
 										<h5>Past Appointments</h5>
-										<div className='mt-3 text-center'>
-											<p>You don't have any past appointments</p>
-										</div>
+										{pastAppointments.length > 0 ? (
+											<>
+												<div className='mt-3'>
+													{pastAppointments.map((appointment, index) => (
+														<p key={index}>{appointment.get('vaccine')?.name}</p>
+													))}
+												</div>
+											</>
+										) : (
+											<div className='mt-3 text-center'>
+												<p>You don't have any past appointments</p>
+											</div>
+										)}
 									</Card>
 									<Card className='my-3'>
 										<h5>Next Step</h5>

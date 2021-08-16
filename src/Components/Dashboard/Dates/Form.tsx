@@ -54,10 +54,10 @@ const Form: FC<Props> = (props) => {
 			const id = match.params.id;
 			const query = new DateModel();
 			const date = await query.findOne(id);
-			await date.load(['vaccine']);
+			await date?.load(['vaccine']);
 
-			setDates(date.get('dates').map((date) => date.toDate()));
-			setVaccine(new Vaccine().forceFill(date.get('vaccine')!));
+			setDates(date?.get('dates').map((date) => date.toDate())!);
+			setVaccine(new Vaccine().forceFill(date?.get('vaccine')!));
 
 			setMode('Edit');
 		} catch (error) {

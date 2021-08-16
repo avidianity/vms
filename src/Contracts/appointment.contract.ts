@@ -7,6 +7,8 @@ export interface AppointmentContract extends BaseContract {
 	vaccine?: VaccineContract;
 	attendee_id: string | null;
 	attendee?: UserContract;
+	patient_id: string;
+	patient?: UserContract;
 	done: boolean;
 	dates: string[];
 }

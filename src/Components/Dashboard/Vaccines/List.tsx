@@ -33,7 +33,7 @@ const List: FC<Props> = (props) => {
 		try {
 			if (await Asker.danger('Are you sure you want to delete this Vaccine?')) {
 				const vaccine = await new Vaccine().findOne(id);
-				await vaccine.delete();
+				await vaccine?.delete();
 
 				toastr.success('Vaccine deleted successfully.');
 

@@ -5,6 +5,7 @@ import { storage } from '../Libraries/firebase.library';
 import { State } from '../Libraries/state.library';
 import { File as FileModel } from '../Models/file.model';
 import { User } from '../Models/user.model';
+import Card from './Card';
 
 type Props = {};
 
@@ -38,7 +39,8 @@ const Profile: FC<Props> = (props) => {
 				})
 			);
 
-			await userModel.load(['picture']);
+			const picture = await new FileModel().where('user_id', '==', userModel.id()).first();
+			userModel.set('picture', picture?.getData());
 
 			toastr.success('Profile picture changed successfully.', 'Notice');
 
@@ -55,39 +57,35 @@ const Profile: FC<Props> = (props) => {
 	};
 
 	return (
-		<div className='container text-center'>
-			<div className='card'>
-				<div className='card-body'>
-					<form ref={formRef}>
-						<input
-							ref={fileRef}
-							accept='image/*'
-							type='file'
-							className='d-none'
-							onChange={(e) => {
-								if (e.target.files && e.target.files.length > 0) {
-									const file = e.target.files[0];
-									saveFile(file);
-								}
-							}}
-						/>
-					</form>
-					<img
-						src={user?.picture?.path || 'https://via.placeholder.com/200'}
-						alt=''
-						className='rounded-circle shadow border clickable'
-						style={{
-							height: '200px',
-							width: '200px',
-						}}
-						onClick={(e) => {
-							e.preventDefault();
-							fileRef.current?.click();
-						}}
-					/>
-				</div>
-			</div>
-		</div>
+		<Card className='text-center'>
+			<form ref={formRef}>
+				<input
+					ref={fileRef}
+					accept='image/*'
+					type='file'
+					className='d-none'
+					onChange={(e) => {
+						if (e.target.files && e.target.files.length > 0) {
+							const file = e.target.files[0];
+							saveFile(file);
+						}
+					}}
+				/>
+			</form>
+			<img
+				src={user?.picture?.path || 'https://via.placeholder.com/200'}
+				alt=''
+				className='rounded-circle shadow border clickable'
+				style={{
+					height: '200px',
+					width: '200px',
+				}}
+				onClick={(e) => {
+					e.preventDefault();
+					fileRef.current?.click();
+				}}
+			/>
+		</Card>
 	);
 };
 

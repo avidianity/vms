@@ -6,5 +6,6 @@ export interface FileContract extends BaseContract {
 	path: string;
 	type: string;
 	name: string;
+	user_id: string;
 	user?: UserContract;
 }

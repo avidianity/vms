@@ -60,7 +60,7 @@ const Form: FC<Props> = (props) => {
 			const id = match.params.id;
 			const query = new User();
 			const user = await query.findOne(id);
-			const { password, ...data } = user.getData();
+			const { password, ...data } = user?.getData()!;
 
 			Object.entries(data).forEach(([key, value]) => {
 				setValue(key as any, value);

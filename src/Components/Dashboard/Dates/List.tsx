@@ -34,7 +34,7 @@ const List: FC<Props> = (props) => {
 		try {
 			if (await Asker.danger('Are you sure you want to delete this Date?')) {
 				const date = await new Date().findOne(id);
-				await date.delete();
+				await date?.delete();
 
 				toastr.success('Date deleted successfully.');
 

@@ -47,7 +47,7 @@ const Form: FC<Props> = (props) => {
 			const query = new Vaccine();
 			const vaccine = await query.findOne(id);
 
-			for (const [key, value] of Object.entries(vaccine.getData())) {
+			for (const [key, value] of Object.entries(vaccine?.getData()!)) {
 				setValue(key as any, value);
 			}
 

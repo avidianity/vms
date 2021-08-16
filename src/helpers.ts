@@ -4,6 +4,13 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import swal from 'sweetalert';
 import { compareSync, hashSync } from 'bcryptjs';
+import { UserContract } from './Contracts/user.contract';
+import { Date } from './Models/date.model';
+import { Collection } from 'firestore-eloquent';
+import { Appointment } from './Models/appointment.model';
+import { User } from './Models/user.model';
+import { Vaccine } from './Models/vaccine.model';
+import { State } from './Libraries/state.library';
 
 dayjs.extend(relativeTime);
 
@@ -88,6 +95,40 @@ export function setValues(setter: Function, data: any) {
 }
 
 let handle: NodeJS.Timeout | null = null;
+
+export async function getAppointments() {
+	try {
+		const user = State.getInstance().get<UserContract>('user');
+		if (user && user.id) {
+			const appointments = await new Appointment().where('patient_id', '==', user.id).all();
+			return new Collection(
+				...(await Promise.all(
+					appointments.map(async (appointment) => {
+						const vaccine = await new Vaccine().findOne(appointment.get('vaccine_id'));
+
+						vaccine?.set('dates', (await new Date().where('vaccine_id', '==', vaccine?.id()!).all()).toJSON());
+
+						appointment.set('vaccine', vaccine?.getData());
+
+						const attendeeId = appointment.get('attendee_id');
+
+						if (attendeeId) {
+							const attendee = await new User().findOne(attendeeId);
+							appointment.set('attendee', attendee?.getData());
+						}
+
+						return appointment;
+					})
+				))
+			);
+		}
+		return new Collection();
+	} catch (error) {
+		console.log(error);
+		toastr.error('Unable to fetch appointment list.');
+		return new Collection();
+	}
+}
 
 export function handleError(error: any, useHandle = true) {
 	if (error) {

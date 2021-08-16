@@ -67,7 +67,7 @@ const Navbar: FC<Props> = (props) => {
 									<span className='fsz-sm c-grey-900'>{user?.name}</span>
 								</div>
 							</a>
-							<ul className={`dropdown-menu fsz-sm ${outIf(menu, 'show')}`}>
+							<ul className={`dropdown-menu dropdown-menu-right fsz-sm ${outIf(menu, 'show')}`}>
 								<li className='px-3'>
 									<Link
 										to={user.role === 'Patient' ? routes.PATIENT : routes.DASHBOARD}

@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@avidian/events@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@avidian/events/-/events-1.0.2.tgz#9689bc5d811ddd6127d44abfdd01c13287f7ae79"
+  integrity sha512-uoCEHuxpVSFrvRhibM6/y6I8eBL/dWYyEk16ICULwVGvA0Xqt6gniQ+TGaUNkym1HUCBgZ4VXyBCOaFzTZPiNg==
+  dependencies:
+    uuid "^8.3.2"
+
 "@avidian/extras@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@avidian/extras/-/extras-1.0.0.tgz#99af26d4ab6244b13a9c8cf93243b7eefebc3e9d"
@@ -5708,10 +5715,10 @@ firebase@^8.9.0:
     "@firebase/storage" "0.6.2"
     "@firebase/util" "1.2.0"
 
-firestore-eloquent@^1.4.1:
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.4.1.tgz#10c13b08b5702c8ebf41253fd201f187f401b18b"
-  integrity sha512-EbTg08oSQCj/wQ9J7qWG2Bep9mSkYWuPX4rbwcOyGR2VtVh+QmMr9b/tbsx6fGcEZi6XjinAAP5D7zuq9JN+9w==
+firestore-eloquent@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.5.2.tgz#eb7e64147e945e2d638886f4c8489a07e3c0ccee"
+  integrity sha512-tjPgPY1DfoCy+OqNYpFX9vHNncGXTGUdg+xfPTeIR1HP6oFITKis8dh5sutBv/Dd4fx0e3wSJ+YY3K2WMtYzNQ==
   dependencies:
     firebase "^8.9.0"
     pluralize "^8.0.0"

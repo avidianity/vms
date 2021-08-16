@@ -12,14 +12,18 @@ export class Appointment extends Model<AppointmentContract> {
 	}
 
 	fillable() {
-		return ['vaccine_id', 'attendee_id', 'done', 'dates'];
+		return ['vaccine_id', 'attendee_id', 'patient_id', 'done', 'dates'];
 	}
 
 	vaccine() {
 		return this.belongsTo(new Vaccine());
 	}
 
+	patient() {
+		return this.belongsTo(new User(), 'patient');
+	}
+
 	attendee() {
-		return this.belongsTo(new User());
+		return this.belongsTo(new User(), 'attendee');
 	}
 }
