@@ -8,7 +8,7 @@ export class File extends Model<FileContract> {
 
 	constructor(data?: Partial<FileContract>) {
 		super(data);
-		this.name = 'files';
+		this.name = 'file';
 	}
 
 	fillable() {
@@ -16,7 +16,7 @@ export class File extends Model<FileContract> {
 	}
 
 	user() {
-		return this.belongsTo(new User());
+		return this.belongsTo(User);
 	}
 
 	protected booted() {

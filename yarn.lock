@@ -5715,13 +5715,12 @@ firebase@^8.9.0:
     "@firebase/storage" "0.6.2"
     "@firebase/util" "1.2.0"
 
-firestore-eloquent@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.5.2.tgz#eb7e64147e945e2d638886f4c8489a07e3c0ccee"
-  integrity sha512-tjPgPY1DfoCy+OqNYpFX9vHNncGXTGUdg+xfPTeIR1HP6oFITKis8dh5sutBv/Dd4fx0e3wSJ+YY3K2WMtYzNQ==
+firestore-eloquent@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.6.2.tgz#5145971989b4a47566a2453c07db63910d1df11d"
+  integrity sha512-Y4cZowNipGx8n8lTTNRbGaNzucxpw2Trc+gwlHORVW8GdHq1KT0OgzQwRn6GWlyWeYEmSibTQJGI/CbsYhBsoA==
   dependencies:
     firebase "^8.9.0"
-    pluralize "^8.0.0"
 
 flat-cache@^3.0.4:
   version "3.0.4"
@@ -8806,11 +8805,6 @@ pkg-up@^2.0.0:
   integrity sha1-yBmscoBZpGHKscOImivjxJoATX8=
   dependencies:
     find-up "^2.1.0"
-
-pluralize@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-8.0.0.tgz#1a6fa16a38d12a1901e0320fa017051c539ce3b1"
-  integrity sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==
 
 pnp-webpack-plugin@1.6.4:
   version "1.6.4"

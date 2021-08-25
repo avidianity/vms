@@ -7,7 +7,7 @@ export class Token extends Model<TokenContract> {
 
 	constructor(data?: Partial<TokenContract>) {
 		super(data);
-		this.name = 'tokens';
+		this.name = 'token';
 	}
 
 	fillable() {
@@ -15,6 +15,6 @@ export class Token extends Model<TokenContract> {
 	}
 
 	user() {
-		return this.belongsTo(new User());
+		return this.belongsTo(User);
 	}
 }

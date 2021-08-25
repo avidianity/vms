@@ -8,7 +8,7 @@ export class User extends Model<UserContract> {
 
 	constructor(data?: Partial<UserContract>) {
 		super(data);
-		this.name = 'users';
+		this.name = 'user';
 	}
 
 	fillable() {
@@ -16,10 +16,10 @@ export class User extends Model<UserContract> {
 	}
 
 	tokens() {
-		return this.hasMany(new Token());
+		return this.hasMany(Token);
 	}
 
 	picture() {
-		return this.hasOne(new File());
+		return this.hasOne(File, 'picture');
 	}
 }

@@ -6,9 +6,7 @@ import { manager } from './constants';
 import { firestore } from './Libraries/firebase.library';
 import { State } from './Libraries/state.library';
 import { Appointment } from './Models/appointment.model';
-import { File } from './Models/file.model';
 import { Token } from './Models/token.model';
-import { User } from './Models/user.model';
 import { routes } from './routes';
 import Dashboard from './Views/Dashboard';
 import Home from './Views/Home';
@@ -47,15 +45,13 @@ const App: FC<Props> = (props) => {
 
 	const check = async () => {
 		if (state.has('token')) {
-			const hash = md5(state.get<string>('token')!);
-			const tokens = await new Token().where('hash', '==', hash).all();
-			if (tokens.length > 0) {
-				const token = tokens[0];
-				const user = await new User().findOneOrFail(token.get('user_id'));
-				const picture = await new File().where('user_id', '==', user.id()).first();
-				user.set('picture', picture?.getData());
-				state.set('user', user.toJSON());
-			} else {
+			try {
+				const hash = md5(state.get<string>('token')!);
+				const token = await new Token().where('hash', '==', hash).firstOrFail();
+				const user = await token.user().get();
+				await user?.load(['picture']);
+				state.set('user', user?.toJSON());
+			} catch (_) {
 				state.remove('token').remove('user');
 			}
 		}

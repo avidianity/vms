@@ -30,7 +30,7 @@
 		"chart.js": "^3.3.2",
 		"dayjs": "^1.10.5",
 		"faker": "^5.5.3",
-		"firestore-eloquent": "^1.5.2",
+		"firestore-eloquent": "^1.6.2",
 		"jquery": "^3.6.0",
 		"lodash": "^4.17.21",
 		"md5": "^2.3.0",

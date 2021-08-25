@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import { routes } from '../routes';
-import intro from '../Assets/intro.png';
+import intro from '../Assets/landing.gif';
 import Navbar from '../Components/Home/Navbar';
 import Announcements from '../Components/Announcements';
 import FAQs from '../Components/FAQs';
@@ -14,7 +14,7 @@ const Home: FC<Props> = (props) => {
 	return (
 		<>
 			<Navbar />
-			<div style={{ backgroundColor: '#1884C1' }} className='py-5'>
+			<div style={{ backgroundColor: '#25B7E1' }} className='py-5'>
 				<div className='container text-white'>
 					<div className='row'>
 						<div className='col-12 col-md-6'>
@@ -26,7 +26,7 @@ const Home: FC<Props> = (props) => {
 								Register Now
 							</Link>
 						</div>
-						<div className='col-12 col-md-6'>
+						<div className='col-12 col-md-6 text-center'>
 							<img src={intro} alt={v4()} className='img-fluid' />
 						</div>
 					</div>

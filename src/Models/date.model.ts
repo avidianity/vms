@@ -7,7 +7,7 @@ export class Date extends Model<DateContract> {
 
 	constructor(data?: Partial<DateContract>) {
 		super(data);
-		this.name = 'dates';
+		this.name = 'date';
 	}
 
 	fillable() {
@@ -15,6 +15,6 @@ export class Date extends Model<DateContract> {
 	}
 
 	vaccine() {
-		return this.belongsTo(new Vaccine());
+		return this.belongsTo(Vaccine);
 	}
 }

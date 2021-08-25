@@ -17,20 +17,23 @@ const Profile: FC<Props> = (props) => {
 	const [user, setUser] = useState(state.get<UserContract>('user'));
 
 	const saveFile = async (file: File) => {
+		if (!user) {
+			return;
+		}
 		try {
 			const fileName = `${file.name}-${v4()}`;
 			const storageResponse = await storage.ref(fileName).put(file);
 
-			const userModel = new User().forceFill(user!);
+			const userModel = new User().forceFill(user);
 
-			await userModel.load(['picture']);
+			await (async () => {
+				const picture = await userModel.picture().get();
+				if (picture) {
+					await picture.delete();
+				}
+			})();
 
-			if (userModel.has('picture')) {
-				const picture = new FileModel().forceFill(userModel.get('picture')!);
-				await picture.delete();
-			}
-
-			await userModel.picture().save(
+			const picture = await userModel.picture().save(
 				new FileModel({
 					size: file.size,
 					path: await storageResponse.ref.getDownloadURL(),
@@ -39,8 +42,7 @@ const Profile: FC<Props> = (props) => {
 				})
 			);
 
-			const picture = await new FileModel().where('user_id', '==', userModel.id()).first();
-			userModel.set('picture', picture?.getData());
+			userModel.set('picture', picture.getData());
 
 			toastr.success('Profile picture changed successfully.', 'Notice');
 

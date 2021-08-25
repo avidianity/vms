@@ -8,7 +8,7 @@ export class Vaccine extends Model<VaccineContract> {
 
 	constructor(data?: Partial<VaccineContract>) {
 		super(data);
-		this.name = 'vaccines';
+		this.name = 'vaccine';
 	}
 
 	fillable() {
@@ -22,10 +22,10 @@ export class Vaccine extends Model<VaccineContract> {
 	}
 
 	dates() {
-		return this.hasMany(new Date());
+		return this.hasMany(Date);
 	}
 
 	appointments() {
-		return this.hasMany(new Appointment());
+		return this.hasMany(Appointment);
 	}
 }

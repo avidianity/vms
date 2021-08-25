@@ -53,11 +53,13 @@ const Form: FC<Props> = (props) => {
 		try {
 			const id = match.params.id;
 			const query = new DateModel();
-			const date = await query.findOne(id);
-			await date?.load(['vaccine']);
+			const date = await query.findOneOrFail(id);
+			const vaccine = await date.vaccine().get();
 
-			setDates(date?.get('dates').map((date) => date.toDate())!);
-			setVaccine(new Vaccine().forceFill(date?.get('vaccine')!));
+			if (vaccine) {
+				setVaccine(vaccine);
+			}
+			setDates(date.get('dates').map((date) => date.toDate()));
 
 			setMode('Edit');
 		} catch (error) {
@@ -130,7 +132,7 @@ const Form: FC<Props> = (props) => {
 								}}
 								id='date'
 								className='form-control'
-								disabled={processing || !vaccine}
+								disabled={processing}
 								onChange={(dates) => {
 									if (vaccine) {
 										setDates(dates.limit(vaccine.get('doses')));

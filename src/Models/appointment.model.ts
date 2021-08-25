@@ -8,22 +8,34 @@ export class Appointment extends Model<AppointmentContract> {
 
 	constructor(data?: Partial<AppointmentContract>) {
 		super(data);
-		this.name = 'appointments';
+		this.name = 'appointment';
 	}
 
 	fillable() {
-		return ['vaccine_id', 'attendee_id', 'patient_id', 'done', 'dates'];
+		return [
+			'vaccine_id',
+			'attendee_id',
+			'patient_id',
+			'done',
+			'dates',
+			'questions',
+			'mother',
+			'date_of_birth',
+			'height',
+			'weight',
+			'gender',
+		];
 	}
 
 	vaccine() {
-		return this.belongsTo(new Vaccine());
+		return this.belongsTo(Vaccine);
 	}
 
 	patient() {
-		return this.belongsTo(new User(), 'patient');
+		return this.belongsTo(User, 'patient');
 	}
 
 	attendee() {
-		return this.belongsTo(new User(), 'attendee');
+		return this.belongsTo(User, 'attendee');
 	}
 }
