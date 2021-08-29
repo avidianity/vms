@@ -17,6 +17,7 @@ export interface AppointmentContract extends BaseContract {
 	patient?: UserContract;
 	done: boolean;
 	dates: string[];
+	name_of_child: string;
 	mother: string;
 	date_of_birth: string;
 	height: string;

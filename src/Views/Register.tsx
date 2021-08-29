@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import bg from '../Assets/static/images/bg.jpg';
+import bg from '../Assets/time.jpg';
 import logo from '../Assets/logo.svg';
 import { useHistory } from 'react-router';
 import { routes } from '../routes';

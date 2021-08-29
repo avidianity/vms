@@ -11,6 +11,7 @@ import Users from '../Components/Dashboard/Users';
 import Vaccines from '../Components/Dashboard/Vaccines';
 import { useAuthenticate, useURL } from '../hooks';
 import { routes } from '../routes';
+import Appointments from '../Components/Dashboard/Appointments';
 
 type Props = {};
 
@@ -42,6 +43,10 @@ const Dashboard: FC<Props> = (props) => {
 		{
 			path: url(routes.DATES),
 			component: Dates,
+		},
+		{
+			path: url(routes.INCOMING.APPOINTMENT),
+			component: Appointments,
 		},
 	];
 

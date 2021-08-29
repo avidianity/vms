@@ -26,6 +26,7 @@ type Inputs = {
 	height: string;
 	weight: string;
 	gender: string;
+	name_of_child: string;
 };
 
 const state = State.getInstance();
@@ -146,39 +147,6 @@ const Patient: FC<Props> = (props) => {
 										</button>
 									}>
 									<div className='container'>
-										<div className='form-group'>
-											<label htmlFor='vaccine'>Vaccine</label>
-											<select
-												className='form-control'
-												onChange={(e) => {
-													const id = e.target.value;
-													const vaccine = vaccines.get(id);
-													setVaccine(vaccine || null);
-												}}
-												value={vaccine?.id() || 'none'}>
-												<option value='none' disabled>
-													{' '}
-													-- Select --{' '}
-												</option>
-												{vaccines
-													.filter((vaccine) => {
-														if (
-															appointments.has(
-																(appointment) => appointment.get('vaccine_id') === vaccine.id()
-															)
-														) {
-															return false;
-														}
-
-														return true;
-													})
-													.map((vaccine, index) => (
-														<option value={vaccine.id()} key={index}>
-															{vaccine.get('name')}
-														</option>
-													))}
-											</select>
-										</div>
 										{vaccine ? (
 											<>
 												<h6 className='text-center'>Available Dates</h6>
@@ -197,64 +165,108 @@ const Patient: FC<Props> = (props) => {
 												</div>
 											</>
 										) : null}
-										<div className='form-group'>
-											<label htmlFor='mother'>Name of Mother</label>
-											<input {...register('mother')} type='text' id='mother' className='form-control' />
-										</div>
-										<div className='form-group'>
-											<label htmlFor='birthday'>Date of Birth</label>
-											<Flatpickr
-												type='text'
-												id='birthday'
-												className='form-control'
-												value={birthday || undefined}
-												onChange={(dates) => {
-													setBirthday(dates.first());
-												}}
-											/>
-										</div>
-										<div className='form-group'>
-											<label htmlFor='height'>Height</label>
-											<input {...register('height')} type='text' id='height' className='form-control' />
-										</div>
-										<div className='form-group'>
-											<label htmlFor='weight'>Weight</label>
-											<input {...register('weight')} type='text' id='weight' className='form-control' />
-										</div>
-										<div className='form-group'>
-											<label htmlFor='gender'>Gender</label>
-											<select {...register('gender')} id='gender' className='form-control'>
-												<option value='Male'>Male</option>
-												<option value='Female'>Female</option>
-											</select>
-										</div>
-										{questions.map((question, index) => (
-											<div className='form-group' key={index}>
-												<label htmlFor={`question-${index}`}>{question.get('question')}</label>
-												<input
-													type='text'
-													id={`question-${index}`}
+										<div className='row'>
+											<div className='form-group col-12 col-md-6'>
+												<label htmlFor='vaccine'>Vaccine</label>
+												<select
 													className='form-control'
 													onChange={(e) => {
-														const index = appointmentQuestions.findIndex((q) => q.id === question.id());
-														const answer = appointmentQuestions[index];
-														if (answer) {
-															answer.answer = e.target.value;
-															appointmentQuestions.splice(index, 1, answer);
-														} else {
-															appointmentQuestions.push({
-																id: question.id(),
-																question: question.get('question'),
-																answer: e.target.value,
-															});
-														}
-
-														setAppointmentQuestions([...appointmentQuestions]);
+														const id = e.target.value;
+														const vaccine = vaccines.get(id);
+														setVaccine(vaccine || null);
 													}}
-													value={appointmentQuestions.find((q) => q.id === question.id())?.answer}
+													value={vaccine?.id() || 'none'}>
+													<option value='none' disabled>
+														{' '}
+														-- Select --{' '}
+													</option>
+													{vaccines
+														.filter((vaccine) => {
+															if (
+																appointments.has(
+																	(appointment) => appointment.get('vaccine_id') === vaccine.id()
+																)
+															) {
+																return false;
+															}
+
+															return true;
+														})
+														.map((vaccine, index) => (
+															<option value={vaccine.id()} key={index}>
+																{vaccine.get('name')}
+															</option>
+														))}
+												</select>
+											</div>
+											<div className='form-group col-12 col-md-6'>
+												<label htmlFor='mother'>Name of Mother</label>
+												<input {...register('mother')} type='text' id='mother' className='form-control' />
+											</div>
+											<div className='form-group col-12 col-md-6'>
+												<label htmlFor='name_of_child'>Name of Child</label>
+												<input
+													{...register('name_of_child')}
+													type='text'
+													id='name_of_child'
+													className='form-control'
 												/>
 											</div>
-										))}
+											<div className='form-group col-12 col-md-6'>
+												<label htmlFor='birthday'>Date of Birth</label>
+												<Flatpickr
+													type='text'
+													id='birthday'
+													className='form-control'
+													value={birthday || undefined}
+													onChange={(dates) => {
+														setBirthday(dates.first());
+													}}
+												/>
+											</div>
+											<div className='form-group col-12 col-md-6 col-lg-4'>
+												<label htmlFor='height'>Height</label>
+												<input {...register('height')} type='text' id='height' className='form-control' />
+											</div>
+											<div className='form-group col-12 col-md-6 col-lg-4'>
+												<label htmlFor='weight'>Weight</label>
+												<input {...register('weight')} type='text' id='weight' className='form-control' />
+											</div>
+											<div className='form-group col-12 col-md-6 col-lg-4'>
+												<label htmlFor='gender'>Gender</label>
+												<select {...register('gender')} id='gender' className='form-control'>
+													<option value='Male'>Male</option>
+													<option value='Female'>Female</option>
+												</select>
+											</div>
+											{questions.map((question, index) => (
+												<div className='form-group col-12 col-md-6' key={index}>
+													<label htmlFor={`question-${index}`}>{question.get('question')}</label>
+													<input
+														type='text'
+														id={`question-${index}`}
+														className='form-control'
+														onChange={(e) => {
+															const index = appointmentQuestions.findIndex((q) => q.id === question.id());
+															const answer = appointmentQuestions[index];
+															if (answer) {
+																answer.answer = e.target.value;
+																appointmentQuestions.splice(index, 1, answer);
+															} else {
+																appointmentQuestions.push({
+																	id: question.id(),
+																	question: question.get('question'),
+																	answer: e.target.value,
+																});
+															}
+
+															setAppointmentQuestions([...appointmentQuestions]);
+														}}
+														value={appointmentQuestions.find((q) => q.id === question.id())?.answer}
+													/>
+												</div>
+											))}
+										</div>
 									</div>
 								</Modal>
 							</form>

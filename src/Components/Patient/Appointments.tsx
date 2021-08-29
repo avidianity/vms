@@ -1,21 +1,16 @@
 import dayjs from 'dayjs';
 import React, { FC, useEffect } from 'react';
 import { manager } from '../../constants';
-import { UserContract } from '../../Contracts/user.contract';
 import { Asker, getAppointments } from '../../helpers';
 import { useCollection } from '../../hooks';
 import { firestore } from '../../Libraries/firebase.library';
-import { State } from '../../Libraries/state.library';
 import { Appointment } from '../../Models/appointment.model';
 import Card from '../Card';
 import Tooltip from '../Dashboard/Tooltip';
 
 type Props = {};
 
-const state = State.getInstance();
-
 const Appointments: FC<Props> = (props) => {
-	const user = state.get<UserContract>('user');
 	const [appointments, setAppointments] = useCollection<Appointment>();
 
 	const get = async () => {
@@ -71,7 +66,14 @@ const Appointments: FC<Props> = (props) => {
 									<p className='mb-0'>
 										Attendee: {appointment.get('attendee') ? appointment.get('attendee')?.name : 'N/A'}
 									</p>
-									<p className='mb-0'>Patient: {user?.name}</p>
+									<p className='mb-0'>Patient: {appointment.get('name_of_child')}</p>
+									<p className='mb-0'>Gender: {appointment.get('gender')}</p>
+									<p className='mb-0'>Name of Mother: {appointment.get('mother')}</p>
+									<p className='mb-0'>
+										Date of Birth: {appointment.get('date_of_birth').toDayJS().format('MMMM DD, YYYY')}
+									</p>
+									<p className='mb-0'>Height: {appointment.get('height')}</p>
+									<p className='mb-0'>Weight: {appointment.get('weight')}</p>
 									<div>
 										Dates:{' '}
 										<div className='row'>

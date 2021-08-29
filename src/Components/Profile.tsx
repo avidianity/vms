@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { createRef, FC, useState } from 'react';
 import { v4 } from 'uuid';
 import { UserContract } from '../Contracts/user.contract';
@@ -87,6 +88,11 @@ const Profile: FC<Props> = (props) => {
 					fileRef.current?.click();
 				}}
 			/>
+			<div className='container-fluid pt-3'>
+				<h6>{user?.name}</h6>
+				<h6>{user?.gender}</h6>
+				<h6>{dayjs(user?.birthday).format('MMMM DD, YYYY')}</h6>
+			</div>
 		</Card>
 	);
 };
