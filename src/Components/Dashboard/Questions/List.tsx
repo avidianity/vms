@@ -55,7 +55,7 @@ const List: FC<Props> = (props) => {
 		<div className='container'>
 			<Card>
 				<DataTable
-					title='Available Dates'
+					title='Questions'
 					actions={[
 						<i
 							className={`material-icons clickable`}
