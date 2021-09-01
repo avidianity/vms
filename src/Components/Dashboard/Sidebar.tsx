@@ -103,6 +103,14 @@ const Sidebar: FC<Props> = (props) => {
 									<span className='title'>Health Workers</span>
 								</Link>
 							</li>
+							<li>
+								<Link to={url(routes.QUESTIONS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-yellow-700 ti-light-bulb'></i>{' '}
+									</span>
+									<span className='title'>Questions</span>
+								</Link>
+							</li>
 						</>
 					) : null}
 				</ul>

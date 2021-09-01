@@ -1,4 +1,4 @@
-import { Collection, Model } from 'firestore-eloquent';
+import { Collection, Model, ModelData } from 'firestore-eloquent';
 import md5 from 'md5';
 import { useEffect, useState } from 'react';
 import { useHistory, useRouteMatch } from 'react-router-dom';
@@ -20,8 +20,8 @@ export function useURL() {
 	return (path: string) => `${fragments.join('')}${path}`;
 }
 
-export function useMode() {
-	return useState<'Add' | 'Edit'>('Add');
+export function useMode(mode: 'Add' | 'Edit' = 'Add') {
+	return useState<'Add' | 'Edit'>(mode);
 }
 
 export function useNullable<T>(data?: T) {
@@ -32,8 +32,8 @@ export function useArray<T>(data?: T[]) {
 	return useState<T[]>(data || []);
 }
 
-export function useCollection<T extends Model>(data?: Collection<T>) {
-	return useState<Collection<T>>(data || new Collection());
+export function useCollection<T extends Model, D extends ModelData = any>(data?: Collection<T>) {
+	return useState<Collection<T, D>>(data || new Collection());
 }
 
 const state = State.getInstance();

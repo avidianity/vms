@@ -24,4 +24,5 @@ export const routes = {
 	USERS: '/users',
 	DATES: '/available-dates',
 	PATIENT: '/patient',
+	QUESTIONS: '/questions',
 };

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { useHistory } from 'react-router';
+import { AppointmentContract } from '../../../Contracts/appointment.contract';
 import { UserContract } from '../../../Contracts/user.contract';
 import { Asker, outIf } from '../../../helpers';
 import { useCollection, useURL } from '../../../hooks';
@@ -17,7 +18,7 @@ const state = State.getInstance();
 const List: FC<Props> = (props) => {
 	const query = new Appointment();
 	const user = state.get<UserContract>('user');
-	const [appointments, setAppointments] = useCollection<Appointment>();
+	const [appointments, setAppointments] = useCollection<Appointment, AppointmentContract>();
 	const [fetching, setFetching] = useState(false);
 	const history = useHistory();
 	const url = useURL();

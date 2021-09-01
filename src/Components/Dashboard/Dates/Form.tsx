@@ -6,6 +6,7 @@ import { useHistory, useRouteMatch } from 'react-router';
 import Flatpickr from 'react-flatpickr';
 import { Vaccine } from '../../../Models/vaccine.model';
 import { addListener, listen, removeListener } from 'firestore-eloquent';
+import { VaccineContract } from '../../../Contracts/vaccine.contract';
 
 type Props = {};
 
@@ -16,7 +17,7 @@ const Form: FC<Props> = (props) => {
 	const ref = createRef<HTMLFormElement>();
 	const [dates, setDates] = useArray<Date>();
 	const [vaccine, setVaccine] = useNullable<Vaccine>();
-	const [vaccines, setVaccines] = useCollection<Vaccine>();
+	const [vaccines, setVaccines] = useCollection<Vaccine, VaccineContract>();
 	const history = useHistory();
 
 	const submit = async () => {
