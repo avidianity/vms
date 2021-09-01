@@ -41,7 +41,7 @@ const Home: FC<Props> = (props) => {
 					labels: ['Male', 'Female'],
 					datasets: [
 						{
-							label: 'Total Patients Vaccinated (Percent)',
+							label: 'Total Children Vaccinated',
 							data: [12, 19],
 							backgroundColor: ['rgb(54, 162, 235)'],
 						},
@@ -54,11 +54,11 @@ const Home: FC<Props> = (props) => {
 			new Chart('vaccinated-vaccine', {
 				type: 'bar',
 				data: {
-					labels: ['BCG', 'Hepa B', 'MMR', 'Sinovac'],
+					labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', ' Oct', 'Nov', 'Dev'],
 					datasets: [
 						{
-							label: 'Total Patients Vaccinated (Percent)',
-							data: [12, 19, 40, 32],
+							label: 'Vaccinated in Months',
+							data: [12, 19, 40, 32, 53, 28, 82, 38, 82, 57, 10, 38],
 							backgroundColor: ['rgb(54, 162, 235)'],
 						},
 					],
@@ -70,10 +70,10 @@ const Home: FC<Props> = (props) => {
 			new Chart('ages', {
 				type: 'bar',
 				data: {
-					labels: ['Infant', 'Child', 'Teenage', 'Adult'],
+					labels: ['BCG', 'Hepa B', 'MMR', 'Sinovac'],
 					datasets: [
 						{
-							label: 'Total Patients Vaccinated (Percent)',
+							label: 'Infants (0-1 years of age)',
 							data: [74, 19, 40, 32],
 							backgroundColor: ['rgb(54, 162, 235)'],
 						},
@@ -99,16 +99,16 @@ const Home: FC<Props> = (props) => {
 	return (
 		<div className='container'>
 			<div className='row'>
-				<div className='col-12 col-md-6'>
+				<div className='col-12 col-lg-6'>
 					<canvas id='appointments-by-month'></canvas>
 				</div>
-				<div className='col-12 col-md-6'>
+				<div className='col-12 col-lg-6'>
 					<canvas id='total-vaccinated'></canvas>
 				</div>
-				<div className='col-12 col-md-6'>
+				<div className='col-12 col-lg-6'>
 					<canvas id='vaccinated-vaccine'></canvas>
 				</div>
-				<div className='col-12 col-md-6'>
+				<div className='col-12 col-lg-6'>
 					<canvas id='ages'></canvas>
 				</div>
 			</div>
