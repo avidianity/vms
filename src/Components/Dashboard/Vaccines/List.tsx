@@ -90,7 +90,7 @@ const List: FC<Props> = (props) => {
 						{
 							name: 'Number of Doses',
 							selector: (row) => row.get('doses'),
-							minWidth: '150px',
+							minWidth: '200px',
 							sortable: true,
 						},
 						{
@@ -101,14 +101,14 @@ const List: FC<Props> = (props) => {
 							sortable: true,
 						},
 						{
-							name: '1 1/2 Month',
+							name: '1 1/2 Months',
 							cell: (row) =>
 								row.get('one_month_and_a_half') ? (
 									<i className='material-icons'>check</i>
 								) : (
 									<i className='material-icons'>clear</i>
 								),
-							minWidth: '100px',
+							minWidth: '150px',
 							sortable: true,
 						},
 						{
@@ -119,7 +119,7 @@ const List: FC<Props> = (props) => {
 								) : (
 									<i className='material-icons'>clear</i>
 								),
-							minWidth: '100px',
+							minWidth: '150px',
 							sortable: true,
 						},
 						{
@@ -130,7 +130,7 @@ const List: FC<Props> = (props) => {
 								) : (
 									<i className='material-icons'>clear</i>
 								),
-							minWidth: '100px',
+							minWidth: '150px',
 							sortable: true,
 						},
 						{

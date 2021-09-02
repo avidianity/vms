@@ -4,15 +4,15 @@ import DataTable from 'react-data-table-component';
 import { useHistory } from 'react-router';
 import { Asker, outIf } from '../../../helpers';
 import { useCollection, useURL } from '../../../hooks';
-import { Date } from '../../../Models/date.model';
+import { Question } from '../../../Models/question.model';
 import Card from '../../Card';
 import Tooltip from '../Tooltip';
 
 type Props = {};
 
 const List: FC<Props> = (props) => {
-	const query = new Date();
-	const [dates, setDates] = useCollection<Date>();
+	const query = new Question();
+	const [questions, setQuestions] = useCollection<Question>();
 	const [fetching, setFetching] = useState(false);
 	const history = useHistory();
 	const url = useURL();
@@ -20,11 +20,11 @@ const List: FC<Props> = (props) => {
 	const get = async () => {
 		setFetching(true);
 		try {
-			const dates = await query.all();
-			setDates(await dates.load(['vaccine']));
+			const questions = await query.all();
+			setQuestions(questions);
 		} catch (error) {
 			console.log(error);
-			toastr.error('Unable to fetch Dates.', 'Oops!');
+			toastr.error('Unable to fetch Questions.', 'Oops!');
 		} finally {
 			setFetching(false);
 		}
@@ -32,17 +32,17 @@ const List: FC<Props> = (props) => {
 
 	const remove = async (id: string) => {
 		try {
-			if (await Asker.danger('Are you sure you want to delete this Date?')) {
-				const date = await new Date().findOne(id);
+			if (await Asker.danger('Are you sure you want to delete this Question?')) {
+				const date = await new Question().findOne(id);
 				await date?.delete();
 
-				toastr.success('Date deleted successfully.');
+				toastr.success('Question deleted successfully.');
 
 				await get();
 			}
 		} catch (error) {
 			console.error(error);
-			toastr.error('Unable to delete Date.', 'Oops!');
+			toastr.error('Unable to delete Question.', 'Oops!');
 		}
 	};
 
@@ -83,23 +83,10 @@ const List: FC<Props> = (props) => {
 							minWidth: '200px',
 						},
 						{
-							name: 'Vaccine',
-							selector: (row) => row.get('vaccine')?.name,
+							name: 'Question',
+							selector: (row) => row.get('question'),
 							minWidth: '200px',
 							sortable: true,
-						},
-						{
-							name: 'Dates',
-							minWidth: '150px',
-							cell: (row) => (
-								<div>
-									{row.get('dates').map((date, index) => (
-										<p className='mb-0' key={index}>
-											{dayjs(date).format('MMMM DD, YYYY')}
-										</p>
-									))}
-								</div>
-							),
 						},
 						{
 							name: 'Created',
@@ -134,7 +121,7 @@ const List: FC<Props> = (props) => {
 							minWidth: '150px',
 						},
 					]}
-					data={dates}
+					data={questions}
 				/>
 			</Card>
 			<Tooltip />

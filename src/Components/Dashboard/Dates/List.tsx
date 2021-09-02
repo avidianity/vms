@@ -104,7 +104,7 @@ const List: FC<Props> = (props) => {
 						{
 							name: 'Created',
 							selector: (row) => dayjs(row.get('created_at')).format('MMMM DD, YYYY hh:mm A'),
-							minWidth: '200px',
+							minWidth: '250px',
 							sortable: true,
 						},
 						{

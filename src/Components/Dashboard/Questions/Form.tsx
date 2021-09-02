@@ -17,7 +17,16 @@ const Form: FC<Props> = (props) => {
 	const submit = async () => {
 		setProcessing(true);
 		try {
-			toastr.success('Date saved successfully.');
+			if (mode === 'Add') {
+				await new Question({
+					question,
+				}).save();
+			} else {
+				const id = match.params.id;
+				const model = await Question.createQueryBuilder().findOneOrFail(id);
+				await model.update({ question });
+			}
+			toastr.success('Question saved successfully.');
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Question. Please try again later.`, 'Oops!');

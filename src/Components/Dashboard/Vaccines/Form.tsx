@@ -100,7 +100,7 @@ const Form: FC<Props> = (props) => {
 							<input {...register('at_birth')} type='checkbox' id='at_birth' className='form-control' disabled={processing} />
 						</div>
 						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='one_month_and_a_half'>1 1/2 Month</label>
+							<label htmlFor='one_month_and_a_half'>1 1/2 Months</label>
 							<input
 								{...register('one_month_and_a_half')}
 								type='checkbox'
