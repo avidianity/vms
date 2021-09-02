@@ -10,6 +10,7 @@ import { Vaccine } from '../../../Models/vaccine.model';
 import { User } from '../../../Models/user.model';
 import { UserContract } from '../../../Contracts/user.contract';
 import { VaccineContract } from '../../../Contracts/vaccine.contract';
+import dayjs from 'dayjs';
 
 type Props = {};
 
@@ -50,7 +51,6 @@ const Form: FC<Props> = (props) => {
 				});
 			} else {
 				const appointment = await new Appointment().findOneOrFail(match.params.id);
-				setVaccine(await appointment.vaccine().get());
 				await appointment
 					.fill({
 						...data,
@@ -79,6 +79,9 @@ const Form: FC<Props> = (props) => {
 			}
 			setQuestions(data.questions);
 			setBirthday(data.date_of_birth.toDate());
+			const vaccine = await appointment.vaccine().get();
+			await vaccine?.load(['dates']);
+			setVaccine(vaccine);
 		} catch (error) {
 			console.log(error);
 			toastr.error('Unable to fetch appointment.');
@@ -228,7 +231,7 @@ const Form: FC<Props> = (props) => {
 							{vaccine.get('dates')?.map((parentDate, parentIndex) =>
 								parentDate.dates.map((childDate, childIndex) => (
 									<div className='form-group col-12' key={`${parentIndex}-${childIndex}`}>
-										<label htmlFor={parentDate.id}>{childDate}</label>
+										<label htmlFor={parentDate.id}>{dayjs(childDate).format('MMMM DD, YYYY')}</label>
 										<input
 											type='checkbox'
 											id={parentDate.id}
