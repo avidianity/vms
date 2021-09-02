@@ -225,7 +225,7 @@ const Patient: FC<Props> = (props) => {
 												/>
 											</div>
 											<div className='form-group col-12 col-md-6 col-lg-4'>
-												<label htmlFor='height'>Height</label>
+												<label htmlFor='height'>Length</label>
 												<input {...register('height')} type='text' id='height' className='form-control' />
 											</div>
 											<div className='form-group col-12 col-md-6 col-lg-4'>

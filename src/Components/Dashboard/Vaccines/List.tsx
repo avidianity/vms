@@ -94,6 +94,60 @@ const List: FC<Props> = (props) => {
 							sortable: true,
 						},
 						{
+							name: 'At Birth',
+							cell: (row) =>
+								row.get('at_birth') ? <i className='material-icons'>check</i> : <i className='material-icons'>clear</i>,
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: '1 1/2 Month',
+							cell: (row) =>
+								row.get('one_month_and_a_half') ? (
+									<i className='material-icons'>check</i>
+								) : (
+									<i className='material-icons'>clear</i>
+								),
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: '2 1/2 Months',
+							cell: (row) =>
+								row.get('two_months_and_a_half') ? (
+									<i className='material-icons'>check</i>
+								) : (
+									<i className='material-icons'>clear</i>
+								),
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: '3 1/2 Months',
+							cell: (row) =>
+								row.get('three_months_and_a_half') ? (
+									<i className='material-icons'>check</i>
+								) : (
+									<i className='material-icons'>clear</i>
+								),
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: '9 Months',
+							cell: (row) =>
+								row.get('nine_months') ? <i className='material-icons'>check</i> : <i className='material-icons'>clear</i>,
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: '1 Year',
+							cell: (row) =>
+								row.get('one_year') ? <i className='material-icons'>check</i> : <i className='material-icons'>clear</i>,
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
 							name: 'Created',
 							selector: (row) => dayjs(row.get('created_at')).format('MMMM DD, YYYY hh:mm A'),
 							minWidth: '200px',

@@ -72,7 +72,7 @@ const Appointments: FC<Props> = (props) => {
 									<p className='mb-0'>
 										Date of Birth: {appointment.get('date_of_birth').toDayJS().format('MMMM DD, YYYY')}
 									</p>
-									<p className='mb-0'>Height: {appointment.get('height')}</p>
+									<p className='mb-0'>Length: {appointment.get('height')}</p>
 									<p className='mb-0'>Weight: {appointment.get('weight')}</p>
 									<div>
 										Dates:{' '}

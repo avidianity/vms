@@ -10,6 +10,12 @@ type Props = {};
 type VaccineContract = {
 	name: string;
 	doses: number;
+	at_birth: boolean;
+	one_month_and_a_half: boolean;
+	two_months_and_a_half: boolean;
+	three_months_and_a_half: boolean;
+	nine_months: boolean;
+	one_year: boolean;
 };
 
 const Form: FC<Props> = (props) => {
@@ -88,6 +94,54 @@ const Form: FC<Props> = (props) => {
 								className='form-control'
 								disabled={processing}
 							/>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='at_birth'>At Birth</label>
+							<input {...register('at_birth')} type='checkbox' id='at_birth' className='form-control' disabled={processing} />
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='one_month_and_a_half'>1 1/2 Month</label>
+							<input
+								{...register('one_month_and_a_half')}
+								type='checkbox'
+								id='one_month_and_a_half'
+								className='form-control'
+								disabled={processing}
+							/>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='two_months_and_a_half'>2 1/2 Months</label>
+							<input
+								{...register('two_months_and_a_half')}
+								type='checkbox'
+								id='two_months_and_a_half'
+								className='form-control'
+								disabled={processing}
+							/>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='three_months_and_a_half'>3 1/2 Months</label>
+							<input
+								{...register('three_months_and_a_half')}
+								type='checkbox'
+								id='three_months_and_a_half'
+								className='form-control'
+								disabled={processing}
+							/>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='nine_months'>9 Months</label>
+							<input
+								{...register('nine_months')}
+								type='checkbox'
+								id='nine_months'
+								className='form-control'
+								disabled={processing}
+							/>
+						</div>
+						<div className='form-group col-12 col-md-6'>
+							<label htmlFor='one_year'>1 Year</label>
+							<input {...register('one_year')} type='checkbox' id='one_year' className='form-control' disabled={processing} />
 						</div>
 					</div>
 					<div className='form-group'>

@@ -12,7 +12,7 @@ export class Vaccine extends Model<VaccineContract> {
 	}
 
 	fillable() {
-		return ['name', 'doses'];
+		return ['name', 'doses', 'one_month_and_a_half', 'two_months_and_a_half', 'three_months_and_a_half', 'nine_months', 'one_year'];
 	}
 
 	protected booted() {
