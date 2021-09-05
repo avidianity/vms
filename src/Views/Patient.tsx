@@ -180,23 +180,11 @@ const Patient: FC<Props> = (props) => {
 														{' '}
 														-- Select --{' '}
 													</option>
-													{vaccines
-														.filter((vaccine) => {
-															if (
-																appointments.has(
-																	(appointment) => appointment.get('vaccine_id') === vaccine.id()
-																)
-															) {
-																return false;
-															}
-
-															return true;
-														})
-														.map((vaccine, index) => (
-															<option value={vaccine.id()} key={index}>
-																{vaccine.get('name')}
-															</option>
-														))}
+													{vaccines.map((vaccine, index) => (
+														<option value={vaccine.id()} key={index}>
+															{vaccine.get('name')}
+														</option>
+													))}
 												</select>
 											</div>
 											<div className='form-group col-12 col-md-6'>

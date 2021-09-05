@@ -203,6 +203,14 @@ const List: FC<Props> = (props) => {
 										className='material-icons clickable mx-1'
 										onClick={(e) => {
 											e.preventDefault();
+										}}
+										data-tip='Export as ECCD Card'>
+										picture_as_pdf
+									</i>
+									<i
+										className='material-icons clickable mx-1'
+										onClick={(e) => {
+											e.preventDefault();
 											history.push(url(`/${row.id()}/edit`));
 										}}
 										data-tip='Edit'>
@@ -213,7 +221,7 @@ const List: FC<Props> = (props) => {
 										data-tip='Delete'
 										onClick={(e) => {
 											e.preventDefault();
-											remove(row.get('id')!);
+											remove(row.id());
 										}}>
 										delete
 									</i>

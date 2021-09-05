@@ -82,15 +82,17 @@ const Form: FC<Props> = (props) => {
 					<div className='form-row'>
 						<div className='form-group col-12 col-md-6'>
 							<label htmlFor='name'>Name</label>
-							<input {...register('name')} type='text' name='name' id='name' className='form-control' disabled={processing} />
+							<input {...register('name')} type='text' id='name' className='form-control' disabled={processing} />
 						</div>
 						<div className='form-group col-12 col-md-6'>
-							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
-								<input {...register('doses')} type='checkbox' id='doses' className='peer' disabled={processing} />
-								<label htmlFor='doses' className='form-label peers peer-greed js-sb ai-c'>
-									<span className='peer peer-greed'>Doses</span>
-								</label>
-							</div>
+							<label htmlFor='doses'>Doses</label>
+							<input
+								{...register('doses')}
+								type='number'
+								id='doses'
+								className='form-control'
+								disabled={processing || mode === 'Edit'}
+							/>
 						</div>
 						<div className='form-group col-12 col-md-6 col-lg-4'>
 							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>

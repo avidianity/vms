@@ -158,21 +158,25 @@ const Form: FC<Props> = (props) => {
 					<div className='form-group col-12 col-md-6 col-lg-4'>
 						<label htmlFor='attendee_id'>Attendee</label>
 						<select {...register('attendee_id')} id='attendee_id' className='form-control' disabled={processing}>
-							{patients.map((patient, index) => (
-								<option value={patient.id()} key={index}>
-									{patient.get('name')}
-								</option>
-							))}
+							{patients
+								.filter((patient) => patient.get('role') === 'Health Worker')
+								.map((patient, index) => (
+									<option value={patient.id()} key={index}>
+										{patient.get('name')}
+									</option>
+								))}
 						</select>
 					</div>
 					<div className='form-group col-12 col-md-6 col-lg-4'>
 						<label htmlFor='patient_id'>Parent</label>
 						<select {...register('patient_id')} id='patient_id' className='form-control' disabled={processing}>
-							{patients.map((patient, index) => (
-								<option value={patient.id()} key={index}>
-									{patient.get('name')}
-								</option>
-							))}
+							{patients
+								.filter((patient) => patient.get('role') === 'Patient')
+								.map((patient, index) => (
+									<option value={patient.id()} key={index}>
+										{patient.get('name')}
+									</option>
+								))}
 						</select>
 					</div>
 					<div className='form-group col-12 col-md-6'>
@@ -229,7 +233,9 @@ const Form: FC<Props> = (props) => {
 					</div>
 					{mode === 'Edit' && vaccine ? (
 						<>
-							<h6>Completed Dates</h6>
+							<div className='col-12'>
+								<h6>Completed Dates</h6>
+							</div>
 							{vaccine.get('dates')?.map((parentDate, parentIndex) =>
 								parentDate.dates.map((childDate, childIndex) => (
 									<div className='form-group col-12 col-md-6 col-lg-4' key={`${parentIndex}-${childIndex}`}>
@@ -239,7 +245,7 @@ const Form: FC<Props> = (props) => {
 												type='checkbox'
 												className='peer'
 												disabled={processing}
-												checked={dates.includes(childDate)}
+												checked={dates.includes(childDate) || previousDates.includes(childDate)}
 												onChange={() => {
 													if (!previousDates.includes(childDate)) {
 														if (dates.includes(childDate)) {
@@ -262,8 +268,13 @@ const Form: FC<Props> = (props) => {
 						</>
 					) : null}
 					<div className='form-group col-12'>
-						<label htmlFor='done'>Done</label>
-						<input {...register('done')} type='checkbox' id='done' className='form-control' disabled={processing} />
+						<hr />
+						<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+							<input {...register('done')} id='done' type='checkbox' className='peer' disabled={processing} />
+							<label htmlFor='done' className='form-label peers peer-greed js-sb ai-c'>
+								<span className='peer peer-greed'>Done</span>
+							</label>
+						</div>
 					</div>
 					<div className='form-group col-12'>
 						<button type='submit' className='btn btn-primary btn-sm' disabled={processing}>
