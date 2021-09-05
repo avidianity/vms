@@ -40,6 +40,7 @@ const Form: FC<Props> = (props) => {
 	const [dates, setDates] = useArray<string>();
 	const match = useRouteMatch<{ id: string }>();
 	const history = useHistory();
+	const [previousDates, setPreviousDates] = useArray<string>();
 
 	const submit = async (data: Inputs) => {
 		setProcessing(true);
@@ -79,6 +80,7 @@ const Form: FC<Props> = (props) => {
 			}
 			setQuestions(data.questions);
 			setBirthday(data.date_of_birth.toDate());
+			setPreviousDates(data.dates);
 			const vaccine = await appointment.vaccine().get();
 			await vaccine?.load(['dates']);
 			setVaccine(vaccine);
@@ -230,23 +232,30 @@ const Form: FC<Props> = (props) => {
 							<h6>Completed Dates</h6>
 							{vaccine.get('dates')?.map((parentDate, parentIndex) =>
 								parentDate.dates.map((childDate, childIndex) => (
-									<div className='form-group col-12' key={`${parentIndex}-${childIndex}`}>
-										<label htmlFor={parentDate.id}>{dayjs(childDate).format('MMMM DD, YYYY')}</label>
-										<input
-											type='checkbox'
-											id={parentDate.id}
-											className='form-control'
-											checked={dates.includes(childDate)}
-											onChange={() => {
-												if (dates.includes(childDate)) {
-													const index = dates.indexOf(childDate);
-													dates.splice(index, 1);
-												} else {
-													dates.push(childDate);
-												}
-												setDates([...dates]);
-											}}
-										/>
+									<div className='form-group col-12 col-md-6 col-lg-4' key={`${parentIndex}-${childIndex}`}>
+										<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+											<input
+												id={parentDate.id}
+												type='checkbox'
+												className='peer'
+												disabled={processing}
+												checked={dates.includes(childDate)}
+												onChange={() => {
+													if (!previousDates.includes(childDate)) {
+														if (dates.includes(childDate)) {
+															const index = dates.indexOf(childDate);
+															dates.splice(index, 1);
+														} else {
+															dates.push(childDate);
+														}
+														setDates([...dates]);
+													}
+												}}
+											/>
+											<label htmlFor={parentDate.id} className='form-label peers peer-greed js-sb ai-c'>
+												<span className='peer peer-greed'>{dayjs(childDate).format('MMMM DD, YYYY')}</span>
+											</label>
+										</div>
 									</div>
 								))
 							)}

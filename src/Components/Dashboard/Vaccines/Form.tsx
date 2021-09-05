@@ -85,63 +85,84 @@ const Form: FC<Props> = (props) => {
 							<input {...register('name')} type='text' name='name' id='name' className='form-control' disabled={processing} />
 						</div>
 						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='doses'>Doses</label>
-							<input
-								{...register('doses')}
-								type='number'
-								name='doses'
-								id='doses'
-								className='form-control'
-								disabled={processing}
-							/>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input {...register('doses')} type='checkbox' id='doses' className='peer' disabled={processing} />
+								<label htmlFor='doses' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>Doses</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='at_birth'>At Birth</label>
-							<input {...register('at_birth')} type='checkbox' id='at_birth' className='form-control' disabled={processing} />
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input {...register('at_birth')} type='checkbox' id='at_birth' className='peer' disabled={processing} />
+								<label htmlFor='at_birth' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>At Birth</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='one_month_and_a_half'>1 1/2 Months</label>
-							<input
-								{...register('one_month_and_a_half')}
-								type='checkbox'
-								id='one_month_and_a_half'
-								className='form-control'
-								disabled={processing}
-							/>
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input
+									{...register('one_month_and_a_half')}
+									type='checkbox'
+									id='one_month_and_a_half'
+									className='peer'
+									disabled={processing}
+								/>
+								<label htmlFor='one_month_and_a_half' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>1 1/2 Months</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='two_months_and_a_half'>2 1/2 Months</label>
-							<input
-								{...register('two_months_and_a_half')}
-								type='checkbox'
-								id='two_months_and_a_half'
-								className='form-control'
-								disabled={processing}
-							/>
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input
+									{...register('two_months_and_a_half')}
+									type='checkbox'
+									id='two_months_and_a_half'
+									className='peer'
+									disabled={processing}
+								/>
+								<label htmlFor='two_months_and_a_half' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>2 1/2 Months</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='three_months_and_a_half'>3 1/2 Months</label>
-							<input
-								{...register('three_months_and_a_half')}
-								type='checkbox'
-								id='three_months_and_a_half'
-								className='form-control'
-								disabled={processing}
-							/>
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input
+									{...register('three_months_and_a_half')}
+									type='checkbox'
+									id='three_months_and_a_half'
+									className='peer'
+									disabled={processing}
+								/>
+								<label htmlFor='three_months_and_a_half' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>3 1/2 Months</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='nine_months'>9 Months</label>
-							<input
-								{...register('nine_months')}
-								type='checkbox'
-								id='nine_months'
-								className='form-control'
-								disabled={processing}
-							/>
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input
+									{...register('nine_months')}
+									type='checkbox'
+									id='nine_months'
+									className='peer'
+									disabled={processing}
+								/>
+								<label htmlFor='nine_months' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>9 Months</span>
+								</label>
+							</div>
 						</div>
-						<div className='form-group col-12 col-md-6'>
-							<label htmlFor='one_year'>1 Year</label>
-							<input {...register('one_year')} type='checkbox' id='one_year' className='form-control' disabled={processing} />
+						<div className='form-group col-12 col-md-6 col-lg-4'>
+							<div className='checkbox checkbox-circle checkbox-info peers ai-c'>
+								<input {...register('one_year')} type='checkbox' id='one_year' className='peer' disabled={processing} />
+								<label htmlFor='one_year' className='form-label peers peer-greed js-sb ai-c'>
+									<span className='peer peer-greed'>1 Year</span>
+								</label>
+							</div>
 						</div>
 					</div>
 					<div className='form-group'>
