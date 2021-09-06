@@ -13,7 +13,7 @@ import { Appointment } from '../Models/appointment.model';
 import { Vaccine } from '../Models/vaccine.model';
 import { routes } from '../routes';
 import Profile from '../Components/Profile';
-import { getAppointments } from '../helpers';
+import { Asker, getAppointments } from '../helpers';
 import { Question } from '../Models/question.model';
 import { Question as AppointmentQuestion } from '../Contracts/appointment.contract';
 import { useForm } from 'react-hook-form';
@@ -77,29 +77,31 @@ const Patient: FC<Props> = (props) => {
 	};
 
 	const submit = async (data: Inputs) => {
-		$(`#${id}`).modal('hide');
-		try {
-			const appointment = new Appointment();
-			appointment.fill({
-				...data,
-				date_of_birth: birthday?.toJSON(),
-				vaccine_id: vaccine?.id(),
-				attendee_id: null,
-				done: false,
-				patient_id: user?.id,
-				dates: [],
-				questions: appointmentQuestions,
-				weight: '',
-			});
+		if (await Asker.notice('Are you sure you want to submit this appointment?')) {
+			$(`#${id}`).modal('hide');
+			try {
+				const appointment = new Appointment();
+				appointment.fill({
+					...data,
+					date_of_birth: birthday?.toJSON(),
+					vaccine_id: vaccine?.id(),
+					attendee_id: null,
+					done: false,
+					patient_id: user?.id,
+					dates: [],
+					questions: appointmentQuestions,
+					weight: '',
+				});
 
-			await appointment.save();
+				await appointment.save();
 
-			toastr.success('Appointment saved successfully.');
-		} catch (error) {
-			console.log(error);
-			toastr.error('Unable to save appointment.');
-		} finally {
-			await get();
+				toastr.success('Appointment saved successfully.');
+			} catch (error) {
+				console.log(error);
+				toastr.error('Unable to save appointment.');
+			} finally {
+				await get();
+			}
 		}
 	};
 
