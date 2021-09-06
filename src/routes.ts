@@ -25,4 +25,6 @@ export const routes = {
 	DATES: '/available-dates',
 	PATIENT: '/patient',
 	QUESTIONS: '/questions',
+	FAQS: '/faqs',
+	ANNOUNCEMENTS: '/announcements',
 };

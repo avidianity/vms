@@ -13,6 +13,8 @@ import { useAuthenticate, useURL } from '../hooks';
 import { routes } from '../routes';
 import Appointments from '../Components/Dashboard/Appointments';
 import Questions from '../Components/Dashboard/Questions';
+import CMS from '../Components/Dashboard/CMS';
+import { Types } from '../Models/cms.model';
 
 type Props = {};
 
@@ -52,6 +54,14 @@ const Dashboard: FC<Props> = (props) => {
 		{
 			path: url(routes.QUESTIONS),
 			component: Questions,
+		},
+		{
+			path: url(routes.FAQS),
+			render: (props) => <CMS {...props} type={Types.FAQ} />,
+		},
+		{
+			path: url(routes.ANNOUNCEMENTS),
+			render: (props) => <CMS {...props} type={Types.ANNOUNCEMENT} />,
 		},
 	];
 

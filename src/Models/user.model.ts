@@ -11,6 +11,16 @@ export class User extends Model<UserContract> {
 		this.name = 'user';
 	}
 
+	protected booted() {
+		this.deleting((user) => {
+			user.tokens().delete().catch(console.error);
+			this.picture()
+				.get()
+				.then((file) => file?.delete())
+				.catch(console.error);
+		});
+	}
+
 	fillable() {
 		return ['name', 'email', 'password', 'gender', 'address', 'birthday', 'role', 'phone'];
 	}

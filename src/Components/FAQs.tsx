@@ -1,28 +1,46 @@
-import React, { FC } from 'react';
+import React, { FC, Fragment, useEffect } from 'react';
+import { useCollection } from '../hooks';
+import { CMS } from '../Models/cms.model';
 import Card from './Card';
+import Linkify from 'react-linkify';
+import dayjs from 'dayjs';
 
 type Props = {
 	className?: string;
 };
 
 const FAQs: FC<Props> = (props) => {
+	const [faqs, setFAQS] = useCollection<CMS>();
+
+	const fetch = async () => {
+		try {
+			setFAQS(await new CMS().where('type', '==', CMS.FAQ).all());
+		} catch (error) {
+			console.log(error);
+			toastr.error('Unable to fetch announcements.');
+		}
+	};
+
+	useEffect(() => {
+		fetch();
+		// eslint-disable-next-line
+	}, []);
+
 	return (
 		<Card className={props.className}>
 			<h6 className='card-title mb-5'>Frequently Asked Questions</h6>
-			<b className='text-info'>Why are immunization important to infant?</b>
-			<small className='d-block text-muted'>
-				<a href='https://www.nichd.nih.gov'>https://www.nichd.nih.gov</a>
-			</small>
-			<hr />
-			<b className='text-info'>What are the most important vaccination for babies?</b>
-			<small className='d-block text-muted'>
-				<a href='https://www.parents.com/health'>https://www.parents.com/health</a>
-			</small>
-			<hr />
-			<b className='text-info'>How can immunization affect a child development?</b>
-			<small className='d-block text-muted'>
-				<a href='https://healthtalk.org/immunization/why-do-we-immunise'>https://healthtalk.org/immunization/why-do-we-immunise</a>
-			</small>
+			{faqs.map((faq, index) => (
+				<Fragment key={index}>
+					<hr />
+					<b className='text-info'>{faq.get('title')}</b>
+					<small className='d-block text-muted' style={{ fontSize: '10px' }}>
+						{dayjs(faq.get('updated_at')).fromNow()}
+					</small>
+					<small className='d-block text-muted'>
+						<Linkify>{faq.get('description')}</Linkify>
+					</small>
+				</Fragment>
+			))}
 		</Card>
 	);
 };

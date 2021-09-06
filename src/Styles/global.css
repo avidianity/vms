@@ -42,3 +42,9 @@
 	-ms-user-select: none;
 	user-select: none;
 }
+
+.icon-holder > .material-icons {
+	font-size: 18px;
+	height: 18px;
+	width: 18px;
+}

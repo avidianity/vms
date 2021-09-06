@@ -20,7 +20,7 @@ const Sidebar: FC<Props> = (props) => {
 				<div className='sidebar-logo'>
 					<div className='peers ai-c fxw-nw'>
 						<div className='peer peer-greed'>
-							<a className='sidebar-link td-n' href='index.html'>
+							<Link className='sidebar-link td-n' to='/'>
 								<div className='peers ai-c fxw-nw'>
 									<div className='peer'>
 										<div className='logo d-flex align-items-center justify-content-center'>
@@ -38,7 +38,7 @@ const Sidebar: FC<Props> = (props) => {
 										<h5 className='lh-1 mB-0 logo-text'>VMS</h5>
 									</div>
 								</div>
-							</a>
+							</Link>
 						</div>
 						<div className='peer'>
 							<div className='mobile-toggle sidebar-toggle'>
@@ -109,6 +109,22 @@ const Sidebar: FC<Props> = (props) => {
 										<i className='c-yellow-700 ti-light-bulb'></i>{' '}
 									</span>
 									<span className='title'>Questions</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.FAQS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-red-300 material-icons'>help_outline</i>{' '}
+									</span>
+									<span className='title'>FAQs</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.ANNOUNCEMENTS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-light-blue-300 material-icons'>announcements</i>{' '}
+									</span>
+									<span className='title'>Announcements</span>
 								</Link>
 							</li>
 						</>

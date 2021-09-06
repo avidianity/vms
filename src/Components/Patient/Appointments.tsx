@@ -54,7 +54,7 @@ const Appointments: FC<Props> = (props) => {
 									<div className='d-flex align-items-center'>
 										<h5>Vaccine: {appointment.get('vaccine')?.name}</h5>
 										<button
-											className='btn btn-danger btn-sm ml-auto'
+											className='btn btn-danger btn-sm ml-auto d-none'
 											data-tip='Delete'
 											onClick={(e) => {
 												e.preventDefault();
