@@ -52,7 +52,7 @@ const App: FC<Props> = (props) => {
 				await user?.load(['picture']);
 				state.set('user', user?.toJSON());
 			} catch (_) {
-				state.remove('token').remove('user');
+				state.remove('token').set('user', null);
 			}
 		}
 	};
