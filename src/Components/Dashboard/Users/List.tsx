@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import React, { FC, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { useHistory } from 'react-router';
-import { UserContract } from '../../../Contracts/user.contract';
+import { Roles, UserContract } from '../../../Contracts/user.contract';
 import { Asker, outIf } from '../../../helpers';
 import { useCollection, useURL } from '../../../hooks';
 import { State } from '../../../Libraries/state.library';
@@ -10,11 +10,13 @@ import { User } from '../../../Models/user.model';
 import Card from '../../Card';
 import Tooltip from '../Tooltip';
 
-type Props = {};
+type Props = {
+	type: Roles;
+};
 
 const state = State.getInstance();
 
-const List: FC<Props> = (props) => {
+const List: FC<Props> = ({ type }) => {
 	const query = new User();
 	const [users, setUsers] = useCollection<User>();
 	const [fetching, setFetching] = useState(false);
@@ -25,11 +27,11 @@ const List: FC<Props> = (props) => {
 	const get = async () => {
 		setFetching(true);
 		try {
-			const users = await query.where('role', '==', 'Health Worker').all();
+			const users = await query.where('role', '==', type).all();
 			setUsers(await users.load(['picture']));
 		} catch (error) {
 			console.log(error);
-			toastr.error('Unable to fetch barangay health workers.', 'Oops!');
+			toastr.error(`Unable to fetch ${type}s.`, 'Oops!');
 		} finally {
 			setFetching(false);
 		}
@@ -37,17 +39,17 @@ const List: FC<Props> = (props) => {
 
 	const remove = async (id: string) => {
 		try {
-			if (await Asker.danger('Are you sure you want to delete this Health Worker?')) {
-				const user = await new User().findOne(id);
-				await user?.delete();
+			if (await Asker.danger(`Are you sure you want to delete this ${type}?`)) {
+				const user = await new User().findOneOrFail(id);
+				await user.delete();
 
-				toastr.success('Health Worker deleted successfully.');
+				toastr.success(`${type} deleted successfully.`);
 
 				await get();
 			}
 		} catch (error) {
 			console.error(error);
-			toastr.error('Unable to delete Health Worker.', 'Oops!');
+			toastr.error(`Unable to delete ${type}.`, 'Oops!');
 		}
 	};
 
@@ -60,7 +62,7 @@ const List: FC<Props> = (props) => {
 		<div className='container'>
 			<Card>
 				<DataTable
-					title='Barangay Health Workers'
+					title={`${type}s`}
 					actions={[
 						<i
 							className={`material-icons clickable`}
@@ -118,6 +120,17 @@ const List: FC<Props> = (props) => {
 							sortable: true,
 						},
 						{
+							name: 'Approved',
+							cell: (row) =>
+								row.get('approved') ? (
+									<span className='badge badge-success'>Yes</span>
+								) : (
+									<span className='badge badge-danger'>No</span>
+								),
+							minWidth: '150px',
+							sortable: true,
+						},
+						{
 							name: 'Created',
 							selector: (row) => dayjs(row.get('created_at')).format('MMMM DD, YYYY hh:mm A'),
 							minWidth: '250px',
@@ -128,6 +141,17 @@ const List: FC<Props> = (props) => {
 							cell: (row) =>
 								user?.id !== row.get('id') ? (
 									<>
+										{!row.get('approved') ? (
+											<i
+												className='material-icons clickable mx-1'
+												onClick={(e) => {
+													e.preventDefault();
+													history.push(url(`/${row.id()}/view`));
+												}}
+												data-tip='Verify'>
+												check
+											</i>
+										) : null}
 										<i
 											className='material-icons clickable mx-1'
 											onClick={(e) => {

@@ -45,6 +45,10 @@ const Login: FC<Props> = (props) => {
 				return toastr.error('Password is incorrect.');
 			}
 
+			if (!user.get('approved')) {
+				return toastr.error('Your account is not yet approved.');
+			}
+
 			await user.load(['picture']);
 
 			const hash = String.random(20);

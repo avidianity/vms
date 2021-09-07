@@ -22,7 +22,7 @@ export class User extends Model<UserContract> {
 	}
 
 	fillable() {
-		return ['name', 'email', 'password', 'gender', 'address', 'birthday', 'role', 'phone'];
+		return ['name', 'email', 'password', 'gender', 'address', 'birthday', 'role', 'phone', 'approved'];
 	}
 
 	tokens() {
@@ -31,5 +31,9 @@ export class User extends Model<UserContract> {
 
 	picture() {
 		return this.hasOne(File, 'picture');
+	}
+
+	verification() {
+		return this.hasOne(File, 'verification');
 	}
 }

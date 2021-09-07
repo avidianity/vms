@@ -96,11 +96,19 @@ const Sidebar: FC<Props> = (props) => {
 								</Link>
 							</li>
 							<li>
-								<Link to={url(routes.USERS)} className='sidebar-link'>
+								<Link to={url(routes.HEALTH_WORKERS)} className='sidebar-link'>
 									<span className='icon-holder'>
 										<i className='c-green-500 ti-user'></i>{' '}
 									</span>
 									<span className='title'>Health Workers</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.PATIENTS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-blue-500 ti-user'></i>{' '}
+									</span>
+									<span className='title'>Patients</span>
 								</Link>
 							</li>
 							<li>

@@ -1,19 +1,24 @@
 import React, { FC } from 'react';
 import { Route, Switch } from 'react-router';
+import { Roles } from '../../../Contracts/user.contract';
 import { useURL } from '../../../hooks';
 import Form from './Form';
 import List from './List';
+import View from './View';
 
-type Props = {};
+type Props = {
+	type: Roles;
+};
 
-const Users: FC<Props> = (props) => {
+const Users: FC<Props> = ({ type }) => {
 	const url = useURL();
 
 	return (
 		<Switch>
-			<Route path={url('')} exact component={List} />
-			<Route path={url('/add')} component={Form} />
-			<Route path={url('/:id/edit')} component={Form} />
+			<Route path={url('')} exact render={(props) => <List {...props} type={type} />} />
+			<Route path={url('/add')} render={(props) => <Form {...props} type={type} />} />
+			<Route path={url('/:id/edit')} render={(props) => <Form {...props} type={type} />} />
+			<Route path={url('/:id/view')} render={(props) => <View {...props} type={type} />} />
 		</Switch>
 	);
 };

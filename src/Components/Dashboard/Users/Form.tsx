@@ -7,8 +7,12 @@ import { useMode, useNullable } from '../../../hooks';
 import { User } from '../../../Models/user.model';
 import { Hash } from '../../../helpers';
 import { useHistory, useRouteMatch } from 'react-router';
+import { Roles } from '../../../Contracts/user.contract';
+import dayjs from 'dayjs';
 
-type Props = {};
+type Props = {
+	type: Roles;
+};
 
 type UserContract = {
 	name: string;
@@ -21,7 +25,7 @@ type UserContract = {
 	phone: string;
 };
 
-const Form: FC<Props> = (props) => {
+const Form: FC<Props> = ({ type }) => {
 	const [processing, setProcessing] = useState(false);
 	const [mode, setMode] = useMode();
 	const { register, handleSubmit, setValue } = useForm<UserContract>();
@@ -35,13 +39,15 @@ const Form: FC<Props> = (props) => {
 		try {
 			data.password = Hash.make(data.password);
 			data.birthday = birthday?.toJSON() || '';
-			data.role = 'Health Worker';
+			data.role = type;
 
 			const model = new User(data);
 
 			if (mode === 'Edit') {
 				model.set('id', match.params.id);
 			}
+
+			model.set('approved', true);
 
 			await model.save();
 			toastr.success('Health Worker saved successfully.');
@@ -59,12 +65,14 @@ const Form: FC<Props> = (props) => {
 		try {
 			const id = match.params.id;
 			const query = new User();
-			const user = await query.findOne(id);
-			const { password, ...data } = user?.getData()!;
+			const user = await query.findOneOrFail(id);
+			const { password, ...data } = user.getData()!;
 
 			Object.entries(data).forEach(([key, value]) => {
 				setValue(key as any, value);
 			});
+
+			setBirthday(dayjs(data.birthday).toDate());
 
 			setMode('Edit');
 		} catch (error) {
@@ -86,7 +94,9 @@ const Form: FC<Props> = (props) => {
 	return (
 		<div className='container'>
 			<Card>
-				<h4>{mode} Barangay Health Worker</h4>
+				<h4>
+					{mode} {type}
+				</h4>
 				<form ref={ref} onSubmit={handleSubmit(submit)}>
 					<div className='form-row'>
 						<div className='form-group col-12 col-md-6 col-lg-4'>

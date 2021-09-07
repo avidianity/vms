@@ -21,10 +21,11 @@ export const routes = {
 		RECOMMENDATION: '/incoming-recommendation',
 		APPOINTMENT: '/incoming-appointment',
 	},
-	USERS: '/users',
 	DATES: '/available-dates',
 	PATIENT: '/patient',
 	QUESTIONS: '/questions',
 	FAQS: '/faqs',
 	ANNOUNCEMENTS: '/announcements',
+	HEALTH_WORKERS: '/health-workers',
+	PATIENTS: '/patients',
 };

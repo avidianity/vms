@@ -15,6 +15,7 @@ import Appointments from '../Components/Dashboard/Appointments';
 import Questions from '../Components/Dashboard/Questions';
 import CMS from '../Components/Dashboard/CMS';
 import { Types } from '../Models/cms.model';
+import { Roles } from '../Contracts/user.contract';
 
 type Props = {};
 
@@ -36,8 +37,12 @@ const Dashboard: FC<Props> = (props) => {
 			component: Profile,
 		},
 		{
-			path: url(routes.USERS),
-			component: Users,
+			path: url(routes.HEALTH_WORKERS),
+			render: (props) => <Users {...props} type={Roles.BHW} />,
+		},
+		{
+			path: url(routes.PATIENTS),
+			render: (props) => <Users {...props} type={Roles.PATIENT} />,
 		},
 		{
 			path: url(routes.VACCINE.ROOT),

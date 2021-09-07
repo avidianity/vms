@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import bg from '../Assets/register.jpg';
 import logo from '../Assets/logo.svg';
 import { useHistory } from 'react-router';
@@ -10,10 +10,10 @@ import { useForm } from 'react-hook-form';
 import { useNullable } from '../hooks';
 import { Hash } from '../helpers';
 import { User } from '../Models/user.model';
-import md5 from 'md5';
-import { Token } from '../Models/token.model';
-import { State } from '../Libraries/state.library';
 import InputMask from 'react-input-mask';
+import { File as FileModel } from '../Models/file.model';
+import { v4 } from 'uuid';
+import { storage } from '../Libraries/firebase.library';
 
 type Props = {};
 
@@ -28,32 +28,41 @@ type UserContract = {
 	phone: string;
 };
 
-const state = State.getInstance();
-
 const Register: FC<Props> = (props) => {
 	const [processing, setProcessing] = useState(false);
 	const { register, handleSubmit } = useForm<UserContract>();
 	const [birthday, setBirthday] = useNullable<Date>();
 	const history = useHistory();
+	const ref = useRef<HTMLInputElement>(null);
+	const [file, setFile] = useNullable<File>();
+
+	const saveFile = async (file: File) => {
+		const name = `${file.name}-${v4()}`;
+		const response = await storage.ref(name).put(file);
+		return new FileModel({
+			size: file.size,
+			path: await response.ref.getDownloadURL(),
+			type: file.type,
+			name,
+		});
+	};
 
 	const submit = async (data: UserContract) => {
+		if (!file) {
+			return toastr.error('Please upload a verification ID.');
+		}
 		setProcessing(true);
 		try {
 			data.password = Hash.make(data.password);
 			data.birthday = birthday?.toJSON() || '';
 			data.role = 'Patient';
 
-			const user = await new User(data).save();
+			const user = await new User({ ...data, approved: false }).save();
 
-			const hash = String.random(20);
+			await user.verification().save(await saveFile(file));
 
-			await user.tokens().save(new Token({ hash: md5(hash) }));
-
-			toastr.success(`Welcome, ${user.get('name')}!`);
-
-			state.set('user', user.getData()).set('token', hash);
-
-			history.push(routes.PATIENT);
+			toastr.success('Registered successfully. Please wait for approval.');
+			history.goBack();
 		} catch (error) {
 			console.log('Unable to register', error);
 			toastr.error('Unable to register. Please try again later.');
@@ -149,6 +158,27 @@ const Register: FC<Props> = (props) => {
 								id='password'
 								className='form-control'
 								disabled={processing}
+							/>
+						</div>
+						<div className='form-group col-12'>
+							<button
+								className='btn btn-info btn-sm'
+								onClick={(e) => {
+									e.preventDefault();
+									ref.current?.click();
+								}}
+								disabled={file !== null}>
+								{file === null ? 'Upload Verification ID' : 'ID Uploaded'}
+							</button>
+							<input
+								ref={ref}
+								type='file'
+								className='d-none'
+								onChange={(e) => {
+									if (e.target.files && e.target.files.length > 0) {
+										setFile(e.target.files[0]);
+									}
+								}}
 							/>
 						</div>
 					</div>
