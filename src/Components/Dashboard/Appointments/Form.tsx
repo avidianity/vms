@@ -62,6 +62,7 @@ const Form: FC<Props> = (props) => {
 			}
 			toastr.success('Appointment saved successfully.');
 			reset();
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error('Unable to save appointment.');

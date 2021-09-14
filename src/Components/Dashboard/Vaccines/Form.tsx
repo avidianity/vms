@@ -37,6 +37,7 @@ const Form: FC<Props> = (props) => {
 
 			await model.save();
 			toastr.success('Vaccine saved successfully.');
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Vaccine. Please try again later.`, 'Oops!');

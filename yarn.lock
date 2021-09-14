@@ -5715,10 +5715,10 @@ firebase@^8.9.0:
     "@firebase/storage" "0.6.2"
     "@firebase/util" "1.2.0"
 
-firestore-eloquent@^1.6.2:
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.6.2.tgz#5145971989b4a47566a2453c07db63910d1df11d"
-  integrity sha512-Y4cZowNipGx8n8lTTNRbGaNzucxpw2Trc+gwlHORVW8GdHq1KT0OgzQwRn6GWlyWeYEmSibTQJGI/CbsYhBsoA==
+firestore-eloquent@^1.6.5:
+  version "1.6.5"
+  resolved "https://registry.yarnpkg.com/firestore-eloquent/-/firestore-eloquent-1.6.5.tgz#b88fc7d0cdfefe018721c5f582e82d3bd7805df4"
+  integrity sha512-fbOXRKLo95vZbteWuG/7L18D5fUyJCAG53hiPMCDJ4usP4zX3qERuywnMhJ99fFzbCZJ9FQG1R3QOw3TDq60IA==
   dependencies:
     firebase "^8.9.0"
 

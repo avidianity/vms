@@ -51,6 +51,7 @@ const Form: FC<Props> = ({ type }) => {
 
 			await model.save();
 			toastr.success('Health Worker saved successfully.');
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Health Worker. Please try again later.`, 'Oops!');

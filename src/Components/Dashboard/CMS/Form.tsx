@@ -37,6 +37,7 @@ const Form: FC<Props> = ({ type }) => {
 			}
 			toastr.success(`${title} saved successfully.`);
 			reset();
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to save ${title}.`);

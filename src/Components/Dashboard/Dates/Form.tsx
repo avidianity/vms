@@ -38,6 +38,7 @@ const Form: FC<Props> = (props) => {
 			await vaccine.dates().save(model);
 
 			toastr.success('Date saved successfully.');
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Date. Please try again later.`, 'Oops!');

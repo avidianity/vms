@@ -27,6 +27,7 @@ const Form: FC<Props> = (props) => {
 				await model.update({ question });
 			}
 			toastr.success('Question saved successfully.');
+			history.goBack();
 		} catch (error) {
 			console.log(error);
 			toastr.error(`Unable to ${mode.toLowerCase()} Question. Please try again later.`, 'Oops!');
