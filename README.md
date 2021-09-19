@@ -1,46 +1,54 @@
-# Getting Started with Create React App
+# VMS
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
 
-## Available Scripts
+Requirements
 
-In the project directory, you can run:
+- [NodeJS](https://nodejs.org) (version 14 or above)
+- [Git](https://git-scm.com)
 
-### `yarn start`
+1. Pick a folder to save project in then open a terminal (or right click + Git Bash here)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+2. Clone the repository
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+```sh
+git clone https://github.com/avidian/vms.git
+```
 
-### `yarn test`
+3. Change directory to the project
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```sh
+cd vms
+```
 
-### `yarn build`
+4. Install yarn if you haven't yet
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```sh
+npm install -g yarn
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+5. Create a file called `.env` into the root folder (outside of `public` and `src` is called the `root` folder) and paste all of the example values from `.env.example` to your newly created `.env` file.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+6. Add the following configuration variables (ignore any variables not mentioned but don't remove them) to the `.env` file
 
-### `yarn eject`
+```env
+REACT_APP_API_KEY=
+REACT_APP_AUTH_DOMAIN=
+REACT_APP_PROJECT_ID=
+REACT_APP_STORAGE_BUCKET=
+REACT_APP_MESSAGING_SENDER_ID=
+REACT_APP_APP_ID=
+REACT_APP_MEASUREMENT_ID=
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+7. Install dependencies
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```sh
+yarn
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Running the application
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+yarn start
+```

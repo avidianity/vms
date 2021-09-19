@@ -1,10 +1,15 @@
-import React, { FC } from 'react';
+import dayjs from 'dayjs';
+import { Collection } from 'firestore-eloquent';
+import React, { FC, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../Assets/logo.png';
 import { UserContract } from '../../Contracts/user.contract';
-import { useURL } from '../../hooks';
+import { useCollection, useURL } from '../../hooks';
 import { State } from '../../Libraries/state.library';
+import { Appointment } from '../../Models/appointment.model';
+import { User } from '../../Models/user.model';
 import { routes } from '../../routes';
+import Badge from '../Badge';
 
 type Props = {};
 
@@ -13,6 +18,41 @@ const state = State.getInstance();
 const Sidebar: FC<Props> = (props) => {
 	const url = useURL();
 	const user = state.get<UserContract>('user');
+	const [appointments, setAppointments] = useCollection<Appointment>();
+	const [patients, setPatients] = useCollection<User>();
+
+	const fetch = async () => {
+		try {
+			const appointments = await new Appointment().all();
+			setAppointments(
+				new Collection(
+					...appointments.filter((appointment) => {
+						const date = dayjs(appointment.get('created_at')).toDate();
+						const now = new Date();
+
+						return date.toDateString() === now.toDateString();
+					})
+				)
+			);
+
+			const patients = await new User().where('role', '==', 'Patient').all();
+			setPatients(
+				new Collection(
+					...patients.filter((patient) => {
+						const date = dayjs(patient.get('created_at')).toDate();
+						const now = new Date();
+
+						return date.toDateString() === now.toDateString();
+					})
+				)
+			);
+		} catch (_) {}
+	};
+
+	useEffect(() => {
+		fetch();
+		// eslint-disable-next-line
+	}, []);
 
 	return (
 		<div className='sidebar'>
@@ -92,7 +132,10 @@ const Sidebar: FC<Props> = (props) => {
 									<span className='icon-holder'>
 										<i className='c-purple-500 ti-list'></i>{' '}
 									</span>
-									<span className='title'>Appointments</span>
+									<span className='title'>
+										Appointments
+										{appointments.length > 0 ? <Badge type='danger'>{appointments.length}</Badge> : null}
+									</span>
 								</Link>
 							</li>
 							<li>
@@ -108,7 +151,10 @@ const Sidebar: FC<Props> = (props) => {
 									<span className='icon-holder'>
 										<i className='c-blue-500 ti-user'></i>{' '}
 									</span>
-									<span className='title'>Patients</span>
+									<span className='title'>
+										Patients
+										{patients.length > 0 ? <Badge type='danger'>{patients.length}</Badge> : null}
+									</span>
 								</Link>
 							</li>
 							<li>

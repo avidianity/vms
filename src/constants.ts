@@ -6,4 +6,6 @@ export const DEVELOPMENT = process.env.NODE_ENV && process.env.NODE_ENV === 'dev
 
 export const TEST = process.env.NODE_ENV && process.env.NODE_ENV === 'test';
 
+export const EMULATED = process.env.REACT_APP_EMULATED === 'true';
+
 export const manager = new Manager();
