@@ -12,7 +12,7 @@ Requirements
 2. Clone the repository
 
 ```sh
-git clone https://github.com/avidian/vms.git
+git clone https://github.com/avidianity/vms.git
 ```
 
 3. Change directory to the project
