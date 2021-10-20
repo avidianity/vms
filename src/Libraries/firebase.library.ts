@@ -2,7 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/analytics';
-import { DEVELOPMENT, PRODUCTION } from '../constants';
+import { DEVELOPMENT, EMULATED, PRODUCTION } from '../constants';
 
 export const app = firebase.initializeApp({
 	apiKey: process.env.REACT_APP_API_KEY,
@@ -20,7 +20,7 @@ export const storage = app.storage();
 
 export const firestore = app.firestore();
 
-if (DEVELOPMENT) {
+if (DEVELOPMENT && EMULATED) {
 	app.firestore().useEmulator('localhost', 8080);
 	storage.useEmulator('localhost', 9199);
 }
