@@ -28,4 +28,5 @@ export const routes = {
 	ANNOUNCEMENTS: '/announcements',
 	HEALTH_WORKERS: '/health-workers',
 	PATIENTS: '/patients',
+	ECCD: '/eccd',
 };

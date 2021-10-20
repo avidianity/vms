@@ -2,6 +2,7 @@ import { Collection } from 'firestore-eloquent';
 import md5 from 'md5';
 import React, { FC, useEffect } from 'react';
 import { BrowserRouter as Router, Route, RouteProps, Switch } from 'react-router-dom';
+import ECCD from './Components/ECCD';
 import { manager } from './constants';
 import { firestore } from './Libraries/firebase.library';
 import { State } from './Libraries/state.library';
@@ -40,6 +41,10 @@ const App: FC<Props> = (props) => {
 		{
 			path: routes.PATIENT,
 			component: Patient,
+		},
+		{
+			path: `${routes.ECCD}/:id`,
+			component: ECCD,
 		},
 	];
 

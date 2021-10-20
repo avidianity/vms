@@ -8,6 +8,7 @@ import { Asker, outIf } from '../../../helpers';
 import { useCollection, useURL } from '../../../hooks';
 import { State } from '../../../Libraries/state.library';
 import { Appointment } from '../../../Models/appointment.model';
+import { routes } from '../../../routes';
 import Card from '../../Card';
 import Tooltip from '../Tooltip';
 
@@ -22,6 +23,10 @@ const List: FC<Props> = (props) => {
 	const [fetching, setFetching] = useState(false);
 	const history = useHistory();
 	const url = useURL();
+
+	const exportAsECCDCard = (id: any) => {
+		history.push(`${routes.ECCD}/${id}`);
+	};
 
 	const get = async () => {
 		setFetching(true);
@@ -203,6 +208,7 @@ const List: FC<Props> = (props) => {
 										className='material-icons clickable mx-1'
 										onClick={(e) => {
 											e.preventDefault();
+											exportAsECCDCard(row.id());
 										}}
 										data-tip='Export as ECCD Card'>
 										picture_as_pdf

@@ -90,7 +90,6 @@ const Patient: FC<Props> = (props) => {
 					patient_id: user?.id,
 					dates: [],
 					questions: appointmentQuestions,
-					weight: '',
 				});
 
 				await appointment.save();
