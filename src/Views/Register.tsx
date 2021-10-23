@@ -53,6 +53,12 @@ const Register: FC<Props> = (props) => {
 		}
 		setProcessing(true);
 		try {
+			const exists = await new User().where('email', '==', data.email).first();
+
+			if (!exists) {
+				return toastr.error('User already exists.');
+			}
+
 			data.password = Hash.make(data.password);
 			data.birthday = birthday?.toJSON() || '';
 			data.role = 'Patient';
