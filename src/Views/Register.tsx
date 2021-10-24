@@ -55,7 +55,7 @@ const Register: FC<Props> = (props) => {
 		try {
 			const exists = await new User().where('email', '==', data.email).first();
 
-			if (!exists) {
+			if (exists) {
 				return toastr.error('User already exists.');
 			}
 
