@@ -15,13 +15,8 @@ import { Link } from 'react-router-dom';
 type Props = {};
 
 type UserContract = {
-	name: string;
 	email: string;
 	password: string;
-	gender: string;
-	birthday: string;
-	address: string;
-	role: string;
 };
 
 const state = State.getInstance();

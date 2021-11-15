@@ -222,7 +222,7 @@ const Patient: FC<Props> = (props) => {
 												<input {...register('weight')} type='text' id='weight' className='form-control' />
 											</div>
 											<div className='form-group col-12 col-md-6 col-lg-4'>
-												<label htmlFor='gender'>Gender</label>
+												<label htmlFor='gender'>Sex</label>
 												<select {...register('gender')} id='gender' className='form-control'>
 													<option value='Male'>Male</option>
 													<option value='Female'>Female</option>

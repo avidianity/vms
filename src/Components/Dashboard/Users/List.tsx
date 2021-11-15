@@ -108,7 +108,7 @@ const List: FC<Props> = ({ type }) => {
 							sortable: true,
 						},
 						{
-							name: 'Gender',
+							name: 'Sex',
 							selector: (row) => row.get('gender'),
 							minWidth: '100px',
 							sortable: true,

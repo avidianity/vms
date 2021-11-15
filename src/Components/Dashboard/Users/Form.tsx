@@ -118,7 +118,7 @@ const Form: FC<Props> = ({ type }) => {
 							/>
 						</div>
 						<div className='form-group col-12 col-md-6 col-lg-4'>
-							<label htmlFor='gender'>Gender</label>
+							<label htmlFor='gender'>Sex</label>
 							<select {...register('gender')} name='gender' id='gender' className='form-control' disabled={processing}>
 								<option value='Male'>Male</option>
 								<option value='Female'>Female</option>

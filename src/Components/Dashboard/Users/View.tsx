@@ -48,7 +48,7 @@ const View: FC<Props> = ({ type }) => {
 					<>
 						<h4>{user.get('name')}</h4>
 						<p>{user.get('email')}</p>
-						<p>Gender: {user.get('gender')}</p>
+						<p>Sex: {user.get('gender')}</p>
 						<p>Birthday: {dayjs(user.get('birthday')).format('MMMM DD, YYYY')}</p>
 						<p>Address: {user.get('address')}</p>
 						<p>Phone: {user.get('phone')}</p>

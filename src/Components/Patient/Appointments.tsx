@@ -71,7 +71,7 @@ const Appointments: FC<Props> = (props) => {
 											Attendee: {appointment.get('attendee') ? appointment.get('attendee')?.name : 'N/A'}
 										</p>
 										<p className='mb-0'>Patient: {appointment.get('name_of_child')}</p>
-										<p className='mb-0'>Gender: {appointment.get('gender')}</p>
+										<p className='mb-0'>Sex: {appointment.get('gender')}</p>
 										<p className='mb-0'>Name of Mother: {appointment.get('mother')}</p>
 										<p className='mb-0'>
 											Date of Birth: {appointment.get('date_of_birth').toDayJS().format('MMMM DD, YYYY')}
