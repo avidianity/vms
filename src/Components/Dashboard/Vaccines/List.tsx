@@ -77,11 +77,6 @@ const List: FC<Props> = (props) => {
 					]}
 					columns={[
 						{
-							name: 'ID',
-							selector: (row) => row.get('id'),
-							minWidth: '200px',
-						},
-						{
 							name: 'Name',
 							selector: (row) => row.get('name'),
 							minWidth: '200px',

@@ -82,11 +82,6 @@ const List: FC<Props> = ({ type }) => {
 					]}
 					columns={[
 						{
-							name: 'ID',
-							selector: (row) => row.get('id'),
-							minWidth: '200px',
-						},
-						{
 							name: 'Title',
 							selector: (row) => row.get('title'),
 							minWidth: '200px',
