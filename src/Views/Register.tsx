@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC } from 'react';
 import bg from '../Assets/register.jpg';
 import logo from '../Assets/logo.svg';
 import { useHistory } from 'react-router';
@@ -11,9 +11,6 @@ import { useNullable } from '../hooks';
 import { Hash } from '../helpers';
 import { User } from '../Models/user.model';
 import InputMask from 'react-input-mask';
-import { File as FileModel } from '../Models/file.model';
-import { v4 } from 'uuid';
-import { storage } from '../Libraries/firebase.library';
 
 type Props = {};
 
@@ -33,24 +30,8 @@ const Register: FC<Props> = (props) => {
 	const { register, handleSubmit } = useForm<UserContract>();
 	const [birthday, setBirthday] = useNullable<Date>();
 	const history = useHistory();
-	const ref = useRef<HTMLInputElement>(null);
-	const [file, setFile] = useNullable<File>();
-
-	const saveFile = async (file: File) => {
-		const name = `${file.name}-${v4()}`;
-		const response = await storage.ref(name).put(file);
-		return new FileModel({
-			size: file.size,
-			path: await response.ref.getDownloadURL(),
-			type: file.type,
-			name,
-		});
-	};
 
 	const submit = async (data: UserContract) => {
-		if (!file) {
-			return toastr.error('Please upload a verification ID.');
-		}
 		setProcessing(true);
 		try {
 			const exists = await new User().where('email', '==', data.email).first();
@@ -63,11 +44,9 @@ const Register: FC<Props> = (props) => {
 			data.birthday = birthday?.toJSON() || '';
 			data.role = 'Patient';
 
-			const user = await new User({ ...data, approved: false }).save();
+			await new User({ ...data, approved: true }).save();
 
-			await user.verification().save(await saveFile(file));
-
-			toastr.success('Registered successfully. Please wait for approval.');
+			toastr.success('Registered successfully. Please login.');
 			history.goBack();
 		} catch (error) {
 			console.log('Unable to register', error);
@@ -164,27 +143,6 @@ const Register: FC<Props> = (props) => {
 								id='password'
 								className='form-control'
 								disabled={processing}
-							/>
-						</div>
-						<div className='form-group col-12'>
-							<button
-								className='btn btn-info btn-sm'
-								onClick={(e) => {
-									e.preventDefault();
-									ref.current?.click();
-								}}
-								disabled={file !== null}>
-								{file === null ? 'Upload Verification ID' : 'ID Uploaded'}
-							</button>
-							<input
-								ref={ref}
-								type='file'
-								className='d-none'
-								onChange={(e) => {
-									if (e.target.files && e.target.files.length > 0) {
-										setFile(e.target.files[0]);
-									}
-								}}
 							/>
 						</div>
 					</div>

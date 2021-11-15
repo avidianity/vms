@@ -4,7 +4,6 @@ import { Roles } from '../../../Contracts/user.contract';
 import { useURL } from '../../../hooks';
 import Form from './Form';
 import List from './List';
-import View from './View';
 
 type Props = {
 	type: Roles;
@@ -18,7 +17,6 @@ const Users: FC<Props> = ({ type }) => {
 			<Route path={url('')} exact render={(props) => <List {...props} type={type} />} />
 			<Route path={url('/add')} render={(props) => <Form {...props} type={type} />} />
 			<Route path={url('/:id/edit')} render={(props) => <Form {...props} type={type} />} />
-			<Route path={url('/:id/view')} render={(props) => <View {...props} type={type} />} />
 		</Switch>
 	);
 };

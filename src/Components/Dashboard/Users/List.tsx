@@ -120,17 +120,6 @@ const List: FC<Props> = ({ type }) => {
 							sortable: true,
 						},
 						{
-							name: 'Approved',
-							cell: (row) =>
-								row.get('approved') ? (
-									<span className='badge badge-success'>Yes</span>
-								) : (
-									<span className='badge badge-danger'>No</span>
-								),
-							minWidth: '150px',
-							sortable: true,
-						},
-						{
 							name: 'Created',
 							selector: (row) => dayjs(row.get('created_at')).format('MMMM DD, YYYY hh:mm A'),
 							minWidth: '250px',
@@ -141,17 +130,6 @@ const List: FC<Props> = ({ type }) => {
 							cell: (row) =>
 								user?.id !== row.get('id') ? (
 									<>
-										{!row.get('approved') ? (
-											<i
-												className='material-icons clickable mx-1'
-												onClick={(e) => {
-													e.preventDefault();
-													history.push(url(`/${row.id()}/view`));
-												}}
-												data-tip='Verify'>
-												check
-											</i>
-										) : null}
 										<i
 											className='material-icons clickable mx-1'
 											onClick={(e) => {
