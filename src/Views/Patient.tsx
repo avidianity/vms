@@ -10,7 +10,6 @@ import { UserContract } from '../Contracts/user.contract';
 import { useArray, useAuthenticate, useCollection, useNullable, useURL } from '../hooks';
 import { State } from '../Libraries/state.library';
 import { Appointment } from '../Models/appointment.model';
-import { Vaccine } from '../Models/vaccine.model';
 import { routes } from '../routes';
 import Profile from '../Components/Profile';
 import { Asker, getAppointments } from '../helpers';
@@ -18,11 +17,15 @@ import { Question } from '../Models/question.model';
 import { Question as AppointmentQuestion } from '../Contracts/appointment.contract';
 import { useForm } from 'react-hook-form';
 import Flatpickr from 'react-flatpickr';
+import dayjs from 'dayjs';
+import axios from 'axios';
+import { PROXY_URL } from '../constants';
 
 type Props = {};
 
 type Inputs = {
 	mother: string;
+	father: string;
 	height: string;
 	weight: string;
 	gender: string;
@@ -37,8 +40,6 @@ const Patient: FC<Props> = (props) => {
 	const url = useURL();
 	const user = state.get<UserContract>('user');
 	const { authenticated } = useAuthenticate();
-	const [vaccines, setVaccines] = useCollection<Vaccine>();
-	const [vaccine, setVaccine] = useNullable<Vaccine>();
 	const [appointments, setAppointments] = useCollection<Appointment>();
 	const [questions, setQuestions] = useCollection<Question>();
 	const [appointmentQuestions, setAppointmentQuestions] = useArray<AppointmentQuestion>();
@@ -46,7 +47,7 @@ const Patient: FC<Props> = (props) => {
 	const [birthday, setBirthday] = useNullable<Date>();
 
 	const get = async () => {
-		await Promise.all([getVaccines(), getAppointmentsRaw(), getQuestions()]);
+		await Promise.all([getAppointmentsRaw(), getQuestions()]);
 	};
 
 	const getQuestions = async () => {
@@ -56,19 +57,6 @@ const Patient: FC<Props> = (props) => {
 		} catch (error) {
 			console.log(error);
 			toastr.error('Unable to fetch vaccine questions.');
-		}
-	};
-
-	const getVaccines = async () => {
-		try {
-			const vaccines = await new Vaccine().all();
-
-			await vaccines.load(['dates']);
-
-			setVaccines(vaccines);
-		} catch (error) {
-			console.log(error);
-			toastr.error('Unable to fetch vaccine list.');
 		}
 	};
 
@@ -84,15 +72,25 @@ const Patient: FC<Props> = (props) => {
 				appointment.fill({
 					...data,
 					date_of_birth: birthday?.toJSON(),
-					vaccine_id: vaccine?.id(),
 					attendee_id: null,
 					done: false,
 					patient_id: user?.id,
 					dates: [],
 					questions: appointmentQuestions,
+					height: 'Pending',
+					weight: 'Pending',
 				});
 
 				await appointment.save();
+
+				const message = `Hi ${user?.name}, you have made an appointment at ${dayjs().format(
+					'MMMM DD, YYYY hh:ss A'
+				)}. Please wait for further notification for the designation of vaccine.`;
+
+				await Promise.all([
+					axios.post(`${PROXY_URL}/mail`, { email: user?.email, message, subject: 'VMS Appointment' }).catch(() => {}),
+					axios.post(`${PROXY_URL}/sms`, { numbers: [user?.phone], message }).catch(() => {}),
+				]);
 
 				toastr.success('Appointment saved successfully.');
 			} catch (error) {
@@ -108,7 +106,6 @@ const Patient: FC<Props> = (props) => {
 		get();
 		$(`#${id}`).on('hidden.bs.modal', (e) => {
 			e.preventDefault();
-			setVaccine(null);
 		});
 		// eslint-disable-next-line
 	}, []);
@@ -148,51 +145,16 @@ const Patient: FC<Props> = (props) => {
 										</button>
 									}>
 									<div className='container'>
-										{vaccine ? (
-											<>
-												<h6 className='text-center'>Available Dates</h6>
-												<div className='container'>
-													<div className='row'>
-														{vaccine.get('dates')?.map((date, parentIndex) =>
-															date.dates.map((date, childIndex) => (
-																<div
-																	key={`${parentIndex}-${childIndex}`}
-																	className='col-12 col-md-6 col-lg-4 col-xl-3 text-center'>
-																	{date.toDayJS().format('MMMM DD, YYYY')}
-																</div>
-															))
-														)}
-													</div>
-												</div>
-											</>
-										) : null}
 										<div className='row'>
-											<div className='form-group col-12 col-md-6'>
-												<label htmlFor='vaccine'>Vaccine</label>
-												<select
-													className='form-control'
-													onChange={(e) => {
-														const id = e.target.value;
-														const vaccine = vaccines.get(id);
-														setVaccine(vaccine || null);
-													}}
-													value={vaccine?.id() || 'none'}>
-													<option value='none' disabled>
-														{' '}
-														-- Select --{' '}
-													</option>
-													{vaccines.map((vaccine, index) => (
-														<option value={vaccine.id()} key={index}>
-															{vaccine.get('name')}
-														</option>
-													))}
-												</select>
+											<div className='form-group col-12 col-md-4'>
+												<label htmlFor='father'>Name of Father</label>
+												<input {...register('father')} type='text' id='father' className='form-control' />
 											</div>
-											<div className='form-group col-12 col-md-6'>
+											<div className='form-group col-12 col-md-4'>
 												<label htmlFor='mother'>Name of Mother</label>
 												<input {...register('mother')} type='text' id='mother' className='form-control' />
 											</div>
-											<div className='form-group col-12 col-md-6'>
+											<div className='form-group col-12 col-md-4'>
 												<label htmlFor='name_of_child'>Name of Child</label>
 												<input
 													{...register('name_of_child')}
@@ -213,15 +175,7 @@ const Patient: FC<Props> = (props) => {
 													}}
 												/>
 											</div>
-											<div className='form-group col-12 col-md-6 col-lg-4'>
-												<label htmlFor='height'>Length</label>
-												<input {...register('height')} type='text' id='height' className='form-control' />
-											</div>
-											<div className='form-group col-12 col-md-6 col-lg-4'>
-												<label htmlFor='weight'>Weight</label>
-												<input {...register('weight')} type='text' id='weight' className='form-control' />
-											</div>
-											<div className='form-group col-12 col-md-6 col-lg-4'>
+											<div className='form-group col-12 col-md-6'>
 												<label htmlFor='gender'>Sex</label>
 												<select {...register('gender')} id='gender' className='form-control'>
 													<option value='Male'>Male</option>
@@ -282,7 +236,13 @@ const Patient: FC<Props> = (props) => {
 											<>
 												<div className='mt-3'>
 													{pastAppointments.map((appointment, index) => (
-														<p key={index}>{appointment.get('vaccine')?.name}</p>
+														<div key={index}>
+															<p className='mb-0'>{appointment.get('vaccine')?.name || null}</p>
+															<p className='mb-0'>
+																{appointment.get('attendee')?.name || ''}{' '}
+																{dayjs(appointment.get('created_at')).format('MMMM DD, YYYY hh:mm A')}
+															</p>
+														</div>
 													))}
 												</div>
 											</>

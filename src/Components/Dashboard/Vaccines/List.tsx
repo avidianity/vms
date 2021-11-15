@@ -51,7 +51,7 @@ const List: FC<Props> = (props) => {
 	}, []);
 
 	return (
-		<div className='container'>
+		<div className='container-fluid'>
 			<Card>
 				<DataTable
 					title='Vaccines'

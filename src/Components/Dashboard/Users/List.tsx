@@ -59,7 +59,7 @@ const List: FC<Props> = ({ type }) => {
 	}, []);
 
 	return (
-		<div className='container'>
+		<div className='container-fluid'>
 			<Card>
 				<DataTable
 					title={`${type}s`}
@@ -84,11 +84,6 @@ const List: FC<Props> = ({ type }) => {
 						</i>,
 					]}
 					columns={[
-						{
-							name: 'ID',
-							selector: (row) => row.get('id'),
-							minWidth: '200px',
-						},
 						{
 							name: 'Name',
 							selector: (row) => row.get('name'),

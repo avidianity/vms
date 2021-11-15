@@ -11,6 +11,10 @@ import { User } from '../../../Models/user.model';
 import { UserContract } from '../../../Contracts/user.contract';
 import { VaccineContract } from '../../../Contracts/vaccine.contract';
 import dayjs from 'dayjs';
+import { State } from '../../../Libraries/state.library';
+import { flatten } from 'lodash';
+import axios from 'axios';
+import { PROXY_URL } from '../../../constants';
 
 type Props = {};
 
@@ -28,6 +32,8 @@ type Inputs = {
 	gender: string;
 };
 
+const state = State.getInstance();
+
 const Form: FC<Props> = (props) => {
 	const [mode, setMode] = useMode('Edit');
 	const [processing, setProcessing] = useState(false);
@@ -41,6 +47,7 @@ const Form: FC<Props> = (props) => {
 	const match = useRouteMatch<{ id: string }>();
 	const history = useHistory();
 	const [previousDates, setPreviousDates] = useArray<string>();
+	const user = state.get<UserContract>('user');
 
 	const submit = async (data: Inputs) => {
 		setProcessing(true);
@@ -52,6 +59,7 @@ const Form: FC<Props> = (props) => {
 				});
 			} else {
 				const appointment = await new Appointment().findOneOrFail(match.params.id);
+				const hasNoVaccine = !appointment.get('vaccine_id');
 				await appointment
 					.fill({
 						...data,
@@ -59,6 +67,48 @@ const Form: FC<Props> = (props) => {
 						dates,
 					})
 					.save();
+				const patient = await appointment.patient().get();
+				if (hasNoVaccine && data.vaccine_id && patient) {
+					const vaccine = await new Vaccine().findOneOrFail(data.vaccine_id);
+					const dates = await vaccine.dates().get();
+					const sorted = flatten(dates.map((date) => date.get('dates'))).sort((next, prev) => {
+						if (dayjs(next).isAfter(dayjs(prev))) {
+							return 1;
+						}
+						if (dayjs(next).isBefore(dayjs(prev))) {
+							return -1;
+						}
+						return 0;
+					});
+					const firstDate = sorted
+						.filter((date) => {
+							return dayjs().isBefore(dayjs(date));
+						})
+						.filter((date) => {
+							return appointment.get('dates').find((done) => {
+								return (
+									dayjs(done).isSame(dayjs(date), 'date') &&
+									dayjs(done).isSame(dayjs(date), 'month') &&
+									dayjs(done).isSame(dayjs(date), 'year')
+								);
+							})
+								? false
+								: true;
+						})
+						.first();
+					const message = `Hi ${patient.get('name')}, ${user?.name} has assigned the vaccine: ${vaccine.get(
+						'name'
+					)} to your appointment created at ${dayjs(appointment.get('created_at')).format(
+						'MMMM DD, YYYY hh:mm A'
+					)}. Your next appointment will be on ${dayjs(firstDate).format('MMMM DD, YYYY')}.`;
+
+					await Promise.all([
+						axios
+							.post(`${PROXY_URL}/mail`, { email: patient.get('email'), message, subject: 'VMS Vaccine Assignment' })
+							.catch(() => {}),
+						axios.post(`${PROXY_URL}/sms`, { numbers: [patient.get('phone')], message }).catch(() => {}),
+					]);
+				}
 			}
 			toastr.success('Appointment saved successfully.');
 			reset();
@@ -149,6 +199,7 @@ const Form: FC<Props> = (props) => {
 									setVaccine(null);
 								}
 							}}>
+							<option> -- Select -- </option>
 							{vaccines.map((vaccine, index) => (
 								<option value={vaccine.id()} key={index}>
 									{vaccine.get('name')}

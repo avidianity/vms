@@ -54,23 +54,23 @@ const App: FC<Props> = (props) => {
 			try {
 				const hash = md5(state.get<string>('token')!);
 				const token = await new Token().where('hash', '==', hash).firstOrFail();
-                const user = await token.user().get();
-                if (!user) {
-                    throw new Error();
-                }
+				const user = await token.user().get();
+				if (!user) {
+					throw new Error();
+				}
 				await user.load(['picture']);
 				state.set('user', user.toJSON());
 			} catch (_) {
 				state.remove('token').set('user', null);
 			}
-        }
-        
-        try {
-            await axios.get(`${PROXY_URL}/ping`);
-        } catch (error) {
-            toastr.error('Unable to reach mailing and sms server.');
-            console.error(error);
-        }
+		}
+
+		try {
+			await axios.get(`${PROXY_URL}/ping`);
+		} catch (error) {
+			toastr.error('Unable to reach mailing and sms server.');
+			console.error(error);
+		}
 	};
 
 	useEffect(() => {

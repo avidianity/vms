@@ -75,7 +75,7 @@ const List: FC<Props> = (props) => {
 	}, []);
 
 	return (
-		<div className='container'>
+		<div className='container-fluid'>
 			<Card>
 				<DataTable
 					title='Available Appointments'
@@ -146,6 +146,12 @@ const List: FC<Props> = (props) => {
 							name: 'Weight',
 							selector: (row) => row.get('weight'),
 							minWidth: '100px',
+							sortable: true,
+						},
+						{
+							name: "Father's Name",
+							selector: (row) => row.get('mother'),
+							minWidth: '300px',
 							sortable: true,
 						},
 						{

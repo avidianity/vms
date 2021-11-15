@@ -11,6 +11,8 @@ import { useNullable } from '../hooks';
 import { Hash } from '../helpers';
 import { User } from '../Models/user.model';
 import InputMask from 'react-input-mask';
+import axios from 'axios';
+import { PROXY_URL } from '../constants';
 
 type Props = {};
 
@@ -45,6 +47,13 @@ const Register: FC<Props> = (props) => {
 			data.role = 'Patient';
 
 			await new User({ ...data, approved: true }).save();
+
+			const message = `Hi ${data.name}, thank you for registering to VMS!`;
+
+			await Promise.all([
+				axios.post(`${PROXY_URL}/mail`, { email: data.email, message, subject: 'VMS Registration' }).catch(() => {}),
+				axios.post(`${PROXY_URL}/sms`, { numbers: [data.phone], message }).catch(() => {}),
+			]);
 
 			toastr.success('Registered successfully. Please login.');
 			history.goBack();

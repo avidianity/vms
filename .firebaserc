@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "vaccine-9ece2"
-  }
+    "default": "vaccine-9ece2",
+    "testing": "tester-64696"
+  },
+  "targets": {}
 }

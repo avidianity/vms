@@ -79,7 +79,7 @@ const Appointments: FC<Props> = (props) => {
 										<p className='mb-0'>Length: {appointment.get('height')}</p>
 										<p className='mb-0'>Weight: {appointment.get('weight')}</p>
 										<div>
-											Dates:{' '}
+											Date:{' '}
 											<div className='row'>
 												{appointment.get('vaccine')?.dates?.map((date, parentIndex) =>
 													date.dates.map((date, childIndex) => (
@@ -92,7 +92,7 @@ const Appointments: FC<Props> = (props) => {
 										</div>
 										{appointment.get('dates').length > 0 ? (
 											<p className='mb-0'>
-												Dates Done:{' '}
+												Dates/Shots Done:{' '}
 												{appointment.get('dates').map((date, index) => (
 													<span className='mx-1' key={index}>
 														{dayjs(date).format('MMMM DD, YYY')}
