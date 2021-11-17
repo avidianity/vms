@@ -60,6 +60,7 @@ const Form: FC<Props> = (props) => {
 			} else {
 				const appointment = await new Appointment().findOneOrFail(match.params.id);
 				const hasNoVaccine = !appointment.get('vaccine_id');
+				const hasDoneNewDate = dates.length > appointment.get('dates').length;
 				await appointment
 					.fill({
 						...data,
@@ -105,6 +106,52 @@ const Form: FC<Props> = (props) => {
 					await Promise.all([
 						axios
 							.post(`${PROXY_URL}/mail`, { email: patient.get('email'), message, subject: 'VMS Vaccine Assignment' })
+							.catch(() => {}),
+						axios.post(`${PROXY_URL}/sms`, { numbers: [patient.get('phone')], message }).catch(() => {}),
+					]);
+				}
+
+				if (hasDoneNewDate && data.vaccine_id && patient) {
+					const vaccine = await new Vaccine().findOneOrFail(data.vaccine_id);
+					const dates = await vaccine.dates().get();
+					const sorted = flatten(dates.map((date) => date.get('dates'))).sort((next, prev) => {
+						if (dayjs(next).isAfter(dayjs(prev))) {
+							return 1;
+						}
+						if (dayjs(next).isBefore(dayjs(prev))) {
+							return -1;
+						}
+						return 0;
+					});
+					const firstDate = sorted
+						.filter((date) => {
+							return dayjs().isBefore(dayjs(date));
+						})
+						.filter((date) => {
+							return appointment.get('dates').find((done) => {
+								return (
+									dayjs(done).isSame(dayjs(date), 'date') &&
+									dayjs(done).isSame(dayjs(date), 'month') &&
+									dayjs(done).isSame(dayjs(date), 'year')
+								);
+							})
+								? false
+								: true;
+						})
+						.first();
+					let message: string;
+					if (firstDate && appointment.get('dates').length < sorted.length) {
+						message = `Hi ${patient.get('name')}, your next appointment will be on ${dayjs(firstDate).format(
+							'MMMM DD, YYYY'
+						)}.`;
+					} else {
+						message = `Hi ${patient.get(
+							'name'
+						)}, You have finished all your appointments. Please make sure to keep your vaccination card. Thank you!`;
+					}
+					await Promise.all([
+						axios
+							.post(`${PROXY_URL}/mail`, { email: patient.get('email'), message, subject: 'VMS Vaccine Appointment' })
 							.catch(() => {}),
 						axios.post(`${PROXY_URL}/sms`, { numbers: [patient.get('phone')], message }).catch(() => {}),
 					]);

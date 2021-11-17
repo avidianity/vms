@@ -16,6 +16,7 @@ import Questions from '../Components/Dashboard/Questions';
 import CMS from '../Components/Dashboard/CMS';
 import { Types } from '../Models/cms.model';
 import { Roles } from '../Contracts/user.contract';
+import Records from '../Components/Dashboard/Records';
 
 type Props = {};
 
@@ -67,6 +68,10 @@ const Dashboard: FC<Props> = (props) => {
 		{
 			path: url(routes.ANNOUNCEMENTS),
 			render: (props) => <CMS {...props} type={Types.ANNOUNCEMENT} />,
+		},
+		{
+			path: url(routes.RECORDS),
+			component: Records,
 		},
 	];
 

@@ -51,6 +51,10 @@ const Sidebar: FC<Props> = (props) => {
 
 	useEffect(() => {
 		fetch();
+		const handle = setInterval(() => fetch(), 5000);
+		return () => {
+			clearInterval(handle);
+		};
 		// eslint-disable-next-line
 	}, []);
 
@@ -155,6 +159,14 @@ const Sidebar: FC<Props> = (props) => {
 										Patients
 										{patients.length > 0 ? <Badge type='danger'>{patients.length}</Badge> : null}
 									</span>
+								</Link>
+							</li>
+							<li>
+								<Link to={url(routes.RECORDS)} className='sidebar-link'>
+									<span className='icon-holder'>
+										<i className='c-red-500 ti-user'></i>{' '}
+									</span>
+									<span className='title'>Records</span>
 								</Link>
 							</li>
 							<li>
