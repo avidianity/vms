@@ -49,7 +49,7 @@ const View: FC<Props> = () => {
 					<div className='container-fluid'>
 						<div className='row'>
 							{appointments.map((appointment, index) => (
-								<div className='col-12 col-md-6 col-lg-4 col-xl-3' key={index}>
+								<div className='col-12 col-md-6 col-lg-4 col-xl-3 p-1' key={index}>
 									<Card>
 										<p>Vaccine: {appointment.get('vaccine')?.name || 'Pending'}</p>
 										<p>Attendee: {appointment.get('attendee')?.name || 'N/A'}</p>
