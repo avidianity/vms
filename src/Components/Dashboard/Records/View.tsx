@@ -36,7 +36,7 @@ const View: FC<Props> = () => {
 	}, []);
 
 	return (
-		<div className='container'>
+		<div className='container-fluid'>
 			<Card>
 				<>
 					<h4>{patient?.name}</h4>
@@ -45,7 +45,7 @@ const View: FC<Props> = () => {
 					<p>Birthday: {dayjs(patient?.birthday).format('MMMM DD, YYYY')}</p>
 					<p>Address: {patient?.address}</p>
 					<p>Phone: {patient?.phone}</p>
-					<p>Appoinments</p>
+					<p>Appointments:</p>
 					<div className='container-fluid'>
 						<div className='row'>
 							{appointments.map((appointment, index) => (
@@ -54,7 +54,10 @@ const View: FC<Props> = () => {
 										<p>Vaccine: {appointment.get('vaccine')?.name || 'Pending'}</p>
 										<p>Attendee: {appointment.get('attendee')?.name || 'N/A'}</p>
 										<p>Date Created: {dayjs(appointment.get('created_at')).format('MMMM DD, YYYY hh:mm A')}</p>
-										<h6>Doses Done:</h6>
+										<p>Done: {appointment.get('done') ? 'Yes' : 'No'}</p>
+										<h6>
+											Doses Done: {appointment.get('dates').length}/{appointment.get('vaccine')?.doses}
+										</h6>
 										{appointment.get('dates').map((date, index) => (
 											<p key={index}>{dayjs(date).format('MMMM DD, YYYY')}</p>
 										))}

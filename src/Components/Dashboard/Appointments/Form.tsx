@@ -46,7 +46,6 @@ const Form: FC<Props> = (props) => {
 	const [dates, setDates] = useArray<string>();
 	const match = useRouteMatch<{ id: string }>();
 	const history = useHistory();
-	const [previousDates, setPreviousDates] = useArray<string>();
 	const user = state.get<UserContract>('user');
 
 	const submit = async (data: Inputs) => {
@@ -178,7 +177,7 @@ const Form: FC<Props> = (props) => {
 			}
 			setQuestions(data.questions);
 			setBirthday(data.date_of_birth.toDate());
-			setPreviousDates(data.dates);
+			setDates(data.dates);
 			const vaccine = await appointment.vaccine().get();
 			await vaccine?.load(['dates']);
 			setVaccine(vaccine);
@@ -344,9 +343,9 @@ const Form: FC<Props> = (props) => {
 												type='checkbox'
 												className='peer'
 												disabled={processing}
-												checked={dates.includes(childDate) || previousDates.includes(childDate)}
+												checked={dates.includes(childDate)}
 												onChange={() => {
-													if (!previousDates.includes(childDate)) {
+													if (!dates.includes(childDate)) {
 														if (dates.includes(childDate)) {
 															const index = dates.indexOf(childDate);
 															dates.splice(index, 1);

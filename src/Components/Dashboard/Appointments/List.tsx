@@ -150,7 +150,7 @@ const List: FC<Props> = (props) => {
 						},
 						{
 							name: "Father's Name",
-							selector: (row) => row.get('mother'),
+							selector: (row) => row.get('father'),
 							minWidth: '300px',
 							sortable: true,
 						},
