@@ -39,7 +39,8 @@ const View: FC<Props> = () => {
 		<div className='container-fluid'>
 			<Card>
 				<>
-					<h4>{patient?.name}</h4>
+					<h4>{appointments.first()?.get('name_of_child') || ''}</h4>
+					<p>Appointer: {patient?.name}</p>
 					<p>{patient?.email}</p>
 					<p>Sex: {patient?.gender}</p>
 					<p>Birthday: {dayjs(patient?.birthday).format('MMMM DD, YYYY')}</p>
