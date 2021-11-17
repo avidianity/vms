@@ -56,7 +56,7 @@ const View: FC<Props> = () => {
 										<p>Date Created: {dayjs(appointment.get('created_at')).format('MMMM DD, YYYY hh:mm A')}</p>
 										<p>Done: {appointment.get('done') ? 'Yes' : 'No'}</p>
 										<h6>
-											Doses Done: {appointment.get('dates').length}/{appointment.get('vaccine')?.doses}
+											Doses Done: {appointment.get('dates').length}/{appointment.get('vaccine')?.doses || 0}
 										</h6>
 										{appointment.get('dates').map((date, index) => (
 											<p key={index}>{dayjs(date).format('MMMM DD, YYYY')}</p>
