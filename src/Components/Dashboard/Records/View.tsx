@@ -53,6 +53,7 @@ const View: FC<Props> = () => {
 									<Card>
 										<p>Vaccine: {appointment.get('vaccine')?.name || 'Pending'}</p>
 										<p>Attendee: {appointment.get('attendee')?.name || 'N/A'}</p>
+										<p>Date Created: {dayjs(appointment.get('created_at')).format('MMMM DD, YYYY hh:mm A')}</p>
 										<h6>Doses Done:</h6>
 										{appointment.get('dates').map((date, index) => (
 											<p key={index}>{dayjs(date).format('MMMM DD, YYYY')}</p>
