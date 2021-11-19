@@ -5,7 +5,6 @@ import { routes } from '../routes';
 import intro from '../Assets/landing.gif';
 import Navbar from '../Components/Home/Navbar';
 import Announcements from '../Components/Announcements';
-import FAQs from '../Components/FAQs';
 import Program from '../Components/Program';
 
 type Props = {};
@@ -35,9 +34,6 @@ const Home: FC<Props> = (props) => {
 			<div className='container' style={{ marginTop: '-2.5rem' }}>
 				<Program />
 				<div className='row mb-5'>
-					<div className='col-12 col-md-8 mt-3'>
-						<FAQs />
-					</div>
 					<div className='col-12 col-md-4 mt-3'>
 						<Announcements />
 					</div>

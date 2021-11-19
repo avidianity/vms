@@ -16,6 +16,7 @@ type VaccineContract = {
 	three_months_and_a_half: boolean;
 	nine_months: boolean;
 	one_year: boolean;
+	quantity: number;
 };
 
 const Form: FC<Props> = (props) => {
@@ -52,9 +53,9 @@ const Form: FC<Props> = (props) => {
 		try {
 			const id = match.params.id;
 			const query = new Vaccine();
-			const vaccine = await query.findOne(id);
+			const vaccine = await query.findOneOrFail(id);
 
-			for (const [key, value] of Object.entries(vaccine?.getData()!)) {
+			for (const [key, value] of Object.entries(vaccine.getData())) {
 				setValue(key as any, value);
 			}
 
@@ -81,11 +82,15 @@ const Form: FC<Props> = (props) => {
 				<h4>{mode} Vaccine</h4>
 				<form ref={ref} onSubmit={handleSubmit(submit)}>
 					<div className='form-row'>
-						<div className='form-group col-12 col-md-6'>
+						<div className='form-group col-12 col-md-4'>
 							<label htmlFor='name'>Name</label>
 							<input {...register('name')} type='text' id='name' className='form-control' disabled={processing} />
 						</div>
-						<div className='form-group col-12 col-md-6'>
+						<div className='form-group col-12 col-md-4'>
+							<label htmlFor='quantity'>Quantity</label>
+							<input {...register('quantity')} type='number' id='quantity' className='form-control' disabled={processing} />
+						</div>
+						<div className='form-group col-12 col-md-4'>
 							<label htmlFor='doses'>Doses</label>
 							<input
 								{...register('doses')}

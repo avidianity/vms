@@ -209,6 +209,15 @@ const List: FC<Props> = (props) => {
 										className='material-icons clickable mx-1'
 										onClick={(e) => {
 											e.preventDefault();
+											history.push(url(`/${row.id()}/view`));
+										}}
+										data-tip='View'>
+										visibility
+									</i>
+									<i
+										className='material-icons clickable mx-1'
+										onClick={(e) => {
+											e.preventDefault();
 											exportAsECCDCard(row.id());
 										}}
 										data-tip='Export as ECCD Card'>

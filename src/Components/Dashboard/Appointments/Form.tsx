@@ -112,6 +112,7 @@ const Form: FC<Props> = (props) => {
 
 				if (hasDoneNewDate && data.vaccine_id && patient) {
 					const vaccine = await new Vaccine().findOneOrFail(data.vaccine_id);
+					await vaccine.update({ quantity: vaccine.get('quantity') - 1 });
 					const dates = await vaccine.dates().get();
 					const sorted = flatten(dates.map((date) => date.get('dates'))).sort((next, prev) => {
 						if (dayjs(next).isAfter(dayjs(prev))) {
@@ -139,7 +140,7 @@ const Form: FC<Props> = (props) => {
 						})
 						.first();
 					let message: string;
-					if (firstDate && appointment.get('dates').length < sorted.length) {
+					if (firstDate && appointment.get('dates').length < sorted.length && data.done) {
 						message = `Hi ${patient.get('name')}, your next appointment will be on ${dayjs(firstDate).format(
 							'MMMM DD, YYYY'
 						)}.`;
@@ -246,11 +247,13 @@ const Form: FC<Props> = (props) => {
 								}
 							}}>
 							<option> -- Select -- </option>
-							{vaccines.map((vaccine, index) => (
-								<option value={vaccine.id()} key={index}>
-									{vaccine.get('name')}
-								</option>
-							))}
+							{vaccines
+								.filter((vaccine) => vaccine.get('quantity') > 0)
+								.map((vaccine, index) => (
+									<option value={vaccine.id()} key={index}>
+										{vaccine.get('name')}
+									</option>
+								))}
 						</select>
 					</div>
 					<div className='form-group col-12 col-md-6 col-lg-4'>

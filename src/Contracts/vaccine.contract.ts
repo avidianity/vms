@@ -10,5 +10,6 @@ export interface VaccineContract extends BaseContract {
 	three_months_and_a_half: boolean;
 	nine_months: boolean;
 	one_year: boolean;
+	quantity: number;
 	dates?: DateContract[];
 }

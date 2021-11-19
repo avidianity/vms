@@ -162,30 +162,6 @@ const Sidebar: FC<Props> = (props) => {
 								</Link>
 							</li>
 							<li>
-								<Link to={url(routes.RECORDS)} className='sidebar-link'>
-									<span className='icon-holder'>
-										<i className='c-red-500 ti-user'></i>{' '}
-									</span>
-									<span className='title'>Records</span>
-								</Link>
-							</li>
-							<li>
-								<Link to={url(routes.QUESTIONS)} className='sidebar-link'>
-									<span className='icon-holder'>
-										<i className='c-yellow-700 ti-light-bulb'></i>{' '}
-									</span>
-									<span className='title'>Questions</span>
-								</Link>
-							</li>
-							<li>
-								<Link to={url(routes.FAQS)} className='sidebar-link'>
-									<span className='icon-holder'>
-										<i className='c-red-300 material-icons'>help_outline</i>{' '}
-									</span>
-									<span className='title'>FAQs</span>
-								</Link>
-							</li>
-							<li>
 								<Link to={url(routes.ANNOUNCEMENTS)} className='sidebar-link'>
 									<span className='icon-holder'>
 										<i className='c-light-blue-300 material-icons'>announcements</i>{' '}

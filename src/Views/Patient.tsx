@@ -7,14 +7,12 @@ import FAQs from '../Components/FAQs';
 import Navbar from '../Components/Home/Navbar';
 import Modal from '../Components/Modal';
 import { UserContract } from '../Contracts/user.contract';
-import { useArray, useAuthenticate, useCollection, useNullable, useURL } from '../hooks';
+import { useAuthenticate, useCollection, useNullable, useURL } from '../hooks';
 import { State } from '../Libraries/state.library';
 import { Appointment } from '../Models/appointment.model';
 import { routes } from '../routes';
 import Profile from '../Components/Profile';
 import { Asker, getAppointments } from '../helpers';
-import { Question } from '../Models/question.model';
-import { Question as AppointmentQuestion } from '../Contracts/appointment.contract';
 import { useForm } from 'react-hook-form';
 import Flatpickr from 'react-flatpickr';
 import dayjs from 'dayjs';
@@ -41,23 +39,11 @@ const Patient: FC<Props> = (props) => {
 	const user = state.get<UserContract>('user');
 	const { authenticated } = useAuthenticate();
 	const [appointments, setAppointments] = useCollection<Appointment>();
-	const [questions, setQuestions] = useCollection<Question>();
-	const [appointmentQuestions, setAppointmentQuestions] = useArray<AppointmentQuestion>();
 	const { register, handleSubmit } = useForm<Inputs>();
 	const [birthday, setBirthday] = useNullable<Date>();
 
 	const get = async () => {
-		await Promise.all([getAppointmentsRaw(), getQuestions()]);
-	};
-
-	const getQuestions = async () => {
-		try {
-			const questions = await new Question().all();
-			setQuestions(questions);
-		} catch (error) {
-			console.log(error);
-			toastr.error('Unable to fetch vaccine questions.');
-		}
+		await Promise.all([getAppointmentsRaw()]);
 	};
 
 	const getAppointmentsRaw = async () => {
@@ -76,7 +62,7 @@ const Patient: FC<Props> = (props) => {
 					done: false,
 					patient_id: user?.id,
 					dates: [],
-					questions: appointmentQuestions,
+					questions: [],
 					height: 'Pending',
 					weight: 'Pending',
 				});
@@ -182,33 +168,6 @@ const Patient: FC<Props> = (props) => {
 													<option value='Female'>Female</option>
 												</select>
 											</div>
-											{questions.map((question, index) => (
-												<div className='form-group col-12 col-md-6' key={index}>
-													<label htmlFor={`question-${index}`}>{question.get('question')}</label>
-													<input
-														type='text'
-														id={`question-${index}`}
-														className='form-control'
-														onChange={(e) => {
-															const index = appointmentQuestions.findIndex((q) => q.id === question.id());
-															const answer = appointmentQuestions[index];
-															if (answer) {
-																answer.answer = e.target.value;
-																appointmentQuestions.splice(index, 1, answer);
-															} else {
-																appointmentQuestions.push({
-																	id: question.id(),
-																	question: question.get('question'),
-																	answer: e.target.value,
-																});
-															}
-
-															setAppointmentQuestions([...appointmentQuestions]);
-														}}
-														value={appointmentQuestions.find((q) => q.id === question.id())?.answer}
-													/>
-												</div>
-											))}
 										</div>
 									</div>
 								</Modal>
