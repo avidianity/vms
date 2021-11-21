@@ -236,7 +236,7 @@ const Form: FC<Props> = (props) => {
 							onChange={async (e) => {
 								const id = e.target.value;
 								const vaccine = vaccines.get(id);
-								if (vaccine) {
+								if (vaccine && vaccine.get('quantity') > 0) {
 									await vaccine.load(['dates']);
 									setVaccine(vaccine);
 								} else {
@@ -244,13 +244,11 @@ const Form: FC<Props> = (props) => {
 								}
 							}}>
 							<option> -- Select -- </option>
-							{vaccines
-								.filter((vaccine) => vaccine.get('quantity') > 0)
-								.map((vaccine, index) => (
-									<option value={vaccine.id()} key={index}>
-										{vaccine.get('name')}
-									</option>
-								))}
+							{vaccines.map((vaccine, index) => (
+								<option value={vaccine.id()} key={index} disabled={vaccine.get('quantity') === 0}>
+									{vaccine.get('name')} {vaccine.get('quantity') === 0 ? '(Unavailable)' : null}
+								</option>
+							))}
 						</select>
 					</div>
 					<div className='form-group col-12 col-md-6 col-lg-4'>
