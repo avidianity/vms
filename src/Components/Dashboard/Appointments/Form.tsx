@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Question } from '../../../Contracts/appointment.contract';
 import { useArray, useCollection, useMode, useNullable } from '../../../hooks';
 import Card from '../../Card';
 import Flatpickr from 'react-flatpickr';
@@ -40,7 +39,6 @@ const Form: FC<Props> = (props) => {
 	const { register, reset, handleSubmit, setValue } = useForm<Inputs>();
 	const [birthday, setBirthday] = useNullable<Date>();
 	const [vaccine, setVaccine] = useNullable<Vaccine>();
-	const [questions, setQuestions] = useArray<Question>();
 	const [patients, setPatients] = useCollection<User, UserContract>();
 	const [vaccines, setVaccines] = useCollection<Vaccine, VaccineContract>();
 	const [dates, setDates] = useArray<string>();
@@ -176,7 +174,6 @@ const Form: FC<Props> = (props) => {
 			for (const [key, value] of Object.entries(data)) {
 				setValue(key as any, value);
 			}
-			setQuestions(data.questions);
 			setBirthday(data.date_of_birth.toDate());
 			setDates(data.dates);
 			const vaccine = await appointment.vaccine().get();
@@ -322,15 +319,6 @@ const Form: FC<Props> = (props) => {
 							<option value='Male'>Male</option>
 							<option value='Female'>Female</option>
 						</select>
-					</div>
-					<div className='form-group col-12'>
-						<label htmlFor='questions'>Questions and Answers</label>
-						{questions.map((item, index) => (
-							<div key={index}>
-								<h6>{item.question}</h6>
-								<p className='text-muted'>{item.answer}</p>
-							</div>
-						))}
 					</div>
 					{mode === 'Edit' && vaccine ? (
 						<>

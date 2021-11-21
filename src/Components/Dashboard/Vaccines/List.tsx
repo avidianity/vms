@@ -89,6 +89,12 @@ const List: FC<Props> = (props) => {
 							sortable: true,
 						},
 						{
+							name: 'Quantity',
+							selector: (row) => row.get('quantity'),
+							minWidth: '100px',
+							sortable: true,
+						},
+						{
 							name: 'At Birth',
 							cell: (row) =>
 								row.get('at_birth') ? (
