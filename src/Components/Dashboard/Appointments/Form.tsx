@@ -247,8 +247,8 @@ const Form: FC<Props> = (props) => {
 							}}>
 							<option> -- Select -- </option>
 							{vaccines.map((vaccine, index) => (
-								<option value={vaccine.id()} key={index} disabled={vaccine.get('quantity') === 0}>
-									{vaccine.get('name')} {vaccine.get('quantity') === 0 ? '(Unavailable)' : null}
+								<option value={vaccine.id()} key={index} disabled={Number(vaccine.get('quantity')) === 0}>
+									{vaccine.get('name')} {Number(vaccine.get('quantity')) === 0 ? '(Unavailable)' : null}
 								</option>
 							))}
 						</select>
