@@ -22,6 +22,7 @@ export class Appointment extends Model<AppointmentContract> {
             'father',
 			'mother',
 			'date_of_birth',
+			'place_of_birth',
 			'height',
 			'weight',
 			'gender',

@@ -21,6 +21,7 @@ export interface AppointmentContract extends BaseContract {
     father: string;
 	mother: string;
 	date_of_birth: string;
+	place_of_birth: string;
 	height: string;
 	weight: string;
 	gender: string;

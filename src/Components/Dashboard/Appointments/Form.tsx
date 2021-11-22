@@ -25,7 +25,9 @@ type Inputs = {
 	dates: string[];
 	name_of_child: string;
 	mother: string;
+	father: string;
 	date_of_birth: string;
+	place_of_birth: string;
 	height: string;
 	weight: string;
 	gender: string;
@@ -275,8 +277,8 @@ const Form: FC<Props> = (props) => {
 								))}
 						</select>
 					</div>
-					<div className='form-group col-12 col-md-6'>
-						<label htmlFor='name_of_child'>Name of Child</label>
+					<div className='form-group col-12 col-md-4'>
+						<label htmlFor='name_of_child'>Child's Name</label>
 						<input
 							{...register('name_of_child')}
 							type='text'
@@ -285,9 +287,13 @@ const Form: FC<Props> = (props) => {
 							disabled={processing}
 						/>
 					</div>
-					<div className='form-group col-12 col-md-6'>
-						<label htmlFor='mother'>Mother</label>
+					<div className='form-group col-12 col-md-4'>
+						<label htmlFor='mother'>Mother's Name</label>
 						<input {...register('mother')} type='text' id='mother' className='form-control' disabled={processing} />
+					</div>
+					<div className='form-group col-12 col-md-4'>
+						<label htmlFor='father'>Father's Name</label>
+						<input {...register('father')} type='text' id='father' className='form-control' disabled={processing} />
 					</div>
 					<div className='form-group col-12 col-md-6 col-lg-3'>
 						<label htmlFor='date_of_birth'>Date of Birth</label>
@@ -310,13 +316,16 @@ const Form: FC<Props> = (props) => {
 						<label htmlFor='weight'>Weight</label>
 						<input {...register('weight')} type='text' id='weight' className='form-control' disabled={processing} />
 					</div>
-
 					<div className='form-group col-12 col-md-6 col-lg-3'>
 						<label htmlFor='gender'>Sex</label>
 						<select {...register('gender')} id='gender' className='form-control' disabled={processing}>
 							<option value='Male'>Male</option>
 							<option value='Female'>Female</option>
 						</select>
+					</div>
+					<div className='form-group col-12'>
+						<label htmlFor='place_of_birth'>Place of Birth</label>
+						<input {...register('place_of_birth')} type='text' id='place_of_birth' className='form-control' disabled={processing} />
 					</div>
 					{mode === 'Edit' && vaccine ? (
 						<>

@@ -28,6 +28,7 @@ type Inputs = {
 	weight: string;
 	gender: string;
 	name_of_child: string;
+	place_of_birth: string;
 };
 
 const state = State.getInstance();
@@ -133,15 +134,15 @@ const Patient: FC<Props> = (props) => {
 									<div className='container'>
 										<div className='row'>
 											<div className='form-group col-12 col-md-4'>
-												<label htmlFor='father'>Name of Father</label>
+												<label htmlFor='father'>Father's Name</label>
 												<input {...register('father')} type='text' id='father' className='form-control' />
 											</div>
 											<div className='form-group col-12 col-md-4'>
-												<label htmlFor='mother'>Name of Mother</label>
+												<label htmlFor='mother'>Mother's Name</label>
 												<input {...register('mother')} type='text' id='mother' className='form-control' />
 											</div>
 											<div className='form-group col-12 col-md-4'>
-												<label htmlFor='name_of_child'>Name of Child</label>
+												<label htmlFor='name_of_child'>Child's Name</label>
 												<input
 													{...register('name_of_child')}
 													type='text'
@@ -149,7 +150,7 @@ const Patient: FC<Props> = (props) => {
 													className='form-control'
 												/>
 											</div>
-											<div className='form-group col-12 col-md-6'>
+											<div className='form-group col-12 col-md-4'>
 												<label htmlFor='birthday'>Date of Birth</label>
 												<Flatpickr
 													type='text'
@@ -161,7 +162,16 @@ const Patient: FC<Props> = (props) => {
 													}}
 												/>
 											</div>
-											<div className='form-group col-12 col-md-6'>
+											<div className='form-group col-12 col-md-4'>
+												<label htmlFor='place_of_birth'>Place of Birth</label>
+												<input
+													{...register('place_of_birth')}
+													type='text'
+													id='place_of_birth'
+													className='form-control'
+												/>
+											</div>
+											<div className='form-group col-12 col-md-4'>
 												<label htmlFor='gender'>Sex</label>
 												<select {...register('gender')} id='gender' className='form-control'>
 													<option value='Male'>Male</option>
