@@ -20,12 +20,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('auth')->group(function () {
-    Route::post('/register', [AuthController::class, 'register']);
-    Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('auth')->name('auth.')->group(function () {
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/auth/check', [AuthController::class, 'check'])->name('auth.check');
+
     Route::apiResource('announcements', AnnouncementController::class);
     Route::apiResources([
         'appointments' => AppointmentController::class,

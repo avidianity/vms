@@ -2,26 +2,14 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 
 class VerifySMS extends Notification
 {
-    use Queueable;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     /**
      * Get the notification's delivery channels.
      *
@@ -30,7 +18,7 @@ class VerifySMS extends Notification
      */
     public function via($notifiable)
     {
-        return ['semaphore'];
+        return ['semaphore', 'database'];
     }
 
     /**
@@ -42,7 +30,7 @@ class VerifySMS extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Welcome to VMS! Please open the url below to verify your account. If you have not registered or have already verified from your email address. No further action is required.'
+            'message' => 'Welcome to VMS! Please open the url below to verify your account. If you have not registered or have already verified from your email address. No further action is required. ' . $this->verificationUrl($notifiable)
         ];
     }
 
@@ -60,6 +48,7 @@ class VerifySMS extends Notification
             [
                 'id' => $notifiable->getKey(),
                 'hash' => sha1($notifiable->phone),
+                'token' => $notifiable->createToken(Str::random(10))->plainTextToken,
             ]
         );
     }

@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +18,7 @@ class AuthController extends Controller
 
         $user = User::where($data['key'], $data['username'])->firstOrFail();
 
-        if (!Hash::check($data['password'], $user->email)) {
+        if (!Hash::check($data['password'], $user->password)) {
             return response(['message' => 'Password is incorrect.'], 403);
         }
 
@@ -36,5 +37,10 @@ class AuthController extends Controller
         event(new Registered($user));
 
         return response('', 204);
+    }
+
+    public function check(Request $request)
+    {
+        return $request->user();
     }
 }

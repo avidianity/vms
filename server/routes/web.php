@@ -16,14 +16,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('signed')->group(function () {
+Route::middleware(['signed', 'auth:sanctum'])->group(function () {
     Route::get('/auth/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
         $request->fulfill();
+        $request->user()->currentAccessToken()->delete();
         return redirect(frontend('/login'));
     })->name('verification.verify');
 
     Route::get('/auth/verify/sms/{id}/{hash}', function (SMSVerificationRequest $request) {
         $request->fulfill();
+        $request->user()->currentAccessToken()->delete();
         return redirect(frontend('/login'));
     })->name('verification.sms.verify');
 });
