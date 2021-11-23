@@ -1,0 +1,50 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Appointment extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'child',
+        'father',
+        'mother',
+        'birthday',
+        'place_of_birth',
+        'sex',
+        'height',
+        'weight',
+        'user_id',
+        'attendee_id',
+    ];
+
+    protected $dates = [
+        'birthday'
+    ];
+
+    protected static function booted()
+    {
+        static::deleting(function (self $appointment) {
+            $appointment->vaccines->each->delete();
+        });
+    }
+
+    public function vaccines()
+    {
+        return $this->hasMany(AppointmentVaccine::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function attendee()
+    {
+        return $this->belongsTo(User::class, 'attendee_id');
+    }
+}
