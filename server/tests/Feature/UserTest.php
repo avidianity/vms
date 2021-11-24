@@ -81,4 +81,18 @@ class UserTest extends TestCase
 
         $this->assertDatabaseMissing(User::class, ['id' => $user->id]);
     }
+
+    /**
+     * @test
+     */
+    public function search()
+    {
+        $this->authenticate();
+
+        $user = User::factory()
+            ->create();
+
+        $this->getJson(route('v1.search.users', ['keyword' => $user->email]))
+            ->assertJson([$user->toArray()]);
+    }
 }
