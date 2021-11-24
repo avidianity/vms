@@ -18,6 +18,10 @@ class AuthController extends Controller
 
         $user = User::where($data['key'], $data['username'])->firstOrFail();
 
+        if (!$user->email_verified_at) {
+            return response(['message' => 'Account is not verified.'], 403);
+        }
+
         if (!Hash::check($data['password'], $user->password)) {
             return response(['message' => 'Password is incorrect.'], 403);
         }
@@ -42,5 +46,12 @@ class AuthController extends Controller
     public function check(Request $request)
     {
         return $request->user();
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response('', 204);
     }
 }

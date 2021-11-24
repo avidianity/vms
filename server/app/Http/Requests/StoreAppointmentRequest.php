@@ -33,11 +33,11 @@ class StoreAppointmentRequest extends FormRequest
             'mother' => ['required', 'string', 'max:255'],
             'birthday' => ['required', 'date'],
             'place_of_birth' => ['required', 'string', 'max:255'],
-            'sex' => ['required', Gender::class],
+            'sex' => ['required', new Gender],
             'height' => ['required', 'string', 'max:255'],
             'weight' => ['required', 'string', 'max:255'],
-            'user_id' => ['required', 'numeric', Rule::exists(User::class, 'id'), new Role(User::ADMIN)],
-            'attendee_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::USER)],
+            'user_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::USER)],
+            'attendee_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::ADMIN)],
         ];
     }
 }

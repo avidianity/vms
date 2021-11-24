@@ -40,6 +40,6 @@ class Role implements Rule
      */
     public function message()
     {
-        return sprintf('User is not a %s.', $this->role);
+        return sprintf('User\'s role is not %s.', $this->role);
     }
 }

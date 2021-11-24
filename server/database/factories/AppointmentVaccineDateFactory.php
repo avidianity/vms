@@ -14,7 +14,7 @@ class AppointmentVaccineDateFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'date' => $this->faker->date,
         ];
     }
 }

@@ -57,7 +57,7 @@ class HTMLService
             $element->parentNode->removeChild($element);
         }
 
-        if ($result = $dom->saveHTML()) {
+        if ($result = $dom->saveHTML($dom->getElementsByTagName('body')->item(0))) {
             return $result;
         }
 

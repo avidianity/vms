@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Exceptions\HTMLServiceException;
 use App\Services\HTMLService;
 use DOMDocument;
+use DOMNodeList;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -26,7 +27,7 @@ class HTMLServiceTest extends TestCase
     <body>
         <div>Hello World</div>
         <script>console.log('Hello World! :)')</script>
-        <script>alert('ehehehe')</script>
+        <script>alert('Mwehehehe')</script>
     </body>
 </html>
 HTML;
@@ -60,7 +61,7 @@ HTML;
              */
             $dom = Mockery::mock(DOMDocument::class);
             $dom->shouldReceive('loadHTML')->once()->andReturn(true);
-            $dom->shouldReceive('getElementsByTagName')->andReturn([]);
+            $dom->shouldReceive('getElementsByTagName')->andReturn(new DOMNodeList);
             $dom->shouldReceive('saveHTML')->once()->andReturn(false);
 
             app()->instance(DOMDocument::class, $dom);

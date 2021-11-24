@@ -17,7 +17,7 @@ class UpdateAppointmentRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->isAdmin();
     }
 
     /**
@@ -33,11 +33,10 @@ class UpdateAppointmentRequest extends FormRequest
             'mother' => ['nullable', 'string', 'max:255'],
             'birthday' => ['nullable', 'date'],
             'place_of_birth' => ['nullable', 'string', 'max:255'],
-            'sex' => ['nullable', Gender::class],
+            'sex' => ['nullable', new Gender],
             'height' => ['nullable', 'string', 'max:255'],
             'weight' => ['nullable', 'string', 'max:255'],
-            'user_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::ADMIN)],
-            'attendee_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::USER)],
+            'attendee_id' => ['nullable', 'numeric', Rule::exists(User::class, 'id'), new Role(User::ADMIN)],
         ];
     }
 }

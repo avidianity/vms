@@ -14,7 +14,8 @@ class AnnouncementFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => $this->faker->text(10),
+            'description' => $this->faker->text(),
         ];
     }
 }

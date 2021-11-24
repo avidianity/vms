@@ -9,9 +9,9 @@ class HTML implements CastsAttributes
 {
     protected $service;
 
-    public function __construct(HTMLService $service)
+    public function __construct()
     {
-        $this->service = $service;
+        $this->service = app(HTMLService::class);
     }
 
     /**

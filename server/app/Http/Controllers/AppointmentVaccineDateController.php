@@ -17,7 +17,7 @@ class AppointmentVaccineDateController extends Controller
      */
     public function index()
     {
-        return AppointmentVaccineDate::with($this->with)->get();
+        return AppointmentVaccineDate::with($this->withs)->get();
     }
 
     /**
@@ -54,7 +54,7 @@ class AppointmentVaccineDateController extends Controller
     public function update(UpdateAppointmentVaccineDateRequest $request, AppointmentVaccineDate $appointmentVaccineDate)
     {
         $appointmentVaccineDate->update($request->validated());
-        $appointmentVaccineDate->load($this->with);
+        $appointmentVaccineDate->load($this->withs);
 
         return $appointmentVaccineDate;
     }
@@ -67,6 +67,8 @@ class AppointmentVaccineDateController extends Controller
      */
     public function destroy(AppointmentVaccineDate $appointmentVaccineDate)
     {
+        $appointmentVaccineDate->delete();
+
         return response('', 204);
     }
 }

@@ -9,29 +9,24 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+use Tests\Authenticates;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
-    use WithFaker, RefreshDatabase;
+    use WithFaker, RefreshDatabase, Authenticates;
 
     /**
      * @test
      */
     public function it_should_return_a_user()
     {
-        /**
-         * @var \App\Models\User
-         */
-        $user = User::factory()->create();
+        $this->authenticate();
 
-        $this->actingAs($user, 'sanctum');
-
-        $this->get(route('v1.auth.check'))
+        $this->getJson(route('v1.auth.check'))
             ->assertJsonStructure(['id'])
             ->assertOk();
     }
@@ -45,11 +40,24 @@ class AuthTest extends TestCase
 
         User::factory()->create($data);
 
-        $this->post(route('v1.auth.login'), $data, ['Accept' => 'application/json'])
+        $this->postJson(route('v1.auth.login'), $data)
             ->assertJsonStructure([
                 'token', 'user'
             ])
             ->assertOk();
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_prevent_unverified_user_from_logging_in()
+    {
+        $data = ['email' => $this->faker->safeEmail, 'password' => $this->faker->password];
+
+        User::factory()->unverified()->create($data);
+
+        $this->postJson(route('v1.auth.login'), $data)
+            ->assertForbidden();
     }
 
     /**
@@ -69,7 +77,7 @@ class AuthTest extends TestCase
 
         Notification::fake();
 
-        $this->post(route('v1.auth.register'), $data, ['Accept' => 'application/json'])
+        $this->postJson(route('v1.auth.register'), $data)
             ->assertNoContent();
 
         $user = User::firstOrFail();
@@ -89,6 +97,8 @@ class AuthTest extends TestCase
         $user = User::factory()
             ->unverified()
             ->create();
+
+        $this->assertFalse($user->fresh()->hasVerifiedEmail());
 
         Event::fake();
 
@@ -122,6 +132,8 @@ class AuthTest extends TestCase
             ->unverified()
             ->create();
 
+        $this->assertFalse($user->fresh()->hasVerifiedEmail());
+
         Event::fake();
 
         $route =  URL::temporarySignedRoute(
@@ -140,5 +152,16 @@ class AuthTest extends TestCase
         Event::assertDispatched(Verified::class);
 
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_out_a_user()
+    {
+        $this->authenticate();
+
+        $this->postJson(route('v1.auth.logout'))
+            ->assertNoContent();
     }
 }
