@@ -37,4 +37,10 @@ Route::middleware('auth:sanctum')->group(function () {
         'users' => UserController::class,
         'vaccines' => VaccineController::class,
     ]);
+
+    Route::prefix('prefix')->name('search.')->group(function () {
+        Route::get('appointments', [AppointmentController::class, 'search'])->name('appointments');
+        Route::get('users', [UserController::class, 'search'])->name('users');
+        Route::get('vaccines', [VaccineController::class, 'search'])->name('vaccines');
+    });
 });

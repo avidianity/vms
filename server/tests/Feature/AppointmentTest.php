@@ -90,4 +90,19 @@ class AppointmentTest extends TestCase
 
         $this->assertDatabaseMissing(Appointment::class, ['id' => $appointment->id]);
     }
+
+    /**
+     * @test
+     */
+    public function search()
+    {
+        $this->authenticate();
+
+        $appointment = Appointment::factory()
+            ->for(User::factory()->asUser())
+            ->create();
+
+        $this->getJson(route('v1.search.appointments', ['keyword' => $appointment->child]))
+            ->assertJson([$appointment->toArray()]);
+    }
 }

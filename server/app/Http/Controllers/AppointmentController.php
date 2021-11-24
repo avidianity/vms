@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Models\Appointment;
@@ -9,6 +10,15 @@ use App\Models\Appointment;
 class AppointmentController extends Controller
 {
     protected $withs = ['vaccines', 'user', 'attendee'];
+
+    public function search(SearchRequest $request)
+    {
+        $appointment = Appointment::search($request->input('keyword'))->get();
+
+        $appointment->load($this->withs);
+
+        return $appointment;
+    }
 
     /**
      * Display a listing of the resource.

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreVaccineRequest;
 use App\Http\Requests\UpdateVaccineRequest;
 use App\Models\Vaccine;
@@ -9,6 +10,15 @@ use App\Models\Vaccine;
 class VaccineController extends Controller
 {
     protected $withs = ['appointments'];
+
+    public function search(SearchRequest $request)
+    {
+        $vaccine = Vaccine::search($request->input('keyword'))->get();
+
+        $vaccine->load($this->withs);
+
+        return $vaccine;
+    }
 
     /**
      * Display a listing of the resource.

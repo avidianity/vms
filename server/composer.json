@@ -12,9 +12,12 @@
         "avidian/semaphore": "^1.0.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
-        "laravel/tinker": "^2.5"
+        "laravel/scout": "^9.3",
+        "laravel/tinker": "^2.5",
+        "meilisearch/meilisearch-php": "^0.20.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",
@@ -24,7 +27,8 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^5.10",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.10",
+        "sti3bas/laravel-scout-array-driver": "^3.1"
     },
     "autoload": {
         "psr-4": {

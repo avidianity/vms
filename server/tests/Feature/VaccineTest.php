@@ -80,4 +80,17 @@ class VaccineTest extends TestCase
 
         $this->assertDatabaseMissing(Vaccine::class, ['id' => $vaccine->id]);
     }
+
+    /**
+     * @test
+     */
+    public function search()
+    {
+        $this->authenticate();
+
+        $vaccine = Vaccine::factory()->create();
+
+        $this->getJson(route('v1.search.vaccines', ['keyword' => $vaccine->name]))
+            ->assertJson([$vaccine->toArray()]);
+    }
 }
