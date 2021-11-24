@@ -1,3 +1,3 @@
 # Vaccine Management System
 
-![develop](https://github.com/github/docs/actions/workflows/main.yml/badge.svg?branch=v2)
+![develop](https://github.com/avidianity/vms/actions/workflows/develop.yml/badge.svg?branch=v2)
