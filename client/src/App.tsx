@@ -52,14 +52,7 @@ const App: FC<Props> = (props) => {
 	const check = async () => {
 		if (state.has('token')) {
 			try {
-				const hash = md5(state.get<string>('token')!);
-				const token = await new Token().where('hash', '==', hash).firstOrFail();
-				const user = await token.user().get();
-				if (!user) {
-					throw new Error();
-				}
-				await user.load(['picture']);
-				state.set('user', user.toJSON());
+				//
 			} catch (_) {
 				state.remove('token').set('user', null);
 			}
@@ -75,18 +68,6 @@ const App: FC<Props> = (props) => {
 
 	useEffect(() => {
 		check();
-		const key = firestore.collection('appointments').onSnapshot((snapshot) => {
-			const collection = new Collection();
-			snapshot.forEach((document) => {
-				collection.push(new Appointment(document.data()));
-			});
-
-			manager.dispatch('appointments', collection);
-		});
-
-		return () => {
-			key();
-		};
 		//eslint-disable-next-line
 	}, []);
 
