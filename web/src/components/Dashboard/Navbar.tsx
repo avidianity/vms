@@ -1,8 +1,40 @@
-import React, { FC } from 'react';
+import axios from 'axios';
+import React, { FC, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { AuthContext } from '../../contexts';
+import { Asker } from '../../helpers';
+import { routes } from '../../routes';
+import { SearchEvent } from '../../events';
+import { useToggle } from '@avidian/hooks';
 
 type Props = {};
 
 const Navbar: FC<Props> = (props) => {
+	const { token } = useContext(AuthContext);
+	const navigate = useNavigate();
+	const [search, setSearch] = useState('');
+	const [enableSearch, setEnableSearch] = useToggle(false);
+
+	const logout = async () => {
+		if (await Asker.danger('Are you sure you want to logout?')) {
+			await axios.post('/auth/logout', {}, { headers: { Authorization: `Bearer ${token}` } }).catch(console.log);
+			toastr.success('Logged out successfully!');
+			navigate(routes.LOGIN);
+		}
+	};
+
+	useEffect(() => {
+		const key = SearchEvent.on<boolean>('toggle', (value) => {
+			setSearch('');
+			setEnableSearch(value);
+		});
+
+		return () => {
+			SearchEvent.off(key);
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	return (
 		<nav className='navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl' id='navbarBlur' navbar-scroll='true'>
 			<div className='container-fluid py-2 px-3'>
@@ -11,18 +43,33 @@ const Navbar: FC<Props> = (props) => {
 				</nav>
 				<div className='collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4' id='navbar'>
 					<div className='ms-md-auto pe-md-3 d-flex align-items-center'>
-						<div className='input-group input-group-outline'>
-							<label className='form-label'>Search</label>
-							<input type='text' className='form-control' />
-						</div>
+						<form
+							onSubmit={(e) => {
+								e.preventDefault();
+								SearchEvent.dispatch('search', search);
+							}}>
+							<div className={`input-group input-group-outline ${search.length > 0 ? 'is-filled' : ''}`}>
+								<label className='form-label'>Search</label>
+								<input
+									type='search'
+									className='form-control'
+									onChange={(e) => {
+										setSearch(e.target.value);
+										SearchEvent.dispatch('search', e.target.value);
+									}}
+									value={search}
+									onFocus={(e) => {
+										e.target.parentElement?.classList.add('focused', 'is-focused');
+									}}
+									onBlur={(e) => {
+										e.target.parentElement?.classList.remove('focused', 'is-focused');
+									}}
+									disabled={!enableSearch}
+								/>
+							</div>
+						</form>
 					</div>
 					<ul className='navbar-nav justify-content-end'>
-						<li className='nav-item d-flex align-items-center'>
-							<a href='/' className='nav-link text-body font-weight-bold px-0'>
-								<i className='fa fa-user me-sm-1'></i>
-								<span className='d-sm-inline d-none'>Sign In</span>
-							</a>
-						</li>
 						<li className='nav-item d-xl-none ps-3 d-flex align-items-center'>
 							<a
 								href='/'
@@ -129,6 +176,18 @@ const Navbar: FC<Props> = (props) => {
 									</a>
 								</li>
 							</ul>
+						</li>
+						<li className='nav-item d-flex align-items-center ms-3'>
+							<a
+								href='/logout'
+								className='nav-link text-body font-weight-bold px-0'
+								onClick={(e) => {
+									e.preventDefault();
+									logout();
+								}}>
+								<i className='fa fa-user me-sm-1'></i>
+								<span className='d-sm-inline d-none'>Logout</span>
+							</a>
 						</li>
 					</ul>
 				</div>

@@ -23,7 +23,7 @@ class SemaphoreServiceProvider extends ServiceProvider
         });
 
         Notification::resolved(function (ChannelManager $service) {
-            $service->extend('semaphore', function ($app) {
+            $service->extend('sms', function ($app) {
                 return $app->make(SemaphoreChannel::class);
             });
         });

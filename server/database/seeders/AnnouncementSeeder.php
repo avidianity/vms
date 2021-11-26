@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Announcement;
 use Illuminate\Database\Seeder;
 
 class AnnouncementSeeder extends Seeder
@@ -13,6 +14,6 @@ class AnnouncementSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Announcement::factory(15)->create();
     }
 }

@@ -30,6 +30,6 @@ class AppointmentVaccine extends Model
 
     public function appointmentDates()
     {
-        return $this->hasMany(AppointmentVaccineDate::class);
+        return $this->hasMany(AppointmentVaccineDate::class)->latest();
     }
 }

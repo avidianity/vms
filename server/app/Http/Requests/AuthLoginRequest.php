@@ -32,6 +32,14 @@ class AuthLoginRequest extends FormRequest
         ];
     }
 
+    public function messages()
+    {
+        return [
+            'email.exists' => 'Email does not exist.',
+            'phone.exists' => 'Phone does not exist.',
+        ];
+    }
+
     protected function passedValidation()
     {
         parent::passedValidation();

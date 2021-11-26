@@ -9,7 +9,7 @@ use App\Models\Appointment;
 
 class AppointmentController extends Controller
 {
-    protected $withs = ['vaccines', 'user', 'attendee'];
+    protected $withs = ['vaccines.vaccine', 'user', 'attendee'];
 
     public function search(SearchRequest $request)
     {

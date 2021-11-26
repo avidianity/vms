@@ -27,6 +27,12 @@ class Appointment extends Model
         'birthday'
     ];
 
+    public function toSearchableArray()
+    {
+        $this->load(['user', 'attendee']);
+        return $this->toArray();
+    }
+
     protected static function booted()
     {
         static::deleting(function (self $appointment) {
@@ -36,7 +42,7 @@ class Appointment extends Model
 
     public function vaccines()
     {
-        return $this->hasMany(AppointmentVaccine::class);
+        return $this->hasMany(AppointmentVaccine::class)->latest();
     }
 
     public function user()

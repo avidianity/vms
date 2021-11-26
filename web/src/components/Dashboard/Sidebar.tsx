@@ -1,9 +1,24 @@
-import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import React, { FC, useContext } from 'react';
+import { NavLink as Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../contexts';
+import { Asker } from '../../helpers';
+import { routes } from '../../routes';
 
 type Props = {};
 
 const Sidebar: FC<Props> = (props) => {
+	const { token } = useContext(AuthContext);
+	const navigate = useNavigate();
+
+	const logout = async () => {
+		if (await Asker.danger('Are you sure you want to logout?')) {
+			await axios.post('/auth/logout', {}, { headers: { Authorization: `Bearer ${token}` } }).catch(console.log);
+			toastr.success('Logged out successfully!');
+			navigate(routes.LOGIN);
+		}
+	};
+
 	return (
 		<aside
 			className='sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark'
@@ -13,7 +28,7 @@ const Sidebar: FC<Props> = (props) => {
 					className='fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none'
 					aria-hidden='true'
 					id='iconSidenav'></i>
-				<Link className='navbar-brand m-0' to='/'>
+				<Link className='navbar-brand m-0' to={routes.DASHBOARD}>
 					<img src='/assets/img/logo.png' className='navbar-brand-img h-100 me-2' alt='main_logo' />
 					<span className='ms-1 font-weight-bold text-white'>VMS</span>
 				</Link>
@@ -22,18 +37,40 @@ const Sidebar: FC<Props> = (props) => {
 			<div className='collapse navbar-collapse w-auto max-height-vh-100' id='sidenav-collapse-main'>
 				<ul className='navbar-nav'>
 					<li className='nav-item'>
-						<a className='nav-link text-white active bg-gradient-primary' href='/'>
+						<Link className='nav-link text-white' to={routes.APPOINTMENTS}>
 							<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-								<i className='material-icons opacity-10'>dashboard</i>
+								<i className='material-icons opacity-10'>book</i>
 							</div>
-							<span className='nav-link-text ms-1'>Dashboard</span>
-						</a>
+							<span className='nav-link-text ms-1'>Appointments</span>
+						</Link>
+					</li>
+					<li className='nav-item'>
+						<Link className='nav-link text-white' to={routes.VACCINES}>
+							<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+								<i className='material-icons opacity-10'>vaccines</i>
+							</div>
+							<span className='nav-link-text ms-1'>Vaccines</span>
+						</Link>
+					</li>
+					<li className='nav-item'>
+						<Link className='nav-link text-white' to={routes.ANNOUNCEMENTS}>
+							<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+								<i className='material-icons opacity-10'>campaign</i>
+							</div>
+							<span className='nav-link-text ms-1'>Announcements</span>
+						</Link>
 					</li>
 				</ul>
 			</div>
 			<div className='sidenav-footer position-absolute w-100 bottom-0'>
 				<div className='mx-3'>
-					<button className='btn bg-gradient-primary mt-4 w-100' type='button'>
+					<button
+						className='btn bg-gradient-primary mt-4 w-100'
+						type='button'
+						onClick={(e) => {
+							e.preventDefault();
+							logout();
+						}}>
 						Logout
 					</button>
 				</div>

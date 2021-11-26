@@ -9,9 +9,11 @@ class AppointmentVaccineDate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['appointment_vaccine_id', 'date'];
+    protected $fillable = ['appointment_vaccine_id', 'date', 'done'];
 
     protected $dates = ['date'];
+
+    protected $casts = ['done' => 'boolean'];
 
     public function appointmentVaccine()
     {

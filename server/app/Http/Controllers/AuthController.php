@@ -7,7 +7,6 @@ use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -26,7 +25,7 @@ class AuthController extends Controller
             return response(['message' => 'Password is incorrect.'], 403);
         }
 
-        $token = $user->createToken(Crypt::encryptString($request->userAgent() ?? 'NONE'));
+        $token = $user->createToken($request->userAgent() ?? 'NONE');
 
         return [
             'user' => $user,
@@ -50,7 +49,7 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user('sanctum')?->currentAccessToken()?->delete();
 
         return response('', 204);
     }

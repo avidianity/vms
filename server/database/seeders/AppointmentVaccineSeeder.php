@@ -2,6 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
+use App\Models\AppointmentVaccine;
+use App\Models\User;
+use App\Models\Vaccine;
 use Illuminate\Database\Seeder;
 
 class AppointmentVaccineSeeder extends Seeder
@@ -13,6 +17,9 @@ class AppointmentVaccineSeeder extends Seeder
      */
     public function run()
     {
-        //
+        AppointmentVaccine::factory(25)
+            ->for(Vaccine::factory())
+            ->for(Appointment::factory()->for(User::factory()->asUser()))
+            ->create();
     }
 }

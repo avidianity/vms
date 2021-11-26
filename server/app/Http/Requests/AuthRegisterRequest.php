@@ -26,9 +26,18 @@ class AuthRegisterRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', Rule::unique(User::class), 'regex:' . User::REGEX['email']],
             'phone' => ['required', 'string', Rule::unique(User::class), 'regex:' . User::REGEX['phone']],
             'password' => ['required', 'string', 'max:255'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'email.unique' => 'Email is already taken.',
+            'phone.unique' => 'Phone is already taken.',
         ];
     }
 }

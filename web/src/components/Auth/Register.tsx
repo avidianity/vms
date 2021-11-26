@@ -1,33 +1,43 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from '../../routes';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { PHONE_REGEX } from '../../constants';
+import axios from 'axios';
+import { handleError } from '../../helpers';
+import TextInput from '../Shared/TextInput';
 
 type Props = {};
 
 const Register: FC<Props> = (props) => {
+	const navigate = useNavigate();
 	const { handleBlur, handleChange, handleSubmit, values, isSubmitting, touched, errors } = useFormik({
 		initialValues: {
+			name: '',
 			email: '',
 			phone: '',
 			password: '',
 		},
 		validationSchema: Yup.object({
+			name: Yup.string().required('Name is required.'),
 			email: Yup.string().email('Email address is invalid.').required('Email is required.'),
 			phone: Yup.string().required('Phone is required.').matches(PHONE_REGEX, 'Phone format must be +639xxxxxxxxx.'),
 			password: Yup.string().required('Password is required.'),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
 			try {
-				//
+				await axios.post('/auth/register', values);
+				toastr.success('Registered successfully! Please verify your account.');
+				navigate(routes.LOGIN);
 			} catch (error) {
-				//
+				handleError(error);
+			} finally {
+				setSubmitting(false);
 			}
-			setSubmitting(false);
 		},
 	});
+
 	return (
 		<main className='main-content mt-0'>
 			<section>
@@ -73,78 +83,48 @@ const Register: FC<Props> = (props) => {
 									</div>
 									<div className='card-body'>
 										<form onSubmit={handleSubmit}>
-											<div
-												className={`input-group input-group-outline ${
-													touched.email && errors.email ? '' : 'mb-3'
-												} ${values.email.length > 0 ? 'is-filled' : ''}`}>
-												<label className='form-label'>Email</label>
-												<input
-													type='email'
-													name='email'
-													className='form-control'
-													onFocus={(e) => {
-														e.target.parentElement?.classList.add('focused', 'is-focused');
-													}}
-													onChange={handleChange}
-													onBlur={(e) => {
-														e.target.parentElement?.classList.remove('focused', 'is-focused');
-														handleBlur(e);
-													}}
-													disabled={isSubmitting}
-													value={values.email}
-												/>
-											</div>
-											{touched.email && errors.email ? (
-												<small className='form-text text-danger d-block mb-2'>{errors.email}</small>
-											) : null}
-											<div
-												className={`input-group input-group-outline ${
-													touched.phone && errors.phone ? '' : 'mb-3'
-												} ${values.phone.length > 0 ? 'is-filled' : ''}`}>
-												<label className='form-label'>Phone</label>
-												<input
-													type='text'
-													name='phone'
-													className='form-control'
-													onFocus={(e) => {
-														e.target.parentElement?.classList.add('focused', 'is-focused');
-													}}
-													onChange={handleChange}
-													onBlur={(e) => {
-														e.target.parentElement?.classList.remove('focused', 'is-focused');
-														handleBlur(e);
-													}}
-													disabled={isSubmitting}
-													value={values.phone}
-												/>
-											</div>
-											{touched.phone && errors.phone ? (
-												<small className='form-text text-danger d-block mb-2'>{errors.phone}</small>
-											) : null}
-											<div
-												className={`input-group input-group-outline ${
-													touched.password && errors.password ? '' : 'mb-3'
-												} ${values.password.length > 0 ? 'is-filled' : ''}`}>
-												<label className='form-label'>Password</label>
-												<input
-													type='password'
-													name='password'
-													className='form-control'
-													onFocus={(e) => {
-														e.target.parentElement?.classList.add('focused', 'is-focused');
-													}}
-													onChange={handleChange}
-													onBlur={(e) => {
-														e.target.parentElement?.classList.remove('focused', 'is-focused');
-														handleBlur(e);
-													}}
-													disabled={isSubmitting}
-													value={values.password}
-												/>
-											</div>
-											{touched.password && errors.password ? (
-												<small className='form-text text-danger d-block mb-2'>{errors.password}</small>
-											) : null}
+											<TextInput
+												label='Name'
+												name='name'
+												isSubmitting={isSubmitting}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+												touched={touched}
+												errors={errors}
+												values={values}
+											/>
+											<TextInput
+												type='email'
+												label='Email'
+												name='email'
+												isSubmitting={isSubmitting}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+												touched={touched}
+												errors={errors}
+												values={values}
+											/>
+											<TextInput
+												label='Phone'
+												name='phone'
+												isSubmitting={isSubmitting}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+												touched={touched}
+												errors={errors}
+												values={values}
+											/>
+											<TextInput
+												type='password'
+												label='Password'
+												name='password'
+												isSubmitting={isSubmitting}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+												touched={touched}
+												errors={errors}
+												values={values}
+											/>
 											<div className='form-check form-check-info text-start ps-0'>
 												<input
 													className='form-check-input'

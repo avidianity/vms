@@ -28,6 +28,7 @@ class StoreAppointmentVaccineDateRequest extends FormRequest
         return [
             'appointment_vaccine_id' => ['required', Rule::exists(AppointmentVaccine::class, 'id')],
             'date' => ['required', 'date'],
+            'done' => ['nullable', 'boolean'],
         ];
     }
 }

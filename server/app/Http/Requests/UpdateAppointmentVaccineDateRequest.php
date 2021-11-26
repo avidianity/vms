@@ -28,6 +28,7 @@ class UpdateAppointmentVaccineDateRequest extends FormRequest
         return [
             'appointment_vaccine_id' => ['nullable', Rule::exists(AppointmentVaccine::class, 'id')],
             'date' => ['nullable', 'date'],
+            'done' => ['nullable', 'boolean'],
         ];
     }
 }

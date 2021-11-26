@@ -21,6 +21,11 @@ class VerifyEmail extends Notification
         return ['mail', 'database'];
     }
 
+    public function toArray($notifiable)
+    {
+        return $notifiable->toArray();
+    }
+
     /**
      * Get the verification URL for the given notifiable.
      *

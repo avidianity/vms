@@ -23,11 +23,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/register', [AuthController::class, 'register'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('login');
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', [AuthController::class, 'check'])->name('auth.check');
+    Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::apiResource('announcements', AnnouncementController::class);
     Route::apiResources([
@@ -38,7 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
         'vaccines' => VaccineController::class,
     ]);
 
-    Route::prefix('prefix')->name('search.')->group(function () {
+    Route::prefix('search')->name('search.')->group(function () {
         Route::get('appointments', [AppointmentController::class, 'search'])->name('appointments');
         Route::get('users', [UserController::class, 'search'])->name('users');
         Route::get('vaccines', [VaccineController::class, 'search'])->name('vaccines');

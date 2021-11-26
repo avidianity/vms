@@ -18,7 +18,7 @@ class VerifySMS extends Notification
      */
     public function via($notifiable)
     {
-        return ['semaphore', 'database'];
+        return ['sms', 'database'];
     }
 
     /**

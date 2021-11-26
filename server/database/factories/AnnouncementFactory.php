@@ -15,7 +15,7 @@ class AnnouncementFactory extends Factory
     {
         return [
             'title' => $this->faker->text(10),
-            'description' => $this->faker->text(),
+            'description' => $this->faker->randomHtml,
         ];
     }
 }

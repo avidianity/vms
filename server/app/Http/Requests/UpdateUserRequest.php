@@ -26,6 +26,7 @@ class UpdateUserRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => ['nullable', 'string', 'max:255'],
             'email' => ['nullable', 'string', 'email', Rule::unique(User::class), 'regex:' . User::REGEX['email']],
             'phone' => ['nullable', 'string', Rule::unique(User::class), 'regex:' . User::REGEX['phone']],
             'password' => ['nullable', 'string', 'max:255'],

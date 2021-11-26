@@ -16,6 +16,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasApiTokens, HasFactory, Notifiable, Searchable;
 
     protected $fillable = [
+        'name',
         'email',
         'phone',
         'password',
@@ -77,12 +78,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function appointments()
     {
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class)->latest();
     }
 
     public function assigns()
     {
-        return $this->hasMany(Appointment::class, 'attendee_id');
+        return $this->hasMany(Appointment::class, 'attendee_id')->latest('updated_at');
     }
 
     public function isAdmin()

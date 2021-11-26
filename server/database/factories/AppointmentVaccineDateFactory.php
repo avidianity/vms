@@ -15,6 +15,7 @@ class AppointmentVaccineDateFactory extends Factory
     {
         return [
             'date' => $this->faker->date,
+            'done' => $this->faker->boolean,
         ];
     }
 }
