@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAppointmentVaccineDateRequest;
 use App\Http\Requests\UpdateAppointmentVaccineDateRequest;
 use App\Models\AppointmentVaccineDate;
 use App\Notifications\AppointmentVaccineDateCreated;
+use App\Notifications\AppointmentVaccineDateDone;
 
 class AppointmentVaccineDateController extends Controller
 {
@@ -33,7 +34,7 @@ class AppointmentVaccineDateController extends Controller
 
         $user = $appointmentVaccineDate->appointmentVaccine->appointment->user;
 
-        $user->notify(new AppointmentVaccineDateCreated);
+        $user->notify(new AppointmentVaccineDateCreated($appointmentVaccineDate));
 
         return $appointmentVaccineDate;
     }
@@ -62,6 +63,12 @@ class AppointmentVaccineDateController extends Controller
     {
         $appointmentVaccineDate->update($request->validated());
         $appointmentVaccineDate->load($this->withs);
+
+        if ($appointmentVaccineDate->done) {
+            $user = $appointmentVaccineDate->appointmentVaccine->appointment->user;
+
+            $user->notify(new AppointmentVaccineDateDone($appointmentVaccineDate));
+        }
 
         return $appointmentVaccineDate;
     }

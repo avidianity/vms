@@ -9,7 +9,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 
-class AppointmentVaccineDateCreated extends Notification implements ShouldQueue
+class AppointmentVaccineDateDone extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -47,10 +47,11 @@ class AppointmentVaccineDateCreated extends Notification implements ShouldQueue
         return (new MailMessage)
             ->line(sprintf('Hi %s!', $notifiable->name))
             ->line(sprintf(
-                'A date has been assigned to your appointment for %s Vaccine at %s.',
+                'Your appointment for %s Vaccine at %s has been marked as done.',
                 $this->appointmentVaccineDate->appointmentVaccine->vaccine->name,
                 Carbon::parse($this->appointmentVaccineDate->date)->toFormattedDateString()
-            ));
+            ))
+            ->line('Please wait for further notification, if this is your last dose, please disregard.');
     }
 
     /**
@@ -63,7 +64,7 @@ class AppointmentVaccineDateCreated extends Notification implements ShouldQueue
     {
         return [
             'message' => sprintf(
-                'Hi %s! A date has been assigned to your appointment for %s Vaccine at %s. Thank you!',
+                'Hi %s! Your appointment for %s Vaccine at %s has been marked as done. Please wait for further notification, if this is your last dose, please disregard.',
                 $notifiable->name,
                 $this->appointmentVaccineDate->appointmentVaccine->vaccine->name,
                 Carbon::parse($this->appointmentVaccineDate->date)->toFormattedDateString()

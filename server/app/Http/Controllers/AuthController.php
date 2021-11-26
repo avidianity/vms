@@ -53,4 +53,9 @@ class AuthController extends Controller
 
         return response('', 204);
     }
+
+    public function notifications(Request $request)
+    {
+        return $request->user()->notifications;
+    }
 }

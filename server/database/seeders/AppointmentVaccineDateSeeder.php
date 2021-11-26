@@ -18,7 +18,7 @@ class AppointmentVaccineDateSeeder extends Seeder
      */
     public function run()
     {
-        AppointmentVaccineDate::factory(50)
+        AppointmentVaccineDate::factory(100)
             ->for(
                 AppointmentVaccine::factory()
                     ->for(Vaccine::factory())

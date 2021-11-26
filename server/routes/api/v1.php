@@ -27,6 +27,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', [AuthController::class, 'check'])->name('auth.check');
+    Route::get('/auth/notifications', [AuthController::class, 'notifications'])->name('auth.notifications');
     Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
     Route::apiResource('announcements', AnnouncementController::class);

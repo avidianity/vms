@@ -8,6 +8,7 @@ use App\Models\AppointmentVaccineDate;
 use App\Models\User;
 use App\Models\Vaccine;
 use App\Notifications\AppointmentVaccineDateCreated;
+use App\Notifications\AppointmentVaccineDateDone;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Notification;
@@ -93,8 +94,16 @@ class AppointmentVaccineDateTest extends TestCase
 
         $data = AppointmentVaccineDate::factory()->make()->toArray();
 
+        Notification::fake();
+
+        $user = $appointmentVaccineDate->appointmentVaccine->appointment->user;
+
+        $data['done'] = true;
+
         $this->putJson(route('v1.appointment-vaccine-dates.update', ['appointment_vaccine_date' => $appointmentVaccineDate->id]), $data)
             ->assertJson(AppointmentVaccineDate::findOrFail($appointmentVaccineDate->id)->toArray());
+
+        Notification::assertSentTo($user, AppointmentVaccineDateDone::class);
     }
 
     /**

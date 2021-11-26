@@ -183,9 +183,11 @@ const List: FC<Props> = (props) => {
 											<i className='material-icons'>assignment</i>
 										</a>
 									) : null}
-									<Link to={`${row.id}/view`} className='mx-1'>
-										<i className='material-icons'>visibility</i>
-									</Link>
+									{row.attendee_id === user?.id ? (
+										<Link to={`${row.id}/view`} className='mx-1'>
+											<i className='material-icons'>visibility</i>
+										</Link>
+									) : null}
 									<Link to={`${row.id}/edit`} className='mx-1'>
 										<i className='material-icons'>edit</i>
 									</Link>

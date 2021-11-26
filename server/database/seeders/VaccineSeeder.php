@@ -14,6 +14,6 @@ class VaccineSeeder extends Seeder
      */
     public function run()
     {
-        Vaccine::factory(25)->create();
+        Vaccine::factory(50)->create();
     }
 }

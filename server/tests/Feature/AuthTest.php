@@ -164,4 +164,15 @@ class AuthTest extends TestCase
         $this->postJson(route('v1.auth.logout'))
             ->assertNoContent();
     }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_list_of_notifications()
+    {
+        $this->authenticate();
+
+        $this->getJson(route('v1.auth.notifications'))
+            ->assertOk();
+    }
 }
