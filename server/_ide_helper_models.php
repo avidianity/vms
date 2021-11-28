@@ -86,6 +86,7 @@ namespace App\Models{
  * @property-read \App\Models\Appointment $appointment
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\AppointmentVaccineDate[] $appointmentDates
  * @property-read int|null $appointment_dates_count
+ * @property-read bool $done
  * @property-read \App\Models\Vaccine $vaccine
  * @method static \Database\Factories\AppointmentVaccineFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|AppointmentVaccine newModelQuery()
@@ -107,7 +108,7 @@ namespace App\Models{
  * @property int $id
  * @property int $appointment_vaccine_id
  * @property \Illuminate\Support\Carbon $date
- * @property int $done
+ * @property bool $done
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\AppointmentVaccine $appointmentVaccine
@@ -130,6 +131,7 @@ namespace App\Models{
  * App\Models\User
  *
  * @property int $id
+ * @property string $name
  * @property string $email
  * @property string $phone
  * @property mixed $password
@@ -153,6 +155,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User wherePhone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRole($value)

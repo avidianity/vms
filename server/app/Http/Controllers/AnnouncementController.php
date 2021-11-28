@@ -15,7 +15,7 @@ class AnnouncementController extends Controller
      */
     public function index()
     {
-        return Announcement::all();
+        return Announcement::latest()->get();
     }
 
     /**

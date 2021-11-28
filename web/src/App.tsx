@@ -10,6 +10,7 @@ import { UserContract } from './contracts/user.contract';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import State from '@avidian/state';
 import axios from 'axios';
+import Home from './components/Home';
 
 export default function App() {
 	const [loaded, setLoaded] = useState(false);
@@ -18,10 +19,6 @@ export default function App() {
 	const state = new State();
 
 	const links: RouteProps[] = [
-		{
-			path: routes.DASHBOARD,
-			element: <Dashboard />,
-		},
 		{
 			path: `${routes.DASHBOARD}/*`,
 			element: <Dashboard />,
@@ -33,6 +30,10 @@ export default function App() {
 		{
 			path: routes.LOGIN,
 			element: <Login />,
+		},
+		{
+			path: routes.HOME,
+			element: <Home />,
 		},
 	];
 

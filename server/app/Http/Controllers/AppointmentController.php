@@ -6,6 +6,9 @@ use App\Http\Requests\SearchRequest;
 use App\Http\Requests\StoreAppointmentRequest;
 use App\Http\Requests\UpdateAppointmentRequest;
 use App\Models\Appointment;
+use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
@@ -13,21 +16,47 @@ class AppointmentController extends Controller
 
     public function search(SearchRequest $request)
     {
-        $appointment = Appointment::search($request->input('keyword'))->get();
+        /**
+         * @var \App\Models\User
+         */
+        $user = $request->user();
 
-        $appointment->load($this->withs);
+        $builder = Appointment::search($request->input('keyword'));
 
-        return $appointment;
+        $appointments = $builder
+            ->get();
+
+        $appointments->load($this->withs);
+
+        if ($user->role === User::USER) {
+            return $appointments->filter(function (Appointment $appointment) use ($user) {
+                return $appointment->user_id === $user->id;
+            });
+        }
+
+        return $appointments;
     }
 
     /**
      * Display a listing of the resource.
      *
+     * @param \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Appointment::with($this->withs)->get();
+        /**
+         * @var \App\Models\User
+         */
+        $user = $request->user();
+
+        $builder = Appointment::with($this->withs)->latest();
+
+        if ($user->role === User::USER) {
+            $builder = $builder->where('user_id', $user->id);
+        }
+
+        return $builder->get();
     }
 
     /**
@@ -52,11 +81,24 @@ class AppointmentController extends Controller
     /**
      * Display the specified resource.
      *
+     * @param \Illuminate\Http\Request  $request
      * @param  \App\Models\Appointment  $appointment
      * @return \Illuminate\Http\Response
      */
-    public function show(Appointment $appointment)
+    public function show(Request $request, Appointment $appointment)
     {
+        /**
+         * @var \App\Models\User
+         */
+        $user = $request->user();
+
+        if ($user->role === User::USER && $user->id !== $appointment->user_id) {
+            throw (new ModelNotFoundException)->setModel(
+                Appointment::class,
+                $appointment->id
+            );
+        }
+
         $appointment->load($this->withs);
         return $appointment;
     }

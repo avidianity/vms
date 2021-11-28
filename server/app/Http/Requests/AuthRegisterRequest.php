@@ -29,7 +29,8 @@ class AuthRegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', Rule::unique(User::class), 'regex:' . User::REGEX['email']],
             'phone' => ['required', 'string', Rule::unique(User::class), 'regex:' . User::REGEX['phone']],
-            'password' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'max:255', 'confirmed'],
+            'password_confirmation' => ['required', 'string', 'max:255'],
         ];
     }
 

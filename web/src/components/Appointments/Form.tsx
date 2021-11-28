@@ -1,10 +1,11 @@
 import { useMode, useToggle } from '@avidian/hooks';
 import { useFormik } from 'formik';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import 'react-quill/dist/quill.snow.css';
 import { useMatch, useNavigate } from 'react-router';
 import * as Yup from 'yup';
+import { AuthContext } from '../../contexts';
 import { AppointmentContract } from '../../contracts/appointment.contract';
 import { handleError } from '../../helpers';
 import { createAppointment, getAppointment, updateAppointment } from '../../queries/appointment.query';
@@ -52,6 +53,11 @@ const Form: FC<Props> = (props) => {
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
 			try {
+				if (user?.role === 'user') {
+					values.height = 'N/A';
+					values.weight = 'N/A';
+					values.user_id = user.id;
+				}
 				await (mode === 'Add' ? createAppointment(values) : updateAppointment(match?.params.id, values));
 				toastr.success(`${mode} appointment successful!`);
 				navigate(`${routes.DASHBOARD}/${routes.APPOINTMENTS}`);
@@ -63,6 +69,7 @@ const Form: FC<Props> = (props) => {
 		},
 	});
 	const { data: users } = useQuery('users', getUsers);
+	const { user } = useContext(AuthContext);
 
 	const fetch = async (id: any) => {
 		const appointment = await getAppointment(id);
@@ -161,92 +168,100 @@ const Form: FC<Props> = (props) => {
 									<option value='Female'>Female</option>
 								</SelectInput>
 							</div>
-							<div className='col-12 col-md-6 col-lg-3'>
-								<TextInput
-									label='Height'
-									name='height'
-									isSubmitting={isSubmitting}
-									handleBlur={handleBlur}
-									handleChange={handleChange}
-									touched={touched}
-									errors={errors}
-									values={values}
-								/>
-							</div>
-							<div className='col-12 col-md-6 col-lg-3'>
-								<TextInput
-									label='Weight'
-									name='weight'
-									isSubmitting={isSubmitting}
-									handleBlur={handleBlur}
-									handleChange={handleChange}
-									touched={touched}
-									errors={errors}
-									values={values}
-								/>
-							</div>
-							<div className='col-12 col-md-6 col-lg-3'>
-								<SelectInput
-									label='User'
-									name='user_id'
-									isSubmitting={isSubmitting}
-									handleBlur={handleBlur}
-									handleChange={handleChange}
-									touched={touched}
-									errors={errors}
-									values={values}>
-									<option value=''> -- Select -- </option>
-									{users
-										?.filter((user) => user.role === 'user')
-										.map((user, index) => (
-											<option value={user.id} key={index}>
-												{user.name}
-											</option>
-										))}
-								</SelectInput>
-							</div>
-							<div className='col-12 col-md-6 col-lg-3'>
-								<SelectInput
-									label={`Attendee ${!assign ? '(disabled)' : ''}`}
-									name='attendee_id'
-									isSubmitting={isSubmitting || !assign}
-									handleBlur={handleBlur}
-									handleChange={handleChange}
-									touched={touched}
-									errors={errors}
-									values={values}>
-									<option value=''> -- Select -- </option>
-									{users
-										?.filter((user) => user.role === 'admin')
-										.map((user, index) => (
-											<option value={user.id} key={index}>
-												{user.name}
-											</option>
-										))}
-								</SelectInput>
-								<div className='form-check ps-0'>
-									<input
-										className='form-check-input'
-										type='checkbox'
-										id='assign'
-										name='assign'
-										checked={assign}
-										onChange={() => {
-											if (assign) {
-												setValues({
-													...values,
-													attendee_id: '' as any,
-												});
-											}
-											setAssign();
-										}}
-										disabled={isSubmitting}
-									/>
-									<label className='custom-control-label' htmlFor='assign'>
-										Assign
-									</label>
-								</div>
-							</div>
+							{user?.role === 'admin' ? (
+								<>
+									<div className='col-12 col-md-6 col-lg-3'>
+										<TextInput
+											label='Height'
+											name='height'
+											isSubmitting={isSubmitting}
+											handleBlur={handleBlur}
+											handleChange={handleChange}
+											touched={touched}
+											errors={errors}
+											values={values}
+										/>
+									</div>
+									<div className='col-12 col-md-6 col-lg-3'>
+										<TextInput
+											label='Weight'
+											name='weight'
+											isSubmitting={isSubmitting}
+											handleBlur={handleBlur}
+											handleChange={handleChange}
+											touched={touched}
+											errors={errors}
+											values={values}
+										/>
+									</div>{' '}
+								</>
+							) : null}
+							{user?.role === 'admin' ? (
+								<>
+									<div className='col-12 col-md-6 col-lg-3'>
+										<SelectInput
+											label='User'
+											name='user_id'
+											isSubmitting={isSubmitting}
+											handleBlur={handleBlur}
+											handleChange={handleChange}
+											touched={touched}
+											errors={errors}
+											values={values}>
+											<option value=''> -- Select -- </option>
+											{users
+												?.filter((user) => user.role === 'user')
+												.map((user, index) => (
+													<option value={user.id} key={index}>
+														{user.name}
+													</option>
+												))}
+										</SelectInput>
+									</div>
+									<div className='col-12 col-md-6 col-lg-3'>
+										<SelectInput
+											label={`Attendee ${!assign ? '(disabled)' : ''}`}
+											name='attendee_id'
+											isSubmitting={isSubmitting || !assign}
+											handleBlur={handleBlur}
+											handleChange={handleChange}
+											touched={touched}
+											errors={errors}
+											values={values}>
+											<option value=''> -- Select -- </option>
+											{users
+												?.filter((user) => user.role === 'admin')
+												.map((user, index) => (
+													<option value={user.id} key={index}>
+														{user.name}
+													</option>
+												))}
+										</SelectInput>
+										<div className='form-check ps-0'>
+											<input
+												className='form-check-input'
+												type='checkbox'
+												id='assign'
+												name='assign'
+												checked={assign}
+												onChange={() => {
+													if (assign) {
+														setValues({
+															...values,
+															attendee_id: '' as any,
+														});
+													}
+													setAssign();
+												}}
+												disabled={isSubmitting}
+											/>
+											<label className='custom-control-label' htmlFor='assign'>
+												Assign
+											</label>
+										</div>
+									</div>
+								</>
+							) : null}
 						</div>
 					</div>
 					<div className='form-group pt-3'>

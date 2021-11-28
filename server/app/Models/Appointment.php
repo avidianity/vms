@@ -27,6 +27,8 @@ class Appointment extends Model
         'birthday'
     ];
 
+    protected $appends = ['done'];
+
     public function toSearchableArray()
     {
         $this->load(['user', 'attendee']);
@@ -38,6 +40,13 @@ class Appointment extends Model
         static::deleting(function (self $appointment) {
             $appointment->vaccines->each->delete();
         });
+    }
+
+    public function getDoneAttribute()
+    {
+        return $this->vaccines->first(function (AppointmentVaccine $appointmentVaccine) {
+            return !$appointmentVaccine->done;
+        }) === null && $this->vaccines->count() > 0;
     }
 
     public function vaccines()

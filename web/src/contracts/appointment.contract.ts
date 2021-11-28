@@ -13,6 +13,7 @@ export interface AppointmentContract extends ModelContract {
 	weight: string;
 	user_id: number;
 	attendee_id?: number;
+	done: boolean;
 	user?: UserContract;
 	attendee?: UserContract;
 	vaccines?: AppointmentVaccineContract[];

@@ -8,7 +8,7 @@ import { routes } from '../../routes';
 type Props = {};
 
 const Sidebar: FC<Props> = (props) => {
-	const { token } = useContext(AuthContext);
+	const { user, token } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	const logout = async () => {
@@ -18,6 +18,10 @@ const Sidebar: FC<Props> = (props) => {
 			navigate(routes.LOGIN);
 		}
 	};
+
+	if (!user) {
+		return null;
+	}
 
 	return (
 		<aside
@@ -44,22 +48,34 @@ const Sidebar: FC<Props> = (props) => {
 							<span className='nav-link-text ms-1'>Appointments</span>
 						</Link>
 					</li>
-					<li className='nav-item'>
-						<Link className='nav-link text-white' to={routes.VACCINES}>
-							<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-								<i className='material-icons opacity-10'>vaccines</i>
-							</div>
-							<span className='nav-link-text ms-1'>Vaccines</span>
-						</Link>
-					</li>
-					<li className='nav-item'>
-						<Link className='nav-link text-white' to={routes.ANNOUNCEMENTS}>
-							<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
-								<i className='material-icons opacity-10'>campaign</i>
-							</div>
-							<span className='nav-link-text ms-1'>Announcements</span>
-						</Link>
-					</li>
+					{user.role === 'admin' ? (
+						<>
+							<li className='nav-item'>
+								<Link className='nav-link text-white' to={routes.ANNOUNCEMENTS}>
+									<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+										<i className='material-icons opacity-10'>campaign</i>
+									</div>
+									<span className='nav-link-text ms-1'>Announcements</span>
+								</Link>
+							</li>
+							<li className='nav-item'>
+								<Link className='nav-link text-white' to={routes.USERS}>
+									<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+										<i className='material-icons opacity-10'>person</i>
+									</div>
+									<span className='nav-link-text ms-1'>Users</span>
+								</Link>
+							</li>
+							<li className='nav-item'>
+								<Link className='nav-link text-white' to={routes.VACCINES}>
+									<div className='text-white text-center me-2 d-flex align-items-center justify-content-center'>
+										<i className='material-icons opacity-10'>vaccines</i>
+									</div>
+									<span className='nav-link-text ms-1'>Vaccines</span>
+								</Link>
+							</li>
+						</>
+					) : null}
 				</ul>
 			</div>
 			<div className='sidenav-footer position-absolute w-100 bottom-0'>

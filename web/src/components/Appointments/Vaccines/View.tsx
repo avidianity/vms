@@ -1,5 +1,5 @@
 import { useNullable } from '@avidian/hooks';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { useMatch, useNavigate } from 'react-router';
 import { AppointmentVaccineContract } from '../../../contracts/appointment-vaccine.contract';
 import { getAppointmentVaccine } from '../../../queries/appointment-vaccine.query';
@@ -16,6 +16,7 @@ import {
 	updateAppointmentVaccineDate,
 } from '../../../queries/appointment-vaccine-date.query';
 import dayjs from 'dayjs';
+import { AuthContext } from '../../../contexts';
 
 type Props = {};
 
@@ -24,6 +25,7 @@ const View: FC<Props> = (props) => {
 	const navigate = useNavigate();
 	const [appointmentVaccine, setAppointmentVaccine] = useNullable<AppointmentVaccineContract>();
 	const [modal, setModal] = useNullable<BSModal>();
+	const { user } = useContext(AuthContext);
 
 	const fetch = async (id: any) => {
 		try {
@@ -132,15 +134,22 @@ const View: FC<Props> = (props) => {
 					<div className='card-text'>
 						Vaccine Name: <b>{appointmentVaccine.vaccine?.name}</b>
 					</div>
+					<div className='card-text'>
+						Doses: <b>{appointmentVaccine.vaccine?.doses}</b>
+					</div>
 					<hr className='my-3' />
-					<button
-						className='btn btn-primary btn-sm mt-2'
-						onClick={(e) => {
-							e.preventDefault();
-							modal?.show();
-						}}>
-						Assign Date
-					</button>
+					{user?.role === 'admin' ? (
+						<button
+							className='btn btn-primary btn-sm mt-2'
+							onClick={(e) => {
+								e.preventDefault();
+								appointmentVaccineDateForm.resetForm();
+								modal?.show();
+							}}
+							disabled={(appointmentVaccine.appointment_dates?.length || 0) >= (appointmentVaccine.vaccine?.doses || 0)}>
+							Assign Date
+						</button>
+					) : null}
 					<div className='row'>
 						{appointmentVaccine.appointment_dates?.map((appointmentVaccineDate, index) => (
 							<div className='col-12 col-md-6 col-xxl-4 p-2' key={index}>
@@ -163,25 +172,29 @@ const View: FC<Props> = (props) => {
 											Assigned: {dayjs(appointmentVaccineDate.created_at).format('MMMM DD, YYYY')}
 										</small>
 										<div className='mt-2'>
-											{!appointmentVaccineDate.done ? (
-												<button
-													className='btn btn-success btn-sm mx-1'
-													onClick={(e) => {
-														e.preventDefault();
-														markAppointmentVaccineDateAsDone(appointmentVaccineDate.id);
-													}}>
-													Mark as 'Done'
-												</button>
+											{user?.role === 'admin' ? (
+												<>
+													{!appointmentVaccineDate.done ? (
+														<button
+															className='btn btn-success btn-sm mx-1'
+															onClick={(e) => {
+																e.preventDefault();
+																markAppointmentVaccineDateAsDone(appointmentVaccineDate.id);
+															}}>
+															Mark as 'Done'
+														</button>
+													) : null}
+													<button
+														className='btn btn-danger btn-sm mx-1'
+														onClick={(e) => {
+															e.preventDefault();
+															removeAppointmentVaccineDate(appointmentVaccineDate.id);
+														}}
+														disabled={appointmentVaccineDate.done}>
+														Delete
+													</button>
+												</>
 											) : null}
-											<button
-												className='btn btn-danger btn-sm mx-1'
-												onClick={(e) => {
-													e.preventDefault();
-													removeAppointmentVaccineDate(appointmentVaccineDate.id);
-												}}
-												disabled={appointmentVaccineDate.done}>
-												Delete
-											</button>
 										</div>
 									</div>
 								</div>

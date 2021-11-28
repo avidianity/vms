@@ -3,10 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { routes } from '../../routes';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { PHONE_REGEX } from '../../constants';
+import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import axios from 'axios';
 import { handleError } from '../../helpers';
 import TextInput from '../Shared/TextInput';
+import register from '../../assets/img/register.jpg';
 
 type Props = {};
 
@@ -16,14 +17,19 @@ const Register: FC<Props> = (props) => {
 		initialValues: {
 			name: '',
 			email: '',
-			phone: '',
+			phone: '+639',
 			password: '',
+			password_confirmation: '',
 		},
 		validationSchema: Yup.object({
 			name: Yup.string().required('Name is required.'),
-			email: Yup.string().email('Email address is invalid.').required('Email is required.'),
+			email: Yup.string()
+				.email('Email address is invalid.')
+				.matches(EMAIL_REGEX, 'Email address is invalid.')
+				.required('Email is required.'),
 			phone: Yup.string().required('Phone is required.').matches(PHONE_REGEX, 'Phone format must be +639xxxxxxxxx.'),
 			password: Yup.string().required('Password is required.'),
+			password_confirmation: Yup.string().required('Confirm Password is required.'),
 		}),
 		onSubmit: async (values, { setSubmitting }) => {
 			try {
@@ -69,9 +75,10 @@ const Register: FC<Props> = (props) => {
 								d-flex
 								flex-column
 								justify-content-center
+                                shadow-lg
 							'
 									style={{
-										backgroundImage: `url(/assets/img/illustrations/illustration-signup.jpg)`,
+										backgroundImage: `url(${register})`,
 										backgroundSize: 'cover',
 									}}></div>
 							</div>
@@ -118,6 +125,17 @@ const Register: FC<Props> = (props) => {
 												type='password'
 												label='Password'
 												name='password'
+												isSubmitting={isSubmitting}
+												handleBlur={handleBlur}
+												handleChange={handleChange}
+												touched={touched}
+												errors={errors}
+												values={values}
+											/>
+											<TextInput
+												type='password'
+												label='Confirm Password'
+												name='password_confirmation'
 												isSubmitting={isSubmitting}
 												handleBlur={handleBlur}
 												handleChange={handleChange}

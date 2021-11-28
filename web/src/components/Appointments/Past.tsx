@@ -1,17 +1,15 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { useQuery } from 'react-query';
-import { Asker } from '../../helpers';
 import dayjs from 'dayjs';
-import { Link } from 'react-router-dom';
-import { deleteAppointment, getAppointments, searchAppointments, updateAppointment } from '../../queries/appointment.query';
+import { getAppointments, searchAppointments } from '../../queries/appointment.query';
 import { SearchEvent } from '../../events';
 import { useToggle } from '@avidian/hooks';
 import { AuthContext } from '../../contexts';
 
 type Props = {};
 
-const List: FC<Props> = (props) => {
+const Past: FC<Props> = (props) => {
 	const [search, setSearch] = useState('');
 	const [isSearch, setIsSearch] = useToggle(false || search.length > 3);
 	const { user } = useContext(AuthContext);
@@ -39,35 +37,7 @@ const List: FC<Props> = (props) => {
 		// eslint-disable-next-line
 	}, []);
 
-	const assign = async (id: any) => {
-		if (await Asker.notice('Are you sure you want to assign yourself to this appointment as an attendee?')) {
-			try {
-				await updateAppointment(id, { attendee_id: user?.id });
-				toastr.success('Assigned to an appointment as attendee successfully!');
-			} catch (error) {
-				console.error(error);
-				toastr.error('Unable to assign self to appointment.');
-			} finally {
-				await refetch();
-			}
-		}
-	};
-
-	const remove = async (id: any) => {
-		if (await Asker.danger('Are you sure you want to delete this appointment?')) {
-			try {
-				await deleteAppointment(id);
-				toastr.success('Appointment has been deleted successfully!');
-			} catch (error) {
-				console.error(error);
-				toastr.error('Unable to delete appointment.');
-			} finally {
-				refetch();
-			}
-		}
-	};
-
-	const appointments = data?.filter((item) => !item.done);
+	const appointments = data?.filter((item) => item.done);
 
 	return (
 		<div className='card'>
@@ -76,11 +46,8 @@ const List: FC<Props> = (props) => {
 					pagination
 					fixedHeader
 					subHeader
-					title='Appointments'
+					title='Past Appointments'
 					actions={[
-						<Link to='add' className='btn btn-icon btn-sm btn-primary'>
-							Add Appointment
-						</Link>,
 						<button
 							className='btn btn-info btn-sm'
 							onClick={(e) => {
@@ -169,46 +136,6 @@ const List: FC<Props> = (props) => {
 							selector: (row) => dayjs(row.updated_at).format('MMMM DD, YYYY hh:mm A'),
 							minWidth: '250px',
 						},
-						{
-							name: 'Actions',
-							cell: (row) => (
-								<>
-									{!row.attendee_id && user?.role === 'admin' ? (
-										<a
-											href='assign'
-											onClick={(e) => {
-												e.preventDefault();
-												assign(row.id);
-											}}
-											className='mx-1'>
-											<i className='material-icons'>assignment</i>
-										</a>
-									) : null}
-									{row.attendee_id === user?.id || user?.role === 'user' ? (
-										<Link to={`${row.id}/view`} className='mx-1'>
-											<i className='material-icons'>visibility</i>
-										</Link>
-									) : null}
-									{user?.role === 'admin' ? (
-										<>
-											<Link to={`${row.id}/edit`} className='mx-1'>
-												<i className='material-icons'>edit</i>
-											</Link>
-											<a
-												href='delete'
-												onClick={(e) => {
-													e.preventDefault();
-													remove(row.id);
-												}}
-												className='mx-1'>
-												<i className='material-icons'>delete</i>
-											</a>
-										</>
-									) : null}
-								</>
-							),
-							minWidth: '150px',
-						},
 					]}
 				/>
 			</div>
@@ -216,4 +143,4 @@ const List: FC<Props> = (props) => {
 	);
 };
 
-export default List;
+export default Past;

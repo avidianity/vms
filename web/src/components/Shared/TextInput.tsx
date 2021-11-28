@@ -18,7 +18,7 @@ const TextInput: FC<Props> = ({ type = 'text', isSubmitting, handleBlur, handleC
 		<>
 			<div
 				className={`input-group input-group-outline ${touched[name] && errors[name] ? '' : 'mb-3'} ${
-					values[name].length > 0 || type === 'date' ? 'is-filled' : ''
+					values[name].length > 0 || type === 'date' || type === 'number' ? 'is-filled' : ''
 				}`}>
 				<label className='form-label'>{label}</label>
 				<input

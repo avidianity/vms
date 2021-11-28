@@ -8,5 +8,6 @@ export interface AppointmentVaccineContract extends ModelContract {
 	appointment_id: number;
 	vaccine?: VaccineContract;
 	appointment?: AppointmentContract;
+	done: boolean;
 	appointment_dates?: AppointmentVaccineDateContract[];
 }

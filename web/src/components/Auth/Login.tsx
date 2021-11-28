@@ -10,7 +10,7 @@ import State from '@avidian/state';
 import { AuthContext } from '../../contexts';
 import { UserContract } from '../../contracts/user.contract';
 import { upperFirst } from 'lodash';
-import { PHONE_REGEX } from '../../constants';
+import { EMAIL_REGEX, PHONE_REGEX } from '../../constants';
 import { useToggle } from '@avidian/hooks';
 import TextInput from '../Shared/TextInput';
 
@@ -30,7 +30,10 @@ const Login: FC<Props> = (props) => {
 		validationSchema: Yup.object({
 			[mode]:
 				mode === 'email'
-					? Yup.string().email('Email address is invalid.').required('Email is required.')
+					? Yup.string()
+							.email('Email address is invalid.')
+							.matches(EMAIL_REGEX, 'Email address is invalid.')
+							.required('Email is required.')
 					: Yup.string().required('Phone is required.').matches(PHONE_REGEX, 'Phone format must be +639xxxxxxxxx.'),
 			password: Yup.string().required('Password is required.'),
 		}),
@@ -43,16 +46,15 @@ const Login: FC<Props> = (props) => {
 					password: values.password,
 				});
 				toastr.success('Logged in successfully!');
+				const state = new State();
 				if (remember) {
-					const state = new State();
 					state.set('user', user).set('token', token);
 				}
+				state.set('remember', remember);
 				setToken(token);
 				setUser(user);
 				axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-				if (user.role === 'admin') {
-					navigate(routes.DASHBOARD);
-				}
+				navigate(routes.DASHBOARD);
 			} catch (error) {
 				handleError(error);
 			} finally {

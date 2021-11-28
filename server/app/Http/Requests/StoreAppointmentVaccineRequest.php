@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Appointment;
 use App\Models\Vaccine;
+use App\Rules\VaccineNotOutOfStock;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,7 +28,7 @@ class StoreAppointmentVaccineRequest extends FormRequest
     public function rules()
     {
         return [
-            'vaccine_id' => ['required', 'numeric', Rule::exists(Vaccine::class, 'id')],
+            'vaccine_id' => ['required', 'numeric', Rule::exists(Vaccine::class, 'id'), new VaccineNotOutOfStock],
             'appointment_id' => ['required', 'numeric', Rule::exists(Appointment::class, 'id')],
         ];
     }

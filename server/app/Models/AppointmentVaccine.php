@@ -11,11 +11,23 @@ class AppointmentVaccine extends Model
 
     protected $fillable = ['vaccine_id', 'appointment_id'];
 
+    protected $appends = ['done'];
+
     protected static function booted()
     {
         static::deleting(function (self $appointmentVaccine) {
             $appointmentVaccine->appointmentDates->each->delete();
         });
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDoneAttribute()
+    {
+        return $this->appointmentDates->filter(function (AppointmentVaccineDate $appointmentVaccineDate) {
+            return $appointmentVaccineDate->done;
+        })->count() >= $this->vaccine()->first()?->doses ?? 0;
     }
 
     public function vaccine()

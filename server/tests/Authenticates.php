@@ -15,5 +15,7 @@ trait Authenticates
         $user = User::factory()->create(['role' => $role]);
 
         Sanctum::actingAs($user);
+
+        return $user;
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\AppointedVaccineIsDoneException;
 use App\Http\Requests\StoreAppointmentVaccineDateRequest;
 use App\Http\Requests\UpdateAppointmentVaccineDateRequest;
+use App\Models\AppointmentVaccine;
 use App\Models\AppointmentVaccineDate;
 use App\Notifications\AppointmentVaccineDateCreated;
 use App\Notifications\AppointmentVaccineDateDone;
@@ -27,10 +29,19 @@ class AppointmentVaccineDateController extends Controller
      *
      * @param  \App\Http\Requests\StoreAppointmentVaccineDateRequest  $request
      * @return \Illuminate\Http\Response
+     * @throws \App\Exceptions\AppointedVaccineIsDoneException
      */
     public function store(StoreAppointmentVaccineDateRequest $request)
     {
-        $appointmentVaccineDate = AppointmentVaccineDate::create($request->validated());
+        $data = $request->validated();
+
+        $appointmentVaccine = AppointmentVaccine::with(['vaccine'])->withCount(['appointmentDates'])->findOrFail($data['appointment_vaccine_id']);
+
+        if ($appointmentVaccine->appointment_dates_count >= $appointmentVaccine->vaccine->doses) {
+            throw new AppointedVaccineIsDoneException;
+        }
+
+        $appointmentVaccineDate = AppointmentVaccineDate::create($data);
 
         $user = $appointmentVaccineDate->appointmentVaccine->appointment->user;
 
@@ -64,8 +75,11 @@ class AppointmentVaccineDateController extends Controller
         $appointmentVaccineDate->update($request->validated());
         $appointmentVaccineDate->load($this->withs);
 
+        $appointmentVaccine = $appointmentVaccineDate->appointmentVaccine;
+
         if ($appointmentVaccineDate->done) {
             $user = $appointmentVaccineDate->appointmentVaccine->appointment->user;
+            $appointmentVaccine->vaccine->update(['quantity' => $appointmentVaccine->vaccine->quantity - 1]);
 
             $user->notify(new AppointmentVaccineDateDone($appointmentVaccineDate));
         }

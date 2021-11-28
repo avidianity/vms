@@ -1,6 +1,6 @@
 import { useNullable } from '@avidian/hooks';
 import dayjs from 'dayjs';
-import React, { FC, useEffect } from 'react';
+import React, { FC, useContext, useEffect } from 'react';
 import { useNavigate, useMatch } from 'react-router';
 import { Link } from 'react-router-dom';
 import { AppointmentContract } from '../../contracts/appointment.contract';
@@ -14,6 +14,7 @@ import { Asker, handleError } from '../../helpers';
 import { useQuery } from 'react-query';
 import { getVaccines } from '../../queries/vaccine.query';
 import SelectInput from '../Shared/SelectInput';
+import { AuthContext } from '../../contexts';
 
 type Props = {};
 
@@ -23,6 +24,7 @@ const View: FC<Props> = (props) => {
 	const [appointment, setAppointment] = useNullable<AppointmentContract>();
 	const [modal, setModal] = useNullable<BSModal>();
 	const { data: vaccines } = useQuery('vaccines', getVaccines);
+	const { user } = useContext(AuthContext);
 
 	const vaccineForm = useFormik({
 		initialValues: {
@@ -127,16 +129,19 @@ const View: FC<Props> = (props) => {
 							<div className='col-12'>
 								<hr className='my-3' />
 							</div>
-							<div className='col-12'>
-								<button
-									className='btn btn-info btn-sm'
-									onClick={(e) => {
-										e.preventDefault();
-										modal?.show();
-									}}>
-									Assign Vaccine
-								</button>
-							</div>
+							{user?.role === 'admin' ? (
+								<div className='col-12'>
+									<button
+										className='btn btn-info btn-sm'
+										onClick={(e) => {
+											e.preventDefault();
+											vaccineForm.resetForm();
+											modal?.show();
+										}}>
+										Assign Vaccine
+									</button>
+								</div>
+							) : null}
 							{appointment.vaccines?.map((appointmentVaccine, index) => (
 								<div className='col-12 col-md-6 col-xxl-4 p-2' key={index}>
 									<div className='card'>
@@ -144,8 +149,19 @@ const View: FC<Props> = (props) => {
 											<div className='card-text d-flex'>
 												Vaccine Name: <b className='ms-1'>{appointmentVaccine.vaccine?.name}</b>
 												<span className='ms-auto'>
-													ID: <b>{appointmentVaccine.id}</b>
+													ID: <b>{appointmentVaccine.vaccine?.id}</b>
 												</span>
+											</div>
+											<div className='card-text'>
+												Doses: <b>{appointmentVaccine.vaccine?.doses}</b>
+											</div>
+											<div className='card-text'>
+												Done:{' '}
+												{appointmentVaccine.done ? (
+													<span className='badge rounded-pill bg-success'>Yes</span>
+												) : (
+													<span className='badge rounded-pill bg-danger'>No</span>
+												)}
 											</div>
 										</div>
 										<div className='card-footer'>
@@ -156,14 +172,16 @@ const View: FC<Props> = (props) => {
 												<Link className='btn btn-warning btn-sm mx-1' to={`vaccine/${appointmentVaccine.id}`}>
 													View
 												</Link>
-												<button
-													className='btn btn-danger btn-sm mx-1'
-													onClick={(e) => {
-														e.preventDefault();
-														removeAppointmentVaccine(appointmentVaccine.id);
-													}}>
-													Delete
-												</button>
+												{user?.role === 'admin' ? (
+													<button
+														className='btn btn-danger btn-sm mx-1'
+														onClick={(e) => {
+															e.preventDefault();
+															removeAppointmentVaccine(appointmentVaccine.id);
+														}}>
+														Delete
+													</button>
+												) : null}
 											</div>
 										</div>
 									</div>
@@ -197,8 +215,8 @@ const View: FC<Props> = (props) => {
 						values={vaccineForm.values}>
 						<option value=''> -- Select -- </option>
 						{vaccines?.map((vaccine, index) => (
-							<option value={vaccine.id} key={index}>
-								{vaccine.name}
+							<option value={vaccine.id} key={index} disabled={vaccine.quantity === 0}>
+								{vaccine.name} {vaccine.quantity === 0 ? '(Out Of Stock)' : ''}
 							</option>
 						))}
 					</SelectInput>

@@ -46,7 +46,7 @@ const Navbar: FC<Props> = (props) => {
 						<form
 							onSubmit={(e) => {
 								e.preventDefault();
-								SearchEvent.dispatch('search', search);
+								SearchEvent.dispatch('search', encodeURIComponent(search));
 							}}>
 							<div className={`input-group input-group-outline ${search.length > 0 ? 'is-filled' : ''}`}>
 								<label className='form-label'>Search</label>
@@ -55,7 +55,7 @@ const Navbar: FC<Props> = (props) => {
 									className='form-control'
 									onChange={(e) => {
 										setSearch(e.target.value);
-										SearchEvent.dispatch('search', e.target.value);
+										SearchEvent.dispatch('search', encodeURIComponent(e.target.value));
 									}}
 									value={search}
 									onFocus={(e) => {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAppointmentVaccineRequest;
 use App\Http\Requests\UpdateAppointmentVaccineRequest;
 use App\Models\AppointmentVaccine;
+use App\Notifications\AppointmentVaccineCreated;
 
 class AppointmentVaccineController extends Controller
 {
@@ -28,7 +29,13 @@ class AppointmentVaccineController extends Controller
      */
     public function store(StoreAppointmentVaccineRequest $request)
     {
-        return AppointmentVaccine::create($request->validated());
+        $appointmentVaccine = AppointmentVaccine::create($request->validated());
+
+        $user = $appointmentVaccine->appointment->user;
+
+        $user->notify(new AppointmentVaccineCreated($appointmentVaccine));
+
+        return $appointmentVaccine;
     }
 
     /**

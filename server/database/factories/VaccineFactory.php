@@ -21,7 +21,7 @@ class VaccineFactory extends Factory
             'three_months_and_a_half' => $this->faker->boolean,
             'nine_months' => $this->faker->boolean,
             'one_year' => $this->faker->boolean,
-            'doses' => $this->faker->numberBetween(0, 5),
+            'doses' => $this->faker->numberBetween(1, 5),
             'quantity' => $this->faker->numberBetween(0, 50),
         ];
     }

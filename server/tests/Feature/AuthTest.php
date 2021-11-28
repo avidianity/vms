@@ -170,9 +170,12 @@ class AuthTest extends TestCase
      */
     public function it_returns_a_list_of_notifications()
     {
-        $this->authenticate();
+        $user = $this->authenticate();
 
-        $this->getJson(route('v1.auth.notifications'))
-            ->assertOk();
+        $response = $this->getJson(route('v1.auth.notifications'))
+            ->assertOk()
+            ->json();
+
+        $this->assertTrue($user->notifications->count() === count($response));
     }
 }
