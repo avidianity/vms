@@ -1,10 +1,9 @@
-import React, { FC, Fragment, useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { v4 } from 'uuid';
 import logo from '../../assets/img/logo.svg';
 import { AuthContext } from '../../contexts';
 import { routes } from '../../routes';
-import intro from '../../assets/img/landing.gif';
 import dayjs from 'dayjs';
 import { useQuery } from 'react-query';
 import { getAnnouncements } from '../../queries/announcement.query';
@@ -72,7 +71,7 @@ const Home: FC<Props> = (props) => {
 							</Link>
 						</div>
 						<div className='col-12 col-md-6 text-center'>
-							<img src={intro} alt={v4()} className='img-fluid' />
+							<img src='/assets/img/landing.gif' alt={v4()} className='img-fluid' />
 						</div>
 					</div>
 				</div>
