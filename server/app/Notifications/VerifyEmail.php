@@ -3,16 +3,13 @@
 namespace App\Notifications;
 
 use Illuminate\Auth\Notifications\VerifyEmail as Notification;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 
-class VerifyEmail extends Notification implements ShouldQueue
+class VerifyEmail extends Notification
 {
-    use Queueable;
 
     /**
      * Get the notification's channels.
