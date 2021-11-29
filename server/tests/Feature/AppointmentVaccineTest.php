@@ -6,8 +6,10 @@ use App\Models\Appointment;
 use App\Models\AppointmentVaccine;
 use App\Models\User;
 use App\Models\Vaccine;
+use App\Notifications\AppointmentVaccineCreated;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Notification;
 use Tests\Authenticates;
 use Tests\TestCase;
 
@@ -49,16 +51,22 @@ class AppointmentVaccineTest extends TestCase
     {
         $this->authenticate();
 
+        $user = User::factory()->asUser()->create();
+
         $data = AppointmentVaccine::factory()
             ->for(Vaccine::factory())
-            ->for(Appointment::factory()->for(User::factory()->asUser()))
+            ->for(Appointment::factory()->for($user))
             ->make()
             ->toArray();
+
+        Notification::fake();
 
         $response = $this->postJson(route('v1.appointment-vaccines.store'), $data)
             ->assertCreated();
 
         $this->assertDatabaseHas(AppointmentVaccine::class, ['id' => $response->json('id')]);
+
+        Notification::assertSentTo($user, AppointmentVaccineCreated::class);
     }
 
     /**
