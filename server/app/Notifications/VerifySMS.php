@@ -2,14 +2,18 @@
 
 namespace App\Notifications;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-class VerifySMS extends Notification
+class VerifySMS extends Notification implements ShouldQueue
 {
+    use Queueable;
+
     /**
      * Get the notification's delivery channels.
      *

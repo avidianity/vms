@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class AppointmentVaccineCreated extends Notification
+class AppointmentVaccineCreated extends Notification implements ShouldQueue
 {
     use Queueable;
 
