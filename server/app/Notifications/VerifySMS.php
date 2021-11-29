@@ -30,7 +30,8 @@ class VerifySMS extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Verification URL: ' . $this->verificationUrl($notifiable)
+            'message' => sprintf('Hi %s! Thanks for registering to VMS! Please verify your account in your email address. Thank you!', $notifiable->name),
+            'url' => $this->verificationUrl($notifiable),
         ];
     }
 
