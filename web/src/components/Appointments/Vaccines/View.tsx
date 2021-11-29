@@ -226,6 +226,7 @@ const View: FC<Props> = (props) => {
 						touched={appointmentVaccineDateForm.touched}
 						errors={appointmentVaccineDateForm.errors}
 						values={appointmentVaccineDateForm.values}
+						max={dayjs().subtract(1, 'day').toJSON()}
 					/>
 				</Modal>
 			</form>

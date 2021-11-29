@@ -1,4 +1,5 @@
 import { useMode, useToggle } from '@avidian/hooks';
+import dayjs from 'dayjs';
 import { useFormik } from 'formik';
 import React, { FC, useContext, useEffect } from 'react';
 import { useQuery } from 'react-query';
@@ -140,6 +141,7 @@ const Form: FC<Props> = (props) => {
 									touched={touched}
 									errors={errors}
 									values={values}
+									max={dayjs().subtract(1, 'day').toJSON()}
 								/>
 							</div>
 							<div className='col-12 col-md-4'>
