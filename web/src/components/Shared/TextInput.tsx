@@ -12,9 +12,22 @@ type Props = {
 	errors: any;
 	values: any;
 	max?: string | number;
+	min?: string | number;
 };
 
-const TextInput: FC<Props> = ({ type = 'text', isSubmitting, handleBlur, handleChange, touched, errors, values, label, name, max }) => {
+const TextInput: FC<Props> = ({
+	type = 'text',
+	isSubmitting,
+	handleBlur,
+	handleChange,
+	touched,
+	errors,
+	values,
+	label,
+	name,
+	max,
+	min,
+}) => {
 	return (
 		<>
 			<div
@@ -37,6 +50,7 @@ const TextInput: FC<Props> = ({ type = 'text', isSubmitting, handleBlur, handleC
 					disabled={isSubmitting}
 					value={type === 'date' ? dayjs(values[name]).format('YYYY-MM-DD') : values[name]}
 					max={max}
+					min={min}
 				/>
 			</div>
 			{touched[name] && errors[name] ? <small className='form-text text-danger d-block mb-2'>{errors[name]}</small> : null}
