@@ -25,12 +25,14 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 
+Route::apiResource('announcements', AnnouncementController::class)->only('index', 'show');
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/check', [AuthController::class, 'check'])->name('auth.check');
     Route::get('/auth/notifications', [AuthController::class, 'notifications'])->name('auth.notifications');
     Route::post('/auth/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-    Route::apiResource('announcements', AnnouncementController::class);
+    Route::apiResource('announcements', AnnouncementController::class)->except('index', 'show');
     Route::apiResources([
         'appointments' => AppointmentController::class,
         'appointment-vaccines' => AppointmentVaccineController::class,
