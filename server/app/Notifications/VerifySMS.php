@@ -34,7 +34,7 @@ class VerifySMS extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Welcome to VMS! Please open the url below to verify your account. If you have not registered or have already verified from your email address. No further action is required. ' . $this->verificationUrl($notifiable)
+            'message' => 'Verification URL: ' . $this->verificationUrl($notifiable)
         ];
     }
 
