@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import './assets/css/nucleo-icons.css';
 import './assets/css/nucleo-svg.css';
 import './assets/css/material-dashboard.css';
-import 'toastr/build/toastr.css';
+import './styles/toastr.css';
 import axios from 'axios';
 import { SERVER_URL } from './constants';
 import toastr from 'toastr';

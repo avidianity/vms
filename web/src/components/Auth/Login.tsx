@@ -127,11 +127,14 @@ const Login: FC<Props> = (props) => {
 												checked={remember}
 											/>
 											<label className='form-check-label mb-0 ms-2' htmlFor='remember'>
-												Remember me
+												Remember Me
 											</label>
 										</div>
 										<div className='text-center'>
-											<button type='submit' className='btn bg-gradient-primary w-100 my-4 mb-2'>
+											<button
+												type='submit'
+												className='btn bg-gradient-primary w-100 my-4 mb-2'
+												disabled={isSubmitting}>
 												Sign In
 											</button>
 										</div>
