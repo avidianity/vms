@@ -2,7 +2,6 @@ import { useMode } from '@avidian/hooks';
 import { useFormik } from 'formik';
 import React, { FC, useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import { useMatch, useNavigate } from 'react-router';
 import * as Yup from 'yup';
 import { handleError } from '../../helpers';

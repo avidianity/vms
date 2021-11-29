@@ -13,6 +13,7 @@ import toastr from 'toastr';
 import State from '@avidian/state';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import 'react-quill/dist/quill.snow.css';
 
 dayjs.extend(relativeTime);
 
