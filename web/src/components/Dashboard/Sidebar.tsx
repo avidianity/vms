@@ -78,19 +78,6 @@ const Sidebar: FC<Props> = (props) => {
 					) : null}
 				</ul>
 			</div>
-			<div className='sidenav-footer position-absolute w-100 bottom-0'>
-				<div className='mx-3'>
-					<button
-						className='btn bg-gradient-primary mt-4 w-100'
-						type='button'
-						onClick={(e) => {
-							e.preventDefault();
-							logout();
-						}}>
-						Logout
-					</button>
-				</div>
-			</div>
 		</aside>
 	);
 };

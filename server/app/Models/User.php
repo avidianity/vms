@@ -4,14 +4,13 @@ namespace App\Models;
 
 use App\Casts\Password;
 use App\Notifications\VerifyEmail;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, Searchable;
 
@@ -46,7 +45,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected static function booted()
     {
-        static::deleting(function (self $user) {
+        static::creating(function(self $user) {
+		$user->email_verified_at = now();
+	});
+
+	static::deleting(function (self $user) {
             $user->appointments->each->delete();
             $user->assigns->each->delete();
         });

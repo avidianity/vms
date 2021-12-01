@@ -37,8 +37,6 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated() + ['role' => User::USER]);
 
-        event(new Registered($user));
-
         return response('', 204);
     }
 
