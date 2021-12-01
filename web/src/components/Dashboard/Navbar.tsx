@@ -17,7 +17,7 @@ const Navbar: FC<Props> = (props) => {
 
 	const logout = async () => {
 		if(await Asker.danger('Are you sure you want to logout?')) {
-			await axios.post('/auth/logout', {}, headers: { { Authorization: `Bearer ${token}` } }).catch(console.log);
+			await axios.post('/auth/logout', {}, headers: { Authorization: `Bearer ${token}` }).catch(console.log);
 
 			toastr.success('Logged out successfully!');
 			navigate(routes.LOGIN);
