@@ -15,7 +15,7 @@ type Props = {};
 const Form: FC<Props> = (props) => {
 	const [mode, setMode] = useMode();
 	const navigate = useNavigate();
-	const match = useMatch(`${routes.DASHBOARD}/${routes.ANNOUNCEMENTS}/:id/edit`);
+	const match = useMatch(`${routes.DASHBOARD}/${routes.USERS}/:id/edit`);
 	const { values, setValues, handleBlur, handleChange, handleSubmit, touched, errors, isSubmitting } = useFormik({
 		initialValues: {
 			name: '',
