@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router';
 import React, { FC, useContext, useEffect, useState } from 'react';
+iport { useNavigate } from 'react-router';
 import { AuthContext } from '../../contexts';
 import { Asker } from '../../helpers';
 import { routes } from '../../routes';
@@ -10,17 +10,14 @@ import { useToggle } from '@avidian/hooks';
 type Props = {};
 
 const Navbar: FC<Props> = (props) => {
-	const navigate = useNavigate();
 	const { token } = useContext(AuthContext);
 	const [search, setSearch] = useState('');
+	const navigate = useNavigate();
 	const [enableSearch, setEnableSearch] = useToggle(false);
 
 	const logout = async () => {
 		if(await Asker.danger('Are you sure you want to logout?')) {
-			await axios.post('/auth/logout', {}, { Authorization: `Bearer ${token}` }).catch(console.log);
-
-			toastr.success('Logged out successfully!');
-			navigate(routes.LOGIN);
+			await axios.post('/auth/logout')
 		}
 	};
 

@@ -1,23 +1,12 @@
-import axios from 'axios';
 import React, { FC, useContext } from 'react';
-import { NavLink as Link, useNavigate } from 'react-router-dom';
+import { NavLink as Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts';
-import { Asker } from '../../helpers';
 import { routes } from '../../routes';
 
 type Props = {};
 
 const Sidebar: FC<Props> = (props) => {
 	const { user, token } = useContext(AuthContext);
-	const navigate = useNavigate();
-
-	const logout = async () => {
-		if (await Asker.danger('Are you sure you want to logout?')) {
-			await axios.post('/auth/logout', {}, { headers: { Authorization: `Bearer ${token}` } }).catch(console.log);
-			toastr.success('Logged out successfully!');
-			navigate(routes.LOGIN);
-		}
-	};
 
 	if (!user) {
 		return null;
