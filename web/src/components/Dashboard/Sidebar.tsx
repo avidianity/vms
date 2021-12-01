@@ -6,7 +6,7 @@ import { routes } from '../../routes';
 type Props = {};
 
 const Sidebar: FC<Props> = (props) => {
-	const { user, token } = useContext(AuthContext);
+	const { user } = useContext(AuthContext);
 
 	if (!user) {
 		return null;
