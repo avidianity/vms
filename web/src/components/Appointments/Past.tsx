@@ -6,6 +6,8 @@ import { getAppointments, searchAppointments } from '../../queries/appointment.q
 import { SearchEvent } from '../../events';
 import { useToggle } from '@avidian/hooks';
 import { AuthContext } from '../../contexts';
+import { Link } from 'react-router-dom';
+import { routes } from '../../routes';
 
 type Props = {};
 
@@ -135,6 +137,15 @@ const Past: FC<Props> = (props) => {
 							name: 'Modified',
 							selector: (row) => dayjs(row.updated_at).format('MMMM DD, YYYY hh:mm A'),
 							minWidth: '250px',
+						},
+						{
+							name: 'Actions',
+							cell: (row) => (
+								<Link to={`${routes.DASHBOARD}/${routes.APPOINTMENTS}/${row.id}/view`} className='mx-1'>
+									<i className='material-icons'>visibility</i>
+								</Link>
+							),
+							minWidth: '100px',
 						},
 					]}
 				/>

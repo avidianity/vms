@@ -212,7 +212,7 @@ const View: FC<Props> = (props) => {
 						}
 					}}
 					footer={
-						<button type='submit' className='btn btn-info btn-sm'>
+						<button type='submit' className='btn btn-info btn-sm' disabled={appointmentVaccineDateForm.isSubmitting}>
 							Submit
 						</button>
 					}>

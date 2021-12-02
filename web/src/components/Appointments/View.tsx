@@ -178,7 +178,8 @@ const View: FC<Props> = (props) => {
 														onClick={(e) => {
 															e.preventDefault();
 															removeAppointmentVaccine(appointmentVaccine.id);
-														}}>
+														}}
+														disabled={appointmentVaccine.done}>
 														Delete
 													</button>
 												) : null}
@@ -200,7 +201,7 @@ const View: FC<Props> = (props) => {
 					}}
 					title='Assign Vaccine'
 					footer={
-						<button type='submit' className='btn btn-info btn-sm'>
+						<button type='submit' className='btn btn-info btn-sm' disabled={vaccineForm.isSubmitting}>
 							Submit
 						</button>
 					}>
