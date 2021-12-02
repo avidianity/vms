@@ -104,4 +104,32 @@ class AppointmentVaccineTest extends TestCase
 
         $this->assertDatabaseMissing(AppointmentVaccine::class, ['id' => $appointmentVaccine->id]);
     }
+
+    /**
+     * @test
+     */
+    public function it_cannot_assign_duplicate_vaccine()
+    {
+        $this->authenticate();
+
+        $vaccine = Vaccine::factory()->create();
+        $appointment = Appointment::factory()
+            ->for(User::factory()->asUser()->create())
+            ->create();
+
+        $data = AppointmentVaccine::factory()
+            ->for($vaccine)
+            ->for($appointment)
+            ->make()
+            ->toArray();
+
+        AppointmentVaccine::factory()
+            ->for($vaccine)
+            ->for($appointment)
+            ->create();
+
+        $this->postJson(route('v1.appointment-vaccines.store'), $data)
+            ->assertStatus(400)
+            ->assertJson(['message' => 'Vaccine is already assigned to this appointment.']);
+    }
 }
