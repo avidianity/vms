@@ -29,7 +29,17 @@ class AppointmentVaccineController extends Controller
      */
     public function store(StoreAppointmentVaccineRequest $request)
     {
-        $appointmentVaccine = AppointmentVaccine::create($request->validated());
+        $data = $request->validated();
+
+        $exists = AppointmentVaccine::whereAppointmentId($data['appointment_id'])
+            ->whereVaccineId($data['vaccine_id'])
+            ->first();
+
+        if ($exists) {
+            return response(['message' => 'Vaccine is already assigned to this appointment.'],  400);
+        }
+
+        $appointmentVaccine = AppointmentVaccine::create($data);
 
         $user = $appointmentVaccine->appointment->user;
 

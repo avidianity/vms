@@ -105,4 +105,27 @@ class AppointmentTest extends TestCase
         $this->getJson(route('v1.search.appointments', ['keyword' => $appointment->child]))
             ->assertJson([$appointment->toArray()]);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_prevent_duplicate_child_from_create_appointments()
+    {
+        $user = $this->authenticate(User::USER);
+
+        $appointment = Appointment::factory()
+            ->for($user)
+            ->create();
+
+        $data = Appointment::factory()
+            ->for($user)
+            ->make()
+            ->toArray();
+
+        $data['child'] = $appointment->child;
+
+        $this->postJson(route('v1.appointments.store'), $data)
+            ->assertUnprocessable()
+            ->assertJsonValidationErrors(['child']);
+    }
 }

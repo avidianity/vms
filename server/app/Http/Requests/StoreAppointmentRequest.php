@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\User;
 use App\Rules\Gender;
 use App\Rules\Role;
+use App\Rules\UniqueChild;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,8 +28,19 @@ class StoreAppointmentRequest extends FormRequest
      */
     public function rules()
     {
+        /**
+         * @var \App\Models\User
+         */
+        $user = $this->user();
+
+        $child = ['required', 'string', 'max:255'];
+
+        if ($user->isUser()) {
+            $child[] = new UniqueChild($user);
+        }
+
         return [
-            'child' => ['required', 'string', 'max:255'],
+            'child' => $child,
             'father' => ['required', 'string', 'max:255'],
             'mother' => ['required', 'string', 'max:255'],
             'birthday' => ['required', 'date'],

@@ -3,13 +3,10 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Notifications\VerifySMS;
-use App\Notifications\VerifyEmail;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Tests\Authenticates;
@@ -47,9 +44,6 @@ class AuthTest extends TestCase
             ->assertOk();
     }
 
-    /**
-     * @test
-     */
     public function it_should_prevent_unverified_user_from_logging_in()
     {
         $data = ['email' => $this->faker->safeEmail, 'password' => $this->faker->password];
@@ -75,20 +69,10 @@ class AuthTest extends TestCase
             'password_confirmation' => $password,
         ];
 
-        Notification::fake();
-
         $this->postJson(route('v1.auth.register'), $data)
             ->assertNoContent();
-
-        $user = User::firstOrFail();
-
-        Notification::assertSentTo($user, VerifyEmail::class);
-        Notification::assertSentTo($user, VerifySMS::class);
     }
 
-    /**
-     * @test
-     */
     public function it_verifies_a_user_email()
     {
         /**
@@ -120,9 +104,6 @@ class AuthTest extends TestCase
         $this->assertTrue($user->fresh()->hasVerifiedEmail());
     }
 
-    /**
-     * @test
-     */
     public function it_verifies_a_user_sms()
     {
         /**
